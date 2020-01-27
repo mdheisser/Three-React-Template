@@ -8,6 +8,6 @@ Based on create-react-app tool.
 Includes following libraries and features:
 - ThreeJS: webgl 3d graphics
 - React: UI and browser integration
-- Redux + ReduxToolkit for state: ease data exchange between components (UI and engine)
-- Router: for supporting multiple projects (sandbox)
+- Redux (@types/react-redux, @reduxjs/toolkit): state to ease data exchange between components (UI and engine)
+- React Router(@types/react-router-dom): to support browsing multiple projects (sandbox)
 - Typescript
