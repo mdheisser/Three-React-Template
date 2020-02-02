@@ -1,0 +1,38 @@
+{
+    // Use IntelliSense to learn about possible attributes.
+    // Hover to view descriptions of existing attributes.
+    // For more information, visit: https://go.microsoft.com/fwlink/?linkid=830387
+    "version": "0.2.0",
+    "configurations": [
+
+        {
+            "type": "chrome",
+            "request": "launch",
+            "name": "Chrome Demos",
+            "url": "http://localhost:3000/demos/Template",
+            "webRoot": "${workspaceFolder}"
+        },
+        {
+            "type": "chrome",
+            "request": "launch",
+            "name": "Chromium Demos",
+            "url": "http://localhost:3000/demos/Template",
+            "webRoot": "${workspaceFolder}",
+            "runtimeExecutable": "/usr/bin/chromium",
+            "runtimeArgs": [
+                "--new-window",
+                "-user-data-dir=\"/${workspaceFolder}/DevProfile\"",
+                "--remote-debugging-port=9222",
+                "--disable-background-networking"
+            ]
+        },
+        {
+            "type": "chrome",
+            "request": "launch",
+            "name": "Chrome Tests",
+            "url": "http://localhost:3000/tests/templateTest/test1",
+            "webRoot": "${workspaceFolder}",
+            "runtimeExecutable": "/opt/google/chrome/chrome"
+        }
+    ]
+}
