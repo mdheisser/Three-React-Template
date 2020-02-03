@@ -30,7 +30,7 @@ export class Engine {
     static start(canvas: HTMLCanvasElement, sampleType: string, sampleName: string){
         Graphics.InitSingleton(canvas);
         window.onresize = Engine.onWindowResize;
-        Engine.camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
+        Engine.camera = new THREE.PerspectiveCamera(70, window.innerWidth / window.innerHeight, 0.5, 2000000);
         Engine.scene = new THREE.Scene();
         var phys = new Physics();
         Engine.physWorld = phys.physicsWorld
