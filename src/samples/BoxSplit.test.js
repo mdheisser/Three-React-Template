@@ -1,32 +1,36 @@
 import * as THREE from 'three/build/three.module';
-import { BoxSplitter, BoxListHelper } from '../common/misc/BoxUtils'
+import { BoxSplitter } from '../common/misc/BoxUtils'
 import watch from 'redux-watch'
 import { Engine } from '../common/Engine';
 import store from '../redux/store'
+import { BoxListHelper, AxeGridHelper } from '../common/misc/Helpers';
+import { Sample } from '../common/Sample';
 
 
-export default class BoxSplitTests {
+export default class BoxSplitTests extends Sample {
 
     selectedIndex = 0;
     boxSplitReject;
 
     constructor() {
-        // super(scene, camera, ammo);
-        // super.initPhysics();
-        // var dbgStateListener = new StateListener("boxCombination", this.debugAction);
+        super();
+        Engine.camera.position.x = 0;
+        Engine.camera.position.y = 32;
+        Engine.camera.position.z = 256;
         this.dbgHlpGrp = new THREE.Group();
         Engine.scene.add(this.dbgHlpGrp);
         this.initStateListeners();
-        console.log("Running test #" + this.sampleId);
+        // Engine.scene.add(AxeGridHelper(128));
     }
 
     run(testId){
+        console.log("Running test #" + testId);
         this[testId]();
-    }
+    };
 
-    animate(){
+    // animate(){
 
-    }
+    // }
 
     initStateListeners() {
         let w = watch(store.getState, 'DemoSamples.commands.switch')

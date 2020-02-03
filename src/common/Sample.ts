@@ -2,18 +2,19 @@ import { Engine } from "./Engine";
 
 export class Sample {
 
-    updatable: any[] = [];
-    animated: any[] = [];
+     updatable: any[] = [];
+    static animated: any[] = [];
     dynamic: any[] = [];
     // sampleId: string;
 
     // constructor() {
-        // this.sampleId = store.getState().DemoSamples.sampleId;
-        // this.initStateListeners(); // this.stateListener = new StateListener();
+    // this.sampleId = store.getState().DemoSamples.sampleId;
+    // this.initStateListeners(); // this.stateListener = new StateListener();
     // }
 
-    run(testId: string){
-
+    // @TODO
+    run(testId: string) {
+        // this[testId]();  // doesn't work in TS
     };
 
     // initStateListeners() {
@@ -42,11 +43,10 @@ export class Sample {
      * @param delta 
      */
     animate(time: any, delta: any) {
-        // process physical dynamic objects
-        for (var i = 0, il = this.dynamic.length; i < il; i++) {
-            var objThree: THREE.Object3D = this.dynamic[i];
-            var objPhys = objThree.userData.physicsBody;
-            var ms = objPhys.getMotionState();
+        // dynamic physical objects
+        // for (var i = 0, il = Sample.dynamic.length; i < il; i++) {
+        this.dynamic.forEach((objThree, i) => {
+            var ms = objThree.userData.physicsBody.getMotionState();
             if (ms) {
                 var transformAux = new Engine.AmmoLib.btTransform();;
                 ms.getWorldTransform(transformAux);
@@ -55,8 +55,9 @@ export class Sample {
                 objThree.position.set(p.x(), p.y(), p.z());
                 objThree.quaternion.set(q.x(), q.y(), q.z(), q.w());
             }
-        }
-        // process animated objects
+        });
+
+        // animated objects
         // this.dayTime = (time / 4) % 24;
         this.updatable.forEach((item) => {
             if (item.userData)
@@ -67,7 +68,6 @@ export class Sample {
                 item.update(time);
         })
     }
-    
 }
 
 // export class StateListener {

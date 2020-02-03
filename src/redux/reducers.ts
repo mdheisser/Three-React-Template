@@ -1,6 +1,5 @@
 import { combineReducers } from 'redux'
 import { createReducer } from '@reduxjs/toolkit'
-import { Voxels} from './voxelStates'
 import { CONTROL_TYPE } from '../common/constants';
 
 const UiSettings = createReducer({
@@ -124,7 +123,7 @@ function onTheFly(action: any, current: any) {
 }
 
 const rootReducer = combineReducers({
-    DemoSamples, UiSettings, Voxels
+    DemoSamples, UiSettings
 })
 
 export default rootReducer
