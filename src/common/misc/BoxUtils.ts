@@ -1,4 +1,4 @@
-import { Box3, Vector3, Color, Group, Box3Helper } from 'three';
+import { Box3, Vector3 } from 'three';
 
 export class BoxSplitter {
 
@@ -146,59 +146,5 @@ export class BoxSplitter {
 
     static getRejected() {
         return this.rejected;
-    }
-}
-
-export class BoxListHelper {
-
-    meshGrp: Group;
-    subBoxesArr: BoxListHelper[];
-
-    constructor(boxes: any[], customColorFn: ((boxIndex: any) => Color) | undefined, subBoxesList: any)  {
-        this.meshGrp = new Group();
-        this.getBoxColor = customColorFn ? customColorFn : this.getBoxColor;
-        this.subBoxesArr = subBoxesList;
-        this.refresh(boxes);
-    }
-
-    getBoxColor = (boxIndex: any = null) => {
-        // var lut = new Lut("rainbow", boxes.length * 10);
-        // return lut.getColor(Math.random());
-        return new Color(0xffffff);
-    };
-
-    refresh(boxes: Box3[]) {
-        this.meshGrp.children = [];
-        if (boxes && boxes.length) {
-            boxes.forEach((box, i) => {
-                var boxHlp = new Box3Helper(box, this.getBoxColor());
-                if (this.subBoxesArr && this.subBoxesArr[i]) {
-                    boxHlp.children.push(this.subBoxesArr[i].meshGrp)
-                    boxHlp.children[0].visible = false;
-                }
-                boxHlp.visible = true;
-                this.meshGrp.add(boxHlp);
-            })
-        }
-    }
-
-    singleBox(id: number | null, showSubBoxes = false) {
-        this.allBoxes(false)
-        if (id !== null && this.meshGrp.children[id]) {
-            this.meshGrp.children[id].visible = true;
-            if (this.meshGrp.children[id].children[0]) {
-                this.meshGrp.children[id].children[0].visible = showSubBoxes;
-            }
-            // if (showSubBoxes && this.subBoxList) {
-            //     var subBoxList = subBoxesArr[id]
-            //     subBoxList.highlightAllBoxes(true);
-            // }
-        }
-    }
-
-    allBoxes(visible: boolean) {
-        this.meshGrp.children.forEach(boxHlp => {
-            boxHlp.visible = visible;
-        })
     }
 }

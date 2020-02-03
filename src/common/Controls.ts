@@ -17,20 +17,24 @@ export class ControlManager {
     //     TRANSFORM: TransformControls,
     //     FLY: FlyControls|null
     // }
-    ControlCatalog: { [key in CONTROL_TYPE]: Controls }
+    static ControlCatalog: { [key in CONTROL_TYPE]: Controls };
     static control: Controls;
+    static OrbitCtrl: OrbitControls;
+    static TranformCtrl: TransformControls;
 
     constructor(camera: any, canvas: any) {
         this.camera = camera;
         this.canvas = canvas;
-        this.ControlCatalog = {
-            [CONTROL_TYPE.ORBIT]: this.initOrbit(),
-            [CONTROL_TYPE.TRANSFORM]: this.initTransform(),
+        ControlManager.OrbitCtrl = this.initOrbit();
+        ControlManager.TranformCtrl= this.initTransform();
+        ControlManager.ControlCatalog = {
+            [CONTROL_TYPE.ORBIT]: ControlManager.OrbitCtrl,
+            [CONTROL_TYPE.TRANSFORM]: ControlManager.TranformCtrl,
             // [CONTROL_TYPE.FLY]: this.initFly()
         };
         // get selected control directly from the store
         var ctrl = store.getState().DemoSamples.control;
-        ControlManager.control = this.ControlCatalog[ctrl] //ControlManager.CONTROLS.ORBIT;
+        ControlManager.control = ControlManager.ControlCatalog[ctrl] //ControlManager.CONTROLS.ORBIT;
         this.init();
         this.initStateListener();
     }
@@ -42,7 +46,7 @@ export class ControlManager {
         store.subscribe(w((newVal: CONTROL_TYPE, oldVal: CONTROL_TYPE, objectPath: string) => {
             console.log("Changing control from %s to %s", oldVal, newVal);
             // if (!(ControlManager.control instanceof FlyControls)) ControlManager.control.enabled = false;
-            ControlManager.control = this.ControlCatalog[newVal] //ControlManager.CONTROLS.ORBIT;
+            ControlManager.control = ControlManager.ControlCatalog[newVal] //ControlManager.CONTROLS.ORBIT;
             if (!(ControlManager.control instanceof FlyControls)) ControlManager.control.enabled = true;
         }));
     }
@@ -166,7 +170,7 @@ export class ControlManager {
 
     update(delta: any) {
         // this.switchControls();
-        if(ControlManager.control instanceof OrbitControls) ControlManager.control.update();
+        if (ControlManager.control instanceof OrbitControls) ControlManager.control.update();
         // this.CONTROLS.ORBIT.update();
         // this.CONTROLS.FLY.movementSpeed = 0.33 * d;
         // this.CONTROLS.FLY.update(delta);
