@@ -1,5 +1,7 @@
 import { combineReducers } from 'redux'
 import { createReducer } from '@reduxjs/toolkit'
+import { Voxels} from './voxelStates'
+import { CONTROL_TYPE } from '../common/constants';
 
 const UiSettings = createReducer({
     showDbgCanvas: false,
@@ -18,6 +20,9 @@ updateValue(state, action) {
 }
 */
 
+/**
+ * State common to all demos samples
+ */
 const DemoSamples = createReducer({
     sampleType: "",
     sampleName: "",
@@ -28,11 +33,6 @@ const DemoSamples = createReducer({
             hour: 12,
             min: 0
         }
-    },
-    debug: {
-    },
-    backup: {
-        time: 0
     },
     commands: {
         lock: false,
@@ -47,6 +47,12 @@ const DemoSamples = createReducer({
         down: false,
         movex: 0,
         movey: 0
+    },
+    control: CONTROL_TYPE.ORBIT,
+    debug: {
+    },
+    backup: {
+        time: 0
     }
 }, {
     GLOBAL: (state, action) => {
@@ -54,13 +60,16 @@ const DemoSamples = createReducer({
         state.sampleName = action.payload.sampleName;
         state.sampleId = action.payload.sampleId;
     },
+    CHANGE_CTRL:(state, action) => {
+        state.control = action.payload;
+    }, 
     COMMAND: (state, action) => {
         state.commands.lock = action.payload.btn === 1 && action.payload.isDown;
         state.commands.next = action.payload.btn === 4 && action.payload.isDown;
         state.commands.prev = action.payload.btn === 3 && action.payload.isDown;
         state.commands.trigger = action.payload.btn === 1 && action.payload.isDown;
         state.commands.toggle = action.payload.key === 32 && action.payload.isDown ? !state.commands.toggle : state.commands.toggle;
-        state.commands.switch = action.payload.key === 9 && action.payload.isDown ? !state.commands.switch : state.commands.switch;
+        state.commands.switch = action.payload.key === 9 && action.payload.isDown;
         state.commands.movex = action.payload.moveX ? action.payload.moveX : 0;
         state.commands.movey = action.payload.moveY ? action.payload.moveY : 0;
         state.commands.left = action.payload.key === 37 && action.payload.isDown ? state.commands.left + 1 : 0;
@@ -115,7 +124,7 @@ function onTheFly(action: any, current: any) {
 }
 
 const rootReducer = combineReducers({
-    DemoSamples, UiSettings,
+    DemoSamples, UiSettings, Voxels
 })
 
 export default rootReducer

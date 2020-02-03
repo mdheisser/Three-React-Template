@@ -1,30 +1,50 @@
 import { OrbitControls } from "three/examples/jsm/controls/OrbitControls";
+import { TransformControls } from "three/examples/jsm/controls/TransformControls";
 import { FlyControls } from "three/examples/jsm/controls/FlyControls";
 import store from '../redux/store';
+import watch from 'redux-watch'
+import { CONTROL_TYPE } from "./constants";
 
-type ControlTypes = OrbitControls | FlyControls;
+
+type Controls = OrbitControls | TransformControls | FlyControls;
 
 export class ControlManager {
     camera: any;
     canvas: HTMLCanvasElement;
 
-    static CONTROLS: {
-        ORBIT: OrbitControls,
-        FLY: FlyControls
-    }
-    static controller: ControlTypes;
-    Controls: any;
-    // ctrl: "ORBIT"|"FLY";
+    // Controls: {
+    //     ORBIT: OrbitControls,
+    //     TRANSFORM: TransformControls,
+    //     FLY: FlyControls|null
+    // }
+    ControlCatalog: { [key in CONTROL_TYPE]: Controls }
+    static control: Controls;
 
     constructor(camera: any, canvas: any) {
         this.camera = camera;
         this.canvas = canvas;
-        ControlManager.CONTROLS = {
-            ORBIT: this.initOrbit(),
-            FLY: this.initFly()
-        }
-        ControlManager.controller = ControlManager.CONTROLS.ORBIT;
+        this.ControlCatalog = {
+            [CONTROL_TYPE.ORBIT]: this.initOrbit(),
+            [CONTROL_TYPE.TRANSFORM]: this.initTransform(),
+            // [CONTROL_TYPE.FLY]: this.initFly()
+        };
+        // get selected control directly from the store
+        var ctrl = store.getState().DemoSamples.control;
+        ControlManager.control = this.ControlCatalog[ctrl] //ControlManager.CONTROLS.ORBIT;
         this.init();
+        this.initStateListener();
+    }
+    /**
+     * Put state here that will pilot controlmanager
+     */
+    initStateListener = () => {
+        var w = watch(store.getState, 'DemoSamples.control');
+        store.subscribe(w((newVal: CONTROL_TYPE, oldVal: CONTROL_TYPE, objectPath: string) => {
+            console.log("Changing control from %s to %s", oldVal, newVal);
+            // if (!(ControlManager.control instanceof FlyControls)) ControlManager.control.enabled = false;
+            ControlManager.control = this.ControlCatalog[newVal] //ControlManager.CONTROLS.ORBIT;
+            if (!(ControlManager.control instanceof FlyControls)) ControlManager.control.enabled = true;
+        }));
     }
 
     init() {
@@ -93,6 +113,11 @@ export class ControlManager {
         return orbitCtrl;
     }
 
+    initTransform() {
+        const transfCtrl = new TransformControls(this.camera, this.canvas);
+        return transfCtrl;
+    }
+
     initFly() {
         const flyCtrl = new FlyControls(this.camera, this.canvas);
         flyCtrl.movementSpeed = 100;
@@ -141,7 +166,7 @@ export class ControlManager {
 
     update(delta: any) {
         // this.switchControls();
-        ControlManager.controller.update(delta);
+        if(ControlManager.control instanceof OrbitControls) ControlManager.control.update();
         // this.CONTROLS.ORBIT.update();
         // this.CONTROLS.FLY.movementSpeed = 0.33 * d;
         // this.CONTROLS.FLY.update(delta);
