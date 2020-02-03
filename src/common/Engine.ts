@@ -29,7 +29,7 @@ export class Engine {
 
     static start(canvas: HTMLCanvasElement, sampleType: string, sampleName: string){
         Graphics.InitSingleton(canvas);
-        window.onresize = Engine.onWindowResize;
+        window.onresize = Graphics.onWindowResize;
         Engine.camera = new THREE.PerspectiveCamera(70, window.innerWidth / window.innerHeight, 0.5, 2000000);
         Engine.scene = new THREE.Scene();
         var phys = new Physics();
@@ -55,15 +55,7 @@ export class Engine {
         Graphics.Renderer.render(Engine.scene, Engine.camera);
     };
 
-    static onWindowResize = () => {
-        Engine.camera.aspect = window.innerWidth / window.innerHeight;
-        Engine.camera.updateProjectionMatrix();
-
-        Graphics.Renderer.setSize(window.innerWidth, window.innerHeight);
-        var canvas = Graphics.Renderer.domElement;
-        canvas.style.height = "100%";
-        canvas.style.width = "100%";
-    }
+    
 }
 
 class Graphics {
@@ -80,6 +72,16 @@ class Graphics {
         Graphics.Renderer.shadowMap.type = THREE.PCFSoftShadowMap;
         // this.renderer.gammaInput = true;
         // this.renderer.gammaOutput = true;
+        canvas.style.height = "100%";
+        canvas.style.width = "100%";
+    }
+
+    static onWindowResize = () => {
+        Engine.camera.aspect = window.innerWidth / window.innerHeight;
+        Engine.camera.updateProjectionMatrix();
+
+        Graphics.Renderer.setSize(window.innerWidth, window.innerHeight);
+        var canvas = Graphics.Renderer.domElement;
         canvas.style.height = "100%";
         canvas.style.width = "100%";
     }
