@@ -9,14 +9,14 @@
             "type": "chrome",
             "request": "launch",
             "name": "Chrome Demos",
-            "url": "http://localhost:3000/demos/Template",
+            "url": "http://localhost:3000/",
             "webRoot": "${workspaceFolder}"
         },
         {
             "type": "chrome",
             "request": "launch",
             "name": "Chromium Demos",
-            "url": "http://localhost:3000/demos/Template",
+            "url": "http://localhost:3000/",
             "webRoot": "${workspaceFolder}",
             "runtimeExecutable": "/usr/bin/chromium",
             "runtimeArgs": [
@@ -30,7 +30,7 @@
             "type": "chrome",
             "request": "launch",
             "name": "Chrome Tests",
-            "url": "http://localhost:3000/tests/templateTest/test1",
+            "url": "http://localhost:3000/",
             "webRoot": "${workspaceFolder}",
             "runtimeExecutable": "/opt/google/chrome/chrome"
         }

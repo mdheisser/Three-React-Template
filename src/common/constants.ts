@@ -1,7 +1,17 @@
-enum CONTROL_TYPE {
+export enum CONTROL_TYPE {
     ORBIT,
     TRANSFORM,
     // FLY
 }
 
-export {CONTROL_TYPE}
+export enum SAMPLE_TYPE {
+    LEGACY,
+    HYBRID,
+    FIBER,
+    TEST
+}
+
+export type SampleProps = {
+    sample: any
+}
+

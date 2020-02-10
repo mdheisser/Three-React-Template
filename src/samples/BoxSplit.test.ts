@@ -1,31 +1,34 @@
-import * as THREE from 'three/build/three.module';
+import * as THREE from 'three'
 import { BoxSplitter } from '../common/misc/BoxUtils'
 import watch from 'redux-watch'
-import { Engine } from '../common/Engine';
 import store from '../redux/store'
 import { BoxListHelper, AxeGridHelper } from '../common/misc/Helpers';
-import { Sample } from '../common/Sample';
-
+import Sample from '../common/Sample';
+import Engine from '../components/SampleLoader/Engine';
+import { Color } from 'three';
 
 export default class BoxSplitTests extends Sample {
 
     selectedIndex = 0;
-    boxSplitReject;
+    boxSplitReject: any;
+    dbgHlpGrp: any;
 
-    constructor() {
-        super();
+    constructor(props: any) {
+        super(props);
+        
+        // Engine.scene.add(AxeGridHelper(128));
+    }
+
+    runSample(testId: string){
+        console.log("Running test #" + testId);
         Engine.camera.position.x = 0;
         Engine.camera.position.y = 32;
         Engine.camera.position.z = 256;
         this.dbgHlpGrp = new THREE.Group();
         Engine.scene.add(this.dbgHlpGrp);
         this.initStateListeners();
-        // Engine.scene.add(AxeGridHelper(128));
-    }
-
-    run(testId){
-        console.log("Running test #" + testId);
-        this[testId]();
+        // this[testId]();
+        this.test2();
     };
 
     // animate(){
@@ -34,18 +37,18 @@ export default class BoxSplitTests extends Sample {
 
     initStateListeners() {
         let w = watch(store.getState, 'DemoSamples.commands.switch')
-        store.subscribe(w((newVal, oldVal, objectPath) => {
+        store.subscribe(w((newVal: any, oldVal: any, objectPath: any) => {
             console.log('%s changed from %s to %s', objectPath, oldVal, newVal)
             this.selectCombination(this.selectedIndex++);
         }))
     }
 
-    debugAction = (val) => {
+    debugAction = (val: any) => {
         // console.log(val);
     }
 
-    selectCombination(index) {
-        var splitHlp = new BoxListHelper(this.boxSplitReject[index], (i) => { return 0x00ff00; });
+    selectCombination(index: number) {
+        var splitHlp = new BoxListHelper(this.boxSplitReject[index], (i) => { return new Color(0x00ff00); });
         if (!this.dbgHlpGrp.children.length) {
             this.dbgHlpGrp.add(splitHlp.meshGrp);
         }
@@ -83,10 +86,10 @@ export default class BoxSplitTests extends Sample {
         var hlp = new BoxListHelper([box, box2]);
         Engine.scene.add(hlp.meshGrp);
         var intersectBox = box.clone().intersect(box2);
-        var intersectHlp = new BoxListHelper([intersectBox], (i) => { return 0xff0000; });
+        var intersectHlp = new BoxListHelper([intersectBox], (i) => { return new Color(0xff0000); });
         Engine.scene.add(intersectHlp.meshGrp);
         var boxSplit = BoxSplitter.split(box, [intersectBox]);
-        var splitHlp = new BoxListHelper(boxSplit, (i) => { return 0x00ff00; });
+        var splitHlp = new BoxListHelper(boxSplit, (i) => { return new Color(0x00ff00); });
         Engine.scene.add(splitHlp.meshGrp);
         console.log(splitHlp);
     }
@@ -106,7 +109,7 @@ export default class BoxSplitTests extends Sample {
         var hlp = new BoxListHelper([box, box2]);
         Engine.scene.add(hlp.meshGrp);
         var intersectBox = box.clone().intersect(box2);
-        var intersectHlp = new BoxListHelper([intersectBox], (i) => { return 0xff0000; });
+        var intersectHlp = new BoxListHelper([intersectBox], (i) => { return new Color(0xff0000); });
         Engine.scene.add(intersectHlp.meshGrp);
         var boxSplit = BoxSplitter.split(box, [intersectBox]);
         // if (boxSplit.length > 1) {
@@ -114,7 +117,7 @@ export default class BoxSplitTests extends Sample {
         //     boxSplit = BoxSplitter.split(box, boxSplit[0]);
         //     console.log(boxSplit);
         // }
-        var splitHlp = new BoxListHelper(boxSplit, (i) => { return 0x00ff00; });
+        var splitHlp = new BoxListHelper(boxSplit, (i) => { return new Color(0x00ff00); });
         Engine.scene.add(splitHlp.meshGrp);
         console.log(splitHlp);
     }
@@ -138,11 +141,11 @@ export default class BoxSplitTests extends Sample {
         var hlp = new BoxListHelper([box, box2]);
         Engine.scene.add(hlp.meshGrp);
         var intersectBox = box.clone().intersect(box2);
-        var intersectHlp = new BoxListHelper([intersectBox], (i) => { return 0xff0000; });
+        var intersectHlp = new BoxListHelper([intersectBox], (i) => { return new Color(0xff0000); });
         Engine.scene.add(intersectHlp.meshGrp);
         var boxSplit = BoxSplitter.split(box, [intersectBox]);
         if (boxSplit) {
-            var splitHlp = new BoxListHelper(boxSplit, (i) => { return 0x00ff00; });
+            var splitHlp = new BoxListHelper(boxSplit, (i) => { return new Color(0x00ff00); });
             Engine.scene.add(splitHlp.meshGrp);
             console.log(splitHlp);
         } else {

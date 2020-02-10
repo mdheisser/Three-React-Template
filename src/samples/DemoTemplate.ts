@@ -1,35 +1,37 @@
 import * as THREE from 'three';
 import { SAND } from '../common/catalogs/Materials';
-import { Engine } from '../common/Engine';
-import { Sample } from '../common/Sample';
 import { AxeGridHelper } from '../common/misc/Helpers';
+import Sample from '../common/Sample';
+import Engine from '../components/SampleLoader/Engine';
 import { ControlManager } from '../common/Controls';
-import { CONTROL_TYPE } from '../common/constants';
-import { TransformControls } from 'three/examples/jsm/controls/TransformControls';
 
 /**
  * Minimal Template
  * 
  * Access shared variable
  * 
- * Sample.scene => Graphics.scene (or Engine.sce): put mesh here
- * Sample.camera => Graphics.camera (or Engine.cam)
- * Engine.ctrl  => Controls.
+ * wrapper.scene: put mesh here
+ * wrapper.camera => Graphics.camera (or wrapper.cam)
+ * wrapper.ctrl  => Controls.
  * Physics.AmmoLib
- * Engine.physObj => push dynamic physics objects here
+ * wrapper.physObj => push dynamic physics objects here
  * Sample.updatable => push object needing animation here
  */
-export class DemoTemplate extends Sample {
+export default class DemoTemplate extends Sample {
 
     cube: any;
     mainHlp: THREE.Group = new THREE.Group();
-
-    constructor() {
-        super();
-        this.initScene();
+    constructor(props: any){
+        super(props);
     }
+
+    runSample(testId: string) {
+        // this[testId]();  // doesn't work in TS
+        this.initScene();
+    };
+
     // Sample.scene or  SPL.scene
-    // Engine.scene
+    // wrapper.scene
     // Graphics.scene or GFX.scene
     initScene() {
         Engine.camera.position.x = 0;
@@ -42,6 +44,10 @@ export class DemoTemplate extends Sample {
         Engine.scene.add(AxeGridHelper(128));
         ControlManager.TranformCtrl.attach(this.cube);
         Engine.scene.add( ControlManager.TranformCtrl );
+    }
+
+    render(){
+        return super.render();
     }
 
     // animate(){
