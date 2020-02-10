@@ -1,21 +1,18 @@
-import { Engine } from "./Engine";
+import { AmmoLib } from "./PhysAmmo";
+import Engine from "../components/SampleLoader/Engine";
 
-export class Sample {
+export default class Sample extends Engine {
 
-     updatable: any[] = [];
+    updatable: any[] = [];
     static animated: any[] = [];
     dynamic: any[] = [];
     // sampleId: string;
 
-    // constructor() {
+    constructor(props: any) {
+        super(props);
     // this.sampleId = store.getState().DemoSamples.sampleId;
     // this.initStateListeners(); // this.stateListener = new StateListener();
-    // }
-
-    // @TODO
-    run(testId: string) {
-        // this[testId]();  // doesn't work in TS
-    };
+    }
 
     // initStateListeners() {
     //     let w = watch(store.getState, 'Voxels.raycast.locked')
@@ -48,7 +45,7 @@ export class Sample {
         this.dynamic.forEach((objThree, i) => {
             var ms = objThree.userData.physicsBody.getMotionState();
             if (ms) {
-                var transformAux = new Engine.AmmoLib.btTransform();;
+                var transformAux = new AmmoLib.btTransform();;
                 ms.getWorldTransform(transformAux);
                 var p = transformAux.getOrigin();
                 var q = transformAux.getRotation();
@@ -68,6 +65,11 @@ export class Sample {
                 item.update(time);
         })
     }
+
+    render(){
+        return super.render();
+    }
+
 }
 
 // export class StateListener {

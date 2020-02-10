@@ -2,7 +2,7 @@ import React from 'react'
 import PropTypes from 'prop-types'
 import { Provider } from 'react-redux'
 import { BrowserRouter as Router, Route, Switch } from 'react-router-dom'
-import { App, Welcome, SamplesSelect } from './App'
+import { App, WelcomePage } from './App'
 
 const Root = ({ store }: any) => (
     <Provider store={store}>
@@ -10,16 +10,10 @@ const Root = ({ store }: any) => (
             {/* <Route path="/" component={App} /> */}
             <Switch>
                 <Route exact path="/">
-                    <Welcome />
+                    <WelcomePage />
                 </Route>
-                <Route exact path="/demos">
-                    <SamplesSelect type="demos" />
-                </Route>
-                <Route exact path="/tests">
-                    <SamplesSelect type="tests" />
-                </Route>
-                <Route path="/:sampleType/:sampleName" component={App} />
-                {/* <Route path="/:sampleType/:sampleName/:id" component={App} /> */}
+                <Route exact path="/:sampleName" component={App} />
+                <Route path="/:sampleName/:id" component={App} />
             </Switch>
         </Router>
     </Provider>
