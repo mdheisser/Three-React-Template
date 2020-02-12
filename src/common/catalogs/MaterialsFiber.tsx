@@ -4,7 +4,8 @@ import * as TextureCatalog from "./Textures";
 import * as Shaders from './Shaders';
 export enum MAT {
   WATER,
-  SAND
+  SAND,
+  SHADCOL
 }
 export type MaterialProps = {
   name: MAT,
@@ -35,14 +36,11 @@ export function Material(props: MaterialProps) {
           normalMap={TextureCatalog.sand_norm(props.repeat)}
         />);
       break;
+    case MAT.SHADCOL:
+      return (<shaderMaterial
+        attach="material"
+        vertexShader={Shaders.Color.vertexShader}
+        fragmentShader={Shaders.Color.fragmentShader}
+      />)
   }
-}
-
-var ShaderCol = () => {
-  new THREE.ShaderMaterial({
-    uniforms: Shaders.Color.uniforms,
-    vertexShader: Shaders.Color.vertexShader,
-    fragmentShader: Shaders.Color.fragmentShader,
-    side: THREE.DoubleSide,
-  });
 }
