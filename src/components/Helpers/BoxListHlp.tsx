@@ -6,18 +6,48 @@ import React, {
   useCallback,
 } from "react";
 import * as THREE from 'three'
-import { useFrame } from "react-three-fiber";
 import { Box3, Color } from "three";
 
+enum BOX_SELECT_MODES {
+  SINGLE,
+  MULTI,
+  DRAG,
+  ALLORNOT
+}
 // const defaultVal: bxLstHlpProps = 
 // ({ title, paragraph = 'Hello World' })
-export default ({ boxes = [], selected = [], multiselect = true, useFakeObj = true }) => {
+export default ({ boxes = [], selection = { 0: true }, selectMode = BOX_SELECT_MODES.SINGLE, dispFakeObj = true }:
+  { boxes: Box3[], selection: any, selectMode: BOX_SELECT_MODES, dispFakeObj: boolean }) => {
+  const [state, setState] = useState(selection);
+
+  const stateRef = useRef(state);
+  useEffect(() => {
+    stateRef.current = state;
+  }, [state]);
 
   const boxListHlp = boxes.map((b: Box3, i: number) => {
-    const visible = (selected.findIndex(val => val === i) !== -1);
-
-    return <BoxHlp key={i} box={b} visible={visible} useFakeObj={useFakeObj} />;
+    return <BoxHlp key={i} box={b} isSelected={state[i]} dispFakeObj={dispFakeObj}
+      onBoxSelect={() => select(i)} />;
   });
+
+  const select = (id: string | number) => {
+    console.log("key: %s => state: %s", id, stateRef.current[id]);
+    var curr = stateRef.current[id];
+    if (selectMode !== BOX_SELECT_MODES.MULTI) allOrNothing(false);
+
+    setState((prev: any) => {
+      return { ...prev, [id]: !curr }
+    })
+  }
+
+  const allOrNothing = (isVisible: boolean) => {
+    setState((prev: any) => {
+      boxes.forEach((b, i) => {
+        prev[i] = isVisible;
+      })
+      return { ...prev }
+    })
+  }
 
   return (
     <group>
@@ -26,30 +56,54 @@ export default ({ boxes = [], selected = [], multiselect = true, useFakeObj = tr
   );
 }
 
-const FakeMesh = ({ box, visible }: { box: Box3, visible: boolean }) => {
+const BoxHlp = ({ box, isSelected, onBoxSelect, dispFakeObj }: { box: Box3, isSelected: boolean, onBoxSelect: any, dispFakeObj: boolean }) => {
   const [isHovered, setIsHovered] = useState(false);
-  const [isActive, setIsActive] = useState(false);
 
-  const isActiveRef = useRef(isActive);
+  // color
+  const color = isSelected ? 0xe5d54d : 0xffffff; //(isSelected ? 0xff0000 : 0xffffff);
+  // var color = new Color(0x00ff00);
+
+  return (
+    <>
+      <box3Helper
+        args={[box, new Color(color)]}
+        box={box}
+        visible={isSelected || isHovered}
+      />
+      <FakeMesh
+        // ref={fakeObjRef}
+        box={box}
+        isSelected={isSelected}
+        onBoxSelect={onBoxSelect}
+        onBoxHover={() => setIsHovered(prev => !prev)}
+        isVisible={dispFakeObj} />
+      {/* <boxHelper
+        ref={hlpRef}
+        args={[fakeObjRef.current, new Color(color)]}
+      >
+      </boxHelper> */}
+    </>
+  );
+};
+
+const FakeMesh = ({ box, isSelected, onBoxSelect, onBoxHover, isVisible }:
+  { box: Box3, isSelected: boolean, onBoxSelect: any, onBoxHover: any, isVisible: boolean }) => {
+   const [isHovered, setIsHovered] = useState(false);
 
   const boxDim: any = new THREE.Vector3()
   box.getSize(boxDim);
   const boxCenter: any = new THREE.Vector3()
   box.getCenter(boxCenter);
   // color
-  const color = isHovered ? 0xff0000 : (isActive ? 0xff0000 : 0xffffff);
+  const color = 0x00ff00;
   // const alpha = isHovered ? 0.0 : (isActive ? 0.2 : 0.0);
-  const alpha = isActive ? 0.2 : 0.0;
-
-  //useEffect of the activeState
-  useEffect(() => {
-    isActiveRef.current = isActive;
-  }, [isActive]);
+  const alpha = (isSelected && isVisible) ? 0.2 : 0.0;
 
   // Events
   const onHover = useCallback(
     (e, value) => {
       e.stopPropagation();
+      onBoxHover();
       setIsHovered(value);
     },
     [setIsHovered]
@@ -58,12 +112,13 @@ const FakeMesh = ({ box, visible }: { box: Box3, visible: boolean }) => {
   const onClick = useCallback(
     e => {
       e.stopPropagation();
-      setIsActive(v => !v);
+      // setIsActive(v => !v);
+      onBoxSelect();
     },
-    [setIsActive]
+    [] // [setIsActive]
   );
+  
   return (<mesh
-    visible={visible}
     position={boxCenter}
     onClick={e => onClick(e)}
     onPointerOver={e => onHover(e, true)}
@@ -78,42 +133,3 @@ const FakeMesh = ({ box, visible }: { box: Box3, visible: boolean }) => {
     />
   </mesh>)
 }
-
-const BoxHlp = ({ box, visible, useFakeObj }: { box: Box3, visible: boolean, useFakeObj: boolean }) => {
-  const hlpRef: any = useRef();
-  const fakeObjRef: any = useRef();
-
-  const [isHovered, setIsHovered] = useState(false);
-  const [isActive, setIsActive] = useState(false);
-
-  const isActiveRef = useRef(isActive);
-
-
-  // color
-  const color = isHovered ? 0xe5d54d : (isActive ? 0xff0000 : 0xffffff);
-  // var color = new Color(0x00ff00);
-
-  //useEffect of the activeState
-  useEffect(() => {
-    isActiveRef.current = isActive;
-  }, [isActive]);
-
-
-  return (
-    <>
-      <box3Helper
-        args={[box, new Color(color)]}
-        box={box}
-        visible={visible} />
-      <FakeMesh
-        // ref={fakeObjRef}
-        box={box}
-        visible={visible && useFakeObj} />
-      {/* <boxHelper
-        ref={hlpRef}
-        args={[fakeObjRef.current, new Color(color)]}
-      >
-      </boxHelper> */}
-    </>
-  );
-};

@@ -76,6 +76,24 @@ const Lights = (props: any) => {
 const TestCase1 = () => {
     var grp = [];
 
+    var min = new Vector3(0, 0, 30);
+    var max = new Vector3(50, 50, 60);
+    var box = new Box3(min, max);
+    // box.applyMatrix4(matrix);
+    var min = new Vector3(0, 0, -15);
+    var max = new Vector3(50, 50, 15);
+    var box2 = new Box3(min, max);
+
+    var boxes: Box3[] = [box, box2];
+
+    return (<>
+        <BoxListHlp boxes={boxes} selected={[0, 1]} />
+    </>)
+}
+
+const TestCase2 = () => {
+    var grp = [];
+
     var min = new Vector3(-92, -16, 36);
     var max = new Vector3(-36, 80, 92);
     var box = new Box3(min, max);
