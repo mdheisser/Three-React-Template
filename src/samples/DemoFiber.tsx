@@ -5,6 +5,8 @@ import * as THREE from "three";
 import { OrbitControls } from "three/examples/jsm/controls/OrbitControls";
 import { TransformControls } from "three/examples/jsm/controls/TransformControls";
 import { Material, MAT } from "../common/catalogs/MaterialsFiber";
+import Infos from "../components/UI/Infos";
+import { SampleProps } from "../common/constants";
 
 declare global {
     // eslint-disable-next-line @typescript-eslint/no-namespace
@@ -131,10 +133,12 @@ const Moveable = (props: any) => {
     </>)
 }
 
-export default () => {
+export default (props: SampleProps) => {
     const ctrl: any = useRef();
 
     return (
+        <>
+        <Infos sample={props.sample}/>
         <Canvas
             camera={{ position: [15, 30, 50] }}
         // onCreated={({ gl }) => ((gl.shadowMap.enabled = true), (gl.shadowMap.type = THREE.PCFSoftShadowMap))}>
@@ -146,6 +150,7 @@ export default () => {
             <Static />
             <Moveable ctrl={ctrl} />
         </Canvas>
+        </>
     )
 };
 

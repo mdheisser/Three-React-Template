@@ -40,7 +40,7 @@ class WidgetLoader extends Component {
     return (
       <React.Fragment>
         <div id="info">
-          {/* {this.props.sampleName} {this.props.sampleType} #{this.props.sampleId} */}
+          {this.props.sample.name} #{this.props.sample.id}
         </div>
         {this.props.UiSettings.showDbgCanvas ? (
           <canvas id="testcanvas" height="256" width="256" className="debugCanvas"></canvas>

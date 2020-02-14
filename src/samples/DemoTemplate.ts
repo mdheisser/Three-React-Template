@@ -1,8 +1,8 @@
 import * as THREE from 'three';
 import { SAND } from '../common/catalogs/Materials';
 import { AxeGridHelper } from '../common/misc/Helpers';
-import Sample from '../common/Sample';
-import Engine from '../components/SampleLoader/Engine';
+import Sample from '../legacy/Sample';
+import Engine from '../legacy/Engine';
 import { ControlManager } from '../common/Controls';
 
 /**

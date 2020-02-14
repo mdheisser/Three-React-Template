@@ -1,5 +1,5 @@
-import { AmmoLib } from "./PhysAmmo";
-import Engine from "../components/SampleLoader/Engine";
+import { AmmoLib } from "../common/PhysAmmo";
+import Engine from "./Engine";
 
 export default class Sample extends Engine {
 
