@@ -1,4 +1,4 @@
-///<reference path="../dts/fiber-extend.d.ts" />
+///<reference path="../dts/misc-types-extend.d.ts" />
 import React, { useRef, useCallback, useEffect } from "react";
 import { useFrame, extend, useThree, Canvas } from "react-three-fiber";
 import * as THREE from "three";

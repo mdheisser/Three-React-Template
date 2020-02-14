@@ -1,12 +1,13 @@
-///<reference path="../dts/fiber-extend.d.ts" />
+///<reference path="../dts/misc-types-extend.d.ts" />
 import React, { useRef, useCallback, useEffect } from "react";
 import { useFrame, extend, useThree, Canvas } from "react-three-fiber";
 import * as THREE from "three";
 import { OrbitControls } from "three/examples/jsm/controls/OrbitControls";
 import { TransformControls } from "three/examples/jsm/controls/TransformControls";
 import { Material, MAT } from "../common/catalogs/MaterialsFiber";
-import Infos from "../components/UI/Infos";
 import { SampleProps } from "../common/constants";
+import InfoOverlay from "../components/UI/InfoOverlay";
+import TimelineWidget from "../components/UI/TimelineWidget";
 
 declare global {
     // eslint-disable-next-line @typescript-eslint/no-namespace
@@ -133,23 +134,43 @@ const Moveable = (props: any) => {
     </>)
 }
 
-export default (props: SampleProps) => {
+
+
+const UI = ({ sample }: SampleProps) => {
+
+    const handleTimelineEvt = (data: any) => {
+        console.log(data);
+        // this.props.dispatch({
+        //     type: "TIMING", payload: {
+        //         hour: data.time.getHours(),
+        //         min: data.time.getMinutes()
+        //     }
+        // });
+    }
+
+    return (<>
+        <InfoOverlay sample={sample} />
+        <TimelineWidget className="timeline" onTimeChange={handleTimelineEvt} />
+    </>)
+}
+
+export default ({ sample }: SampleProps) => {
     const ctrl: any = useRef();
 
     return (
         <>
-        <Infos sample={props.sample}/>
-        <Canvas
-            camera={{ position: [15, 30, 50] }}
-        // onCreated={({ gl }) => ((gl.shadowMap.enabled = true), (gl.shadowMap.type = THREE.PCFSoftShadowMap))}>
-        >
-            <Wrapper />
-            <Lights />
-            <Helpers size={128} />
-            <Controls ref={ctrl} />
-            <Static />
-            <Moveable ctrl={ctrl} />
-        </Canvas>
+            <UI sample={sample} />
+            <Canvas
+                camera={{ position: [15, 30, 50] }}
+            // onCreated={({ gl }) => ((gl.shadowMap.enabled = true), (gl.shadowMap.type = THREE.PCFSoftShadowMap))}>
+            >
+                <Wrapper />
+                <Lights />
+                <Helpers size={128} />
+                <Controls ref={ctrl} />
+                <Static />
+                <Moveable ctrl={ctrl} />
+            </Canvas>
         </>
     )
 };
