@@ -1,13 +1,11 @@
-import React from 'react';
+import React, { Suspense } from 'react';
 import {
   Link,
-  useParams,
   useLocation
 } from "react-router-dom";
 import './App.css';
-import WidgetsLoader from './ui/WigetsManager'
-import SampleLoader from './components/SampleLoader';
 import * as Samples from "./samples";
+import { SampleProps } from './legacy/constants';
 
 const items: any = Object.entries(Samples)
     .reduce((acc, [name, item]) => ({ ...acc, [name]: item }), {})
@@ -51,7 +49,21 @@ export const App = ({ props, match }: any) => {
   }
 
   return (<>
-    <SampleLoader sample={sample} />
-    <WidgetsLoader sample={sample} />
+    <LoadSample sample={sample} />
   </>);
 }
+
+const samples: any = Object.entries(Samples)
+    .reduce((acc, [name, item]) => ({ ...acc, [name]: item }), {})
+
+export const LoadSample = (props: SampleProps) => {
+    var sample = props.sample;
+    var item: any = samples[sample.name];
+    // const Component: any = (item.tags[0]===SAMPLE_TYPE.FIBER)? <item.Component/>: <DemoWrapper sampleComp={item.Component}></DemoWrapper>;
+    const Sample = item.Component;
+    sample.type = item.tags[0];
+    return (
+        <Suspense fallback={null}>
+            <Sample sample={sample}/>
+        </Suspense>)
+};

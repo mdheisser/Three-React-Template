@@ -1,6 +1,6 @@
 import * as THREE from 'three';
-import img_sand from '../../assets/img/sand.jpg';
-import img_sand_norm from '../../assets/img/sand_norm.png';
+import img_sand from '../assets/img/sand.jpg';
+import img_sand_norm from '../assets/img/sand_norm.png';
 
 var textureLoader = new THREE.TextureLoader();
 

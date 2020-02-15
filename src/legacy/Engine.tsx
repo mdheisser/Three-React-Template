@@ -1,9 +1,9 @@
-///<reference path="../../dts/ammo.d.ts" />
-import React, { Component, Suspense, useRef } from "react";
+///<reference path="../dts/ammo.d.ts" />
+import React, { Component } from "react";
 import * as THREE from 'three';
-import { ControlManager } from '../../common/Controls';
-import { PhysAmmo, AmmoLib } from "../../common/PhysAmmo"
-import { SampleProps, SAMPLE_TYPE } from "../../common/constants";
+import { ControlManager } from './Controls';
+import { PhysAmmo, AmmoLib } from "./PhysAmmo"
+import { SampleProps, SAMPLE_TYPE } from "./constants";
 import { Canvas, useThree, useFrame } from "react-three-fiber";
 
 type EngineState = SampleProps;
@@ -78,7 +78,7 @@ export const renderLoop = () => {
 
 export const mainLoop = () => {
     const deltaTime = Engine.clk.getDelta();
-    const elapsedTime = Engine.clk.getElapsedTime();
+    // const elapsedTime = Engine.clk.getElapsedTime();
     Engine.ctrl.update(deltaTime);
     // Legacy.physWorld.stepSimulation(deltaTime, 10);;     // physical dynamic scene objects updated 
     // Legacy.sample.animate(deltaTime, elapsedTime);    // scene objects will be updated
@@ -125,14 +125,7 @@ const FiberEngineWrapper = () => {
         gl,                           // WebGL renderer
         scene,                        // Default scene
         camera,                       // Default camera
-        size,                         // Bounds of the view (which stretches 100% and auto-adjusts)
-        viewport,                     // Bounds of the viewport in 3d units + factor (size/viewport)
-        aspect,                       // Aspect ratio (size.width / size.height)
-        mouse,                        // Current 2D mouse coordinates
         clock,                        // THREE.Clock (useful for useFrame deltas)
-        invalidate,                   // Invalidates a single frame (for <Canvas invalidateFrameloop />)
-        intersect,                    // Calls onMouseMove handlers for objects underneath the cursor
-        setDefaultCamera,             // Sets the default camera
     } = useThree();
 
     // init global Legacy 

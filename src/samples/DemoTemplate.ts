@@ -1,9 +1,9 @@
 import * as THREE from 'three';
-import { SAND } from '../common/catalogs/Materials';
-import { AxeGridHelper } from '../common/misc/Helpers';
-import Sample from '../common/Sample';
-import Engine from '../components/SampleLoader/Engine';
-import { ControlManager } from '../common/Controls';
+import { SAND } from '../resources/catalogs/Materials.legacy';
+// import { AxeGridHelper } from '../common/misc/Helpers';
+import Sample from '../legacy/Sample';
+import Engine from '../legacy/Engine';
+import { ControlManager } from '../legacy/Controls';
 
 /**
  * Minimal Template
@@ -21,9 +21,6 @@ export default class DemoTemplate extends Sample {
 
     cube: any;
     mainHlp: THREE.Group = new THREE.Group();
-    constructor(props: any){
-        super(props);
-    }
 
     runSample(testId: string) {
         // this[testId]();  // doesn't work in TS
@@ -41,7 +38,7 @@ export default class DemoTemplate extends Sample {
         var geometry = new THREE.BoxGeometry(10, 10, 10);
         this.cube = new THREE.Mesh(geometry, SAND(0.5));
         Engine.scene.add(this.cube);
-        Engine.scene.add(AxeGridHelper(128));
+        // Engine.scene.add(AxeGridHelper(128));
         ControlManager.TranformCtrl.attach(this.cube);
         Engine.scene.add( ControlManager.TranformCtrl );
     }

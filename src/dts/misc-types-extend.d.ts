@@ -5,3 +5,6 @@ declare global {
        }
     }
   }
+
+  declare module 'vis-timeline/esnext/esm/vis-timeline-graph2d'
+  declare module 'vis-timeline/esnext'

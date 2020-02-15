@@ -1,10 +1,10 @@
 import * as THREE from 'three'
-import { BoxSplitter } from '../common/misc/BoxUtils'
+import { BoxSplitter } from '../../components/Utils/BoxUtils'
 import watch from 'redux-watch'
-import store from '../redux/store'
-import { BoxListHelper, AxeGridHelper } from '../common/misc/Helpers';
-import Sample from '../common/Sample';
-import Engine from '../components/SampleLoader/Engine';
+import store from '../../redux/store'
+// import { BoxListHelper, AxeGridHelper } from '../../common/misc/Helpers';
+import Sample from '../Sample';
+import Engine from '../Engine';
 import { Color } from 'three';
 
 export default class BoxSplitTests extends Sample {
