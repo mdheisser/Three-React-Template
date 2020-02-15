@@ -4,8 +4,8 @@ import { useFrame, extend, useThree, Canvas } from "react-three-fiber";
 import * as THREE from "three";
 import { OrbitControls } from "three/examples/jsm/controls/OrbitControls";
 import { TransformControls } from "three/examples/jsm/controls/TransformControls";
-import { Material, MAT } from "../common/catalogs/MaterialsFiber";
-import { SampleProps } from "../common/constants";
+import { Material, MAT } from "../resources/catalogs/Materials";
+import { SampleProps } from "../legacy/constants";
 import InfoOverlay from "../components/UI/InfoOverlay";
 import TimelineWidget from "../components/UI/TimelineWidget";
 
@@ -25,16 +25,16 @@ extend({ TransformControls })
 const Wrapper = (props: any) => {
     const {
         gl,                           // WebGL renderer
-        scene,                        // Default scene
-        camera,                       // Default camera
-        size,                         // Bounds of the view (which stretches 100% and auto-adjusts)
-        viewport,                     // Bounds of the viewport in 3d units + factor (size/viewport)
-        aspect,                       // Aspect ratio (size.width / size.height)
-        mouse,                        // Current 2D mouse coordinates
-        clock,                        // THREE.Clock (useful for useFrame deltas)
-        invalidate,                   // Invalidates a single frame (for <Canvas invalidateFrameloop />)
-        intersect,                    // Calls onMouseMove handlers for objects underneath the cursor
-        setDefaultCamera,             // Sets the default camera
+        // scene,                        // Default scene
+        // camera,                       // Default camera
+        // size,                         // Bounds of the view (which stretches 100% and auto-adjusts)
+        // viewport,                     // Bounds of the viewport in 3d units + factor (size/viewport)
+        // aspect,                       // Aspect ratio (size.width / size.height)
+        // mouse,                        // Current 2D mouse coordinates
+        // clock,                        // THREE.Clock (useful for useFrame deltas)
+        // invalidate,                   // Invalidates a single frame (for <Canvas invalidateFrameloop />)
+        // intersect,                    // Calls onMouseMove handlers for objects underneath the cursor
+        // setDefaultCamera,             // Sets the default camera
     } = useThree();
 
     gl.setClearColor(0x000000);
@@ -64,7 +64,7 @@ const Controls = React.forwardRef(
         useEffect(() => {
             forwardRef.current.addEventListener('dragging-changed', (event: any) =>
                 orbitRef.current.enabled = !event.value);
-        }, []);
+        });
 
         return (
             <>

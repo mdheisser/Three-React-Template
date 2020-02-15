@@ -1,12 +1,11 @@
 import React, { Suspense } from 'react';
 import {
   Link,
-  useParams,
   useLocation
 } from "react-router-dom";
 import './App.css';
 import * as Samples from "./samples";
-import { SampleProps } from './common/constants';
+import { SampleProps } from './legacy/constants';
 
 const items: any = Object.entries(Samples)
     .reduce((acc, [name, item]) => ({ ...acc, [name]: item }), {})

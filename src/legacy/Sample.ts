@@ -1,4 +1,4 @@
-import { AmmoLib } from "../common/PhysAmmo";
+import { AmmoLib } from "./PhysAmmo";
 import Engine from "./Engine";
 
 export default class Sample extends Engine {
@@ -7,12 +7,6 @@ export default class Sample extends Engine {
     static animated: any[] = [];
     dynamic: any[] = [];
     // sampleId: string;
-
-    constructor(props: any) {
-        super(props);
-    // this.sampleId = store.getState().DemoSamples.sampleId;
-    // this.initStateListeners(); // this.stateListener = new StateListener();
-    }
 
     // initStateListeners() {
     //     let w = watch(store.getState, 'Voxels.raycast.locked')

@@ -1,10 +1,9 @@
 ///<reference path="../dts/misc-types-extend.d.ts" />
-import React, { useRef, useCallback, useEffect } from "react";
+import React, { useRef, useEffect } from "react";
 import { useFrame, extend, useThree, Canvas } from "react-three-fiber";
 import * as THREE from "three";
 import { OrbitControls } from "three/examples/jsm/controls/OrbitControls";
 import { TransformControls } from "three/examples/jsm/controls/TransformControls";
-import { Material, MAT } from "../common/catalogs/MaterialsFiber";
 import BoxListHlp from "../components/Helpers/BoxListHlp";
 import { Box3, Vector3 } from "three";
 
@@ -23,9 +22,7 @@ extend({ TransformControls })
 
 const Wrapper = (props: any) => {
     const {
-        gl,                           // WebGL renderer
-        scene,                        // Default scene
-        camera,                       // Default camera
+        gl                           // WebGL renderer
     } = useThree();
 
     gl.setClearColor(0x000000);
@@ -48,7 +45,7 @@ const Controls = React.forwardRef(
         useEffect(() => {
             forwardRef.current.addEventListener('dragging-changed', (event: any) =>
                 orbitRef.current.enabled = !event.value);
-        }, []);
+        });
 
         return (
             <>
@@ -74,14 +71,12 @@ const Lights = (props: any) => {
 }
 
 const TestCase1 = () => {
-    var grp = [];
-
     var min = new Vector3(0, 0, 30);
     var max = new Vector3(50, 50, 60);
     var box = new Box3(min, max);
     // box.applyMatrix4(matrix);
-    var min = new Vector3(0, 0, -15);
-    var max = new Vector3(50, 50, 15);
+    min = new Vector3(0, 0, -15);
+    max = new Vector3(50, 50, 15);
     var box2 = new Box3(min, max);
 
     var boxes: Box3[] = [box, box2];
@@ -92,8 +87,6 @@ const TestCase1 = () => {
 }
 
 const TestCase2 = () => {
-    var grp = [];
-
     var min = new Vector3(-92, -16, 36);
     var max = new Vector3(-36, 80, 92);
     var box = new Box3(min, max);

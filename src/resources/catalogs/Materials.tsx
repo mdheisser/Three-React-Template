@@ -21,7 +21,6 @@ export function Material(props: MaterialProps) {
           transparent={true}
           color={0xff0000}
         />);
-      break;
     case MAT.SAND:
       return (
         <meshStandardMaterial
@@ -35,7 +34,6 @@ export function Material(props: MaterialProps) {
           map={TextureCatalog.sand(props.repeat)}
           normalMap={TextureCatalog.sand_norm(props.repeat)}
         />);
-      break;
     case MAT.SHADCOL:
       return (<shaderMaterial
         attach="material"

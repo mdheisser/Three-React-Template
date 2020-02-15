@@ -30,13 +30,11 @@ export default ({ onTimeChange }: any) => {
         },
     };
 
-    let timeline;
-
     useEffect(() => {
-        timeline = new Timeline(container.current, items, options);
+        let timeline = new Timeline(container.current, items, options);
         timeline.addCustomTime(3600 * 12, 't');
         timeline.on('timechanged', onTimeChange);
-    }, []);
+    });
 
     return (
         <div className="timeline"><div ref={container}></div></div>
