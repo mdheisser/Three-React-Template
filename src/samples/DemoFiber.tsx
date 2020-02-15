@@ -4,8 +4,8 @@ import { useFrame, extend, useThree, Canvas } from "react-three-fiber";
 import * as THREE from "three";
 import { OrbitControls } from "three/examples/jsm/controls/OrbitControls";
 import { TransformControls } from "three/examples/jsm/controls/TransformControls";
-import { Material, MAT } from "../common/catalogs/MaterialsFiber";
-import { SampleProps } from "../common/constants";
+import { Material, MAT } from "../resources/catalogs/MaterialsFiber";
+import { SampleProps } from "../legacy/constants";
 import InfoOverlay from "../components/UI/InfoOverlay";
 import TimelineWidget from "../components/UI/TimelineWidget";
 

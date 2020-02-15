@@ -1,4 +1,4 @@
-import { AmmoLib } from "../common/PhysAmmo";
+import { AmmoLib } from "./PhysAmmo";
 import Engine from "./Engine";
 
 export default class Sample extends Engine {

@@ -4,7 +4,7 @@ import { useFrame, extend, useThree, Canvas } from "react-three-fiber";
 import * as THREE from "three";
 import { OrbitControls } from "three/examples/jsm/controls/OrbitControls";
 import { TransformControls } from "three/examples/jsm/controls/TransformControls";
-import { Material, MAT } from "../common/catalogs/MaterialsFiber";
+import { Material, MAT } from "../resources/catalogs/MaterialsFiber";
 import BoxListHlp from "../components/Helpers/BoxListHlp";
 import { Box3, Vector3 } from "three";
 

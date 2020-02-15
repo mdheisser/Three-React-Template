@@ -1,9 +1,9 @@
 ///<reference path="../dts/ammo.d.ts" />
 import React, { Component, Suspense, useRef } from "react";
 import * as THREE from 'three';
-import { ControlManager } from '../common/Controls';
-import { PhysAmmo, AmmoLib } from "../common/PhysAmmo"
-import { SampleProps, SAMPLE_TYPE } from "../common/constants";
+import { ControlManager } from './Controls';
+import { PhysAmmo, AmmoLib } from "./PhysAmmo"
+import { SampleProps, SAMPLE_TYPE } from "./constants";
 import { Canvas, useThree, useFrame } from "react-three-fiber";
 
 type EngineState = SampleProps;

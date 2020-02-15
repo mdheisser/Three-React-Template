@@ -31,7 +31,7 @@ export default ({ boxes = [], selection = { 0: true }, selectMode = BOX_SELECT_M
   });
 
   const select = (id: string | number) => {
-    console.log("key: %s => state: %s", id, stateRef.current[id]);
+    // console.log("key: %s => state: %s", id, stateRef.current[id]);
     var curr = stateRef.current[id];
     if (selectMode !== BOX_SELECT_MODES.MULTI) allOrNothing(false);
 
