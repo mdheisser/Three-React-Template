@@ -1,6 +1,6 @@
 import * as THREE from "three";
-import * as TextureCatalog from "./Textures";
-import * as Shaders from './Shaders';
+import * as TextureCatalog from "../resources/catalogs/Textures";
+import * as Shaders from '../resources/catalogs/Shaders';
 
 var WATER = () => {
   return new THREE.MeshStandardMaterial({

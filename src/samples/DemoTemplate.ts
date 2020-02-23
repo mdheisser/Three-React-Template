@@ -1,5 +1,5 @@
 import * as THREE from 'three';
-import { SAND } from '../resources/catalogs/Materials.legacy';
+import { SAND } from '../legacy/Materials';
 // import { AxeGridHelper } from '../common/misc/Helpers';
 import Sample from '../legacy/Sample';
 import Engine from '../legacy/Engine';
