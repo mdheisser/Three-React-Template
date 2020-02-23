@@ -112,14 +112,15 @@ const FakeMesh = ({ box, isSelected, onBoxSelect, onBoxHover, isVisible }:
     e => {
       e.stopPropagation();
       // setIsActive(v => !v);
-      onBoxSelect();
+      if (e.button === 1)
+        onBoxSelect();
     },
     [] // [setIsActive]
   );
-  
+
   return (<mesh
     position={boxCenter}
-    onClick={e => onClick(e)}
+    onPointerUp={e => onClick(e)}
     onPointerOver={e => onHover(e, true)}
     onPointerOut={e => onHover(e, false)}
   >

@@ -5,9 +5,11 @@ const Fiber = { tags: [SAMPLE_TYPE.FIBER], Component: lazy(() => import('./DemoF
 const Wrapper = { tags: [SAMPLE_TYPE.HYBRID], Component: lazy(() => import('../samples/DemoTemplate')) };
 const Legacy = { tags: [SAMPLE_TYPE.LEGACY], Component: lazy(() => import('../samples/DemoTemplate')) };
 const TestBoxSplit = { tags: [SAMPLE_TYPE.FIBER], Component: lazy(() => import('../samples/BoxSplit.test')) };
+const TestRaycastHlp = { tags: [SAMPLE_TYPE.FIBER], Component: lazy(() => import('../samples/RaycastHlp.test')) };
 export {
   Fiber,
   Wrapper,
   Legacy,
-  TestBoxSplit
+  TestBoxSplit,
+  TestRaycastHlp
 }

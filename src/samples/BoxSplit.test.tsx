@@ -70,7 +70,7 @@ const Lights = (props: any) => {
     </>)
 }
 
-const TestCase1 = () => {
+const TestCase = () => {
     var min = new Vector3(0, 0, 30);
     var max = new Vector3(50, 50, 60);
     var box = new Box3(min, max);
@@ -102,12 +102,12 @@ const TestCase2 = () => {
     </>)
 }
 
-const TestCases = [TestCase1];
+const TestCases = [TestCase, TestCase2];
 
 
 export default ({ caseNb = 1 }) => {
     const ctrl: any = useRef();
-    const TestCase = TestCases[caseNb-1];
+    const TestCase = TestCases[caseNb];
     return (
         <Canvas
             gl2
