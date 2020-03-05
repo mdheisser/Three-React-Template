@@ -8,7 +8,7 @@ import * as Samples from "./samples";
 import { SampleProps } from './legacy/constants';
 
 const items: any = Object.entries(Samples)
-    .reduce((acc, [name, item]) => ({ ...acc, [name]: item }), {})
+  .reduce((acc, [name, item]) => ({ ...acc, [name]: item }), {})
 
 // A custom hook that builds on useLocation to parse
 // the query string for you.
@@ -27,11 +27,10 @@ export const WelcomePage = ({ type }: any) => {
   };
   return (
     <div>
-      Welcome to ThreeSandbox! a playground for 3D projects <br />
-      Sandbox contains the following samples:<hr />
+      Welcome to ThreeSandbox! a playground for 3D projects <br/><br/>
+      <span>Sandbox contains the following samples:</span> <br/>
 
-    <ul>{getItemsList(sampleItems)}</ul>
-      Demos (fiber)
+      <ul>{getItemsList(sampleItems)}</ul>
     </div>
   )
 };
@@ -54,16 +53,16 @@ export const App = ({ props, match }: any) => {
 }
 
 const samples: any = Object.entries(Samples)
-    .reduce((acc, [name, item]) => ({ ...acc, [name]: item }), {})
+  .reduce((acc, [name, item]) => ({ ...acc, [name]: item }), {})
 
 export const LoadSample = (props: SampleProps) => {
-    var sample = props.sample;
-    var item: any = samples[sample.name];
-    // const Component: any = (item.tags[0]===SAMPLE_TYPE.FIBER)? <item.Component/>: <DemoWrapper sampleComp={item.Component}></DemoWrapper>;
-    const Sample = item.Component;
-    sample.type = item.tags[0];
-    return (
-        <Suspense fallback={null}>
-            <Sample sample={sample}/>
-        </Suspense>)
+  var sample = props.sample;
+  var item: any = samples[sample.name];
+  // const Component: any = (item.tags[0]===SAMPLE_TYPE.FIBER)? <item.Component/>: <DemoWrapper sampleComp={item.Component}></DemoWrapper>;
+  const Sample = item.Component;
+  sample.type = item.tags[0];
+  return (
+    <Suspense fallback={null}>
+      <Sample sample={sample} />
+    </Suspense>)
 };

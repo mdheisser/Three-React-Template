@@ -6,7 +6,7 @@ export class BoxSplitter {
     static rejected: any;
 
     static checkValidity(combination: any[], targetVol: number) {
-        var volume = combination.reduce((sizeSum: number, box: { getSize: (arg0: Vector3) => void; }) => {
+        var volume = combination.reduce((sizeSum: number, box: Box3) => {
             var size = new Vector3();
             box.getSize(size);
             return sizeSum + size.x * size.y * size.z;
@@ -31,7 +31,7 @@ export class BoxSplitter {
         level: number): Box3[] | null {
         var valid = candidates.filter((box: any) => {
             // remove overlapping boxes
-            var index = combination.findIndex((box2: { containsBox: (arg0: any) => any; clone: () => { (): any; new(): any; expandByScalar: { (arg0: number): { (): any; new(): any; intersectsBox: { (arg0: any): any; new(): any; }; }; new(): any; }; }; }) => {
+            var index = combination.findIndex((box2: Box3) => {
                 return box2.containsBox(box) || box2.clone().expandByScalar(-0.01).intersectsBox(box);
             });
             return index === -1;
@@ -51,7 +51,7 @@ export class BoxSplitter {
         }
     }
 
-    static checkIntersections(intersectBox: { getSize: (arg0: Vector3) => void; }) {
+    static checkIntersections(intersectBox: Box3) {
         var size = new Vector3(0);
         intersectBox.getSize(size);
         // intersects only if all size are not null
@@ -71,77 +71,85 @@ export class BoxSplitter {
     }
 
     // getBoxSplitLayout
-    static split(box: { getSize: (arg0: Vector3) => void; }, intersectBoxes: any[]) {
-        var boxPtsArr = [box, ...intersectBoxes].map((box) => {
-            var pts = [];
-            pts.push(box.min.clone());
-            pts.push(new Vector3(box.max.x, box.min.y, box.min.z));
-            pts.push(new Vector3(box.max.x, box.min.y, box.max.z));
-            pts.push(new Vector3(box.min.x, box.min.y, box.max.z));
-            pts.push(new Vector3(box.min.x, box.max.y, box.min.z));
-            pts.push(new Vector3(box.max.x, box.max.y, box.min.z));
-            pts.push(box.max.clone());
-            pts.push(new Vector3(box.min.x, box.max.y, box.max.z));
-            return pts;
-        });
-
-        var boxPts: Vector3[] = boxPtsArr.flat().reduce((arr, p) => {
-            var index = arr.findIndex((p2: any) => { return p.equals(p2) });
-            if (index === -1) return [...arr, p];
-            else {
-                arr.splice(index, 1);
-                return arr;
-            }
-        }, []);
-        var boxes: Box3[] = [];
-        boxPts.forEach((p, i) => {
-            var candidates = boxPts.slice(i).filter((p2) => {
-                return (p.x !== p2.x && p.y !== p2.y && p.z !== p2.z);
+    static split(box: Box3, intersectBoxes: Box3[]) {
+        // check inputs
+        var notOverlapping = intersectBoxes.filter(overlapBox => !box.intersectsBox(overlapBox));
+        if (notOverlapping.length) {
+            console.log("At least one non overlapping box has been found => abort");
+            return [];
+        } else {
+            var boxPtsArr = [box, ...intersectBoxes].map((box) => {
+                var pts = [];
+                pts.push(box.min.clone());
+                pts.push(new Vector3(box.max.x, box.min.y, box.min.z));
+                pts.push(new Vector3(box.max.x, box.min.y, box.max.z));
+                pts.push(new Vector3(box.min.x, box.min.y, box.max.z));
+                pts.push(new Vector3(box.min.x, box.max.y, box.min.z));
+                pts.push(new Vector3(box.max.x, box.max.y, box.min.z));
+                pts.push(box.max.clone());
+                pts.push(new Vector3(box.min.x, box.max.y, box.max.z));
+                return pts;
             });
-            candidates.forEach((p2) => {
-                var box = new Box3();
-                box.expandByPoint(p);
-                box.expandByPoint(p2);
-                var invalid = intersectBoxes.find((box2: { clone: () => { (): any; new(): any; expandByScalar: { (arg0: number): THREE.Box3; new(): any; }; }; }) => {
-                    return box.intersectsBox(box2.clone().expandByScalar(-0.1));
-                });
-                if (!invalid) boxes.push(box);
-            });
-        });
 
-        var size = new Vector3();
-        box.getSize(size);
-        var vol = size.x * size.y * size.z;
-        var emptySpace = intersectBoxes.reduce((volDiff: number, box: { getSize: (arg0: Vector3) => void; }) => {
-            box.getSize(size);
-            return volDiff - size.x * size.y * size.z;
-        }, vol);
-
-        var combinationCandidates: any[] = [];
-        boxes.forEach((box) => {
-            var combin = BoxSplitter.makeCombinations([box], boxes, emptySpace, 0);
-            if (combin) {
-                combin = [box, ...combin];
-                if (BoxSplitter.checkDuplicate(combin, combinationCandidates)) {
-                    combinationCandidates.push(combin);
+            var boxPts: Vector3[] = boxPtsArr.flat().reduce((arr: Vector3[], p: Vector3) => {
+                var index = arr.findIndex((p2: any) => { return p.equals(p2) });
+                if (index === -1) return [...arr, p];
+                else {
+                    arr.splice(index, 1);
+                    return arr;
                 }
-            }
-        })
-        combinationCandidates.sort((g1, g2) => {
-            return (g1.length - g2.length)
-        })
+            }, []);
+            var boxes: Box3[] = [];
+            boxPts.forEach((p, i) => {
+                var candidates = boxPts.slice(i).filter((p2) => {
+                    return (p.x !== p2.x && p.y !== p2.y && p.z !== p2.z);
+                });
+                candidates.forEach((p2) => {
+                    var box = new Box3();
+                    box.expandByPoint(p);
+                    box.expandByPoint(p2);
+                    var invalid = intersectBoxes.find((box2: Box3) => {
+                        return box.intersectsBox(box2.clone().expandByScalar(-0.1));
+                    });
+                    if (!invalid) boxes.push(box);
+                });
+            });
 
-        var res = combinationCandidates[0];
-        if (!res) {
-            console.log("WARN No split found for");
-            console.log(box)
-            console.log(intersectBoxes)
-            console.log("DEBUG => rejected combination:");
-            console.log(this.rejected);
-            // return this.rejected;
-            return null;
+            var size = new Vector3();
+            box.getSize(size);
+            var vol = size.x * size.y * size.z;
+            var emptySpace = intersectBoxes.reduce((volDiff: number, box: Box3) => {
+                box.getSize(size);
+                return volDiff - size.x * size.y * size.z;
+            }, vol);
+
+            var combinationCandidates: any[] = [];
+            boxes.forEach((box) => {
+                var combin = BoxSplitter.makeCombinations([box], boxes, emptySpace, 0);
+                if (combin) {
+                    combin = [box, ...combin];
+                    if (BoxSplitter.checkDuplicate(combin, combinationCandidates)) {
+                        combinationCandidates.push(combin);
+                    }
+                }
+            })
+            combinationCandidates.sort((g1, g2) => {
+                return (g1.length - g2.length)
+            })
+
+            var res = combinationCandidates[0];
+            if (!res) {
+                console.log("WARN No split found for intersection of ");
+                console.log(box)
+                console.log("with boxes: ");
+                console.log(intersectBoxes)
+                console.log("DEBUG => rejected combination:");
+                console.log(this.rejected);
+                // return this.rejected;
+                return null;
+            }
+            return res;
         }
-        return res;
     }
 
     static getRejected() {

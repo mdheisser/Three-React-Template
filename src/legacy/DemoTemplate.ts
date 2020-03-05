@@ -1,9 +1,9 @@
 import * as THREE from 'three';
-import { SAND } from '../legacy/Materials';
+import { SAND } from './Materials';
 // import { AxeGridHelper } from '../common/misc/Helpers';
-import Sample from '../legacy/Sample';
-import Engine from '../legacy/Engine';
-import { ControlManager } from '../legacy/Controls';
+import Sample from './Sample';
+import Engine from './Engine';
+import { ControlManager } from './Controls';
 
 /**
  * Minimal Template

@@ -1,126 +1,112 @@
 ///<reference path="../dts/misc-types-extend.d.ts" />
-import React, { useRef, useEffect } from "react";
-import { useFrame, extend, useThree, Canvas } from "react-three-fiber";
-import * as THREE from "three";
-import { OrbitControls } from "three/examples/jsm/controls/OrbitControls";
-import { TransformControls } from "three/examples/jsm/controls/TransformControls";
-import BoxListHlp from "../components/Helpers/BoxListHlp";
-import { Box3, Vector3 } from "three";
+import React, { useRef, useEffect, useState } from "react";
+import BoxListHlp, { BoxMovableEntity, BOX_SELECT_MODES } from "../components/Helpers/BoxListHlp";
+import { Box3, Vector3, Matrix4 } from "three";
+import BasicTemplate from "./BasicTemplate";
+import { BoxSplitter } from "../components/Utils/BoxUtils";
+import { Helpers } from "./DemoFiber";
 
-declare global {
-    // eslint-disable-next-line @typescript-eslint/no-namespace
-    namespace JSX {
-        interface IntrinsicElements {
-            orbitControls: any;
-            transformControls: any;
-        }
+const makeEntitites = (boxList: any, stateRef: any, stateSetter: any, color=0xffffff) => {
+    const onMoveCb = (mat: Matrix4, id: any) => {
+        console.log("box moved to: %s %s %s", mat.elements[12], mat.elements[13], mat.elements[14]);
+        var box = stateRef.current[id].box;
+        const boxDim: any = new Vector3(0, 0, 0);
+        box.getSize(boxDim);
+        const boxCenter: any = new Vector3()
+        boxCenter.applyMatrix4(mat);
+        stateRef.current[id].box.setFromCenterAndSize(boxCenter, boxDim);
+        stateSetter([...stateRef.current]);
+        // entities[id].box.translate(...c.toArray());
+        return {};
     }
+    // var boxEntList: BoxMovableEntity[] = [boxEnt];
+    const boxEntList = boxList.map((box: any, id: number) => {
+        return {
+            box: box,
+            selected: 1,
+            color: color,
+            onMove: (mat: Matrix4) => onMoveCb(mat, id)
+        }
+    })
+    return boxEntList;
 }
 
-extend({ OrbitControls })
-extend({ TransformControls })
+const TestBase = ({ initBoxes, splitBoxes }: { initBoxes: Box3[], splitBoxes: Box3[] }) => {
+    const [entities, setEntities] = useState();
+    const stateRef = useRef(entities);
 
-const Wrapper = (props: any) => {
-    const {
-        gl                           // WebGL renderer
-    } = useThree();
+    useEffect(() => {
+        stateRef.current = entities;
+    })
 
-    gl.setClearColor(0x000000);
-    gl.shadowMap.enabled = true;
-    gl.shadowMap.type = THREE.PCFSoftShadowMap;
+    if (!entities) {
+        var boxEntList: BoxMovableEntity[] = makeEntitites(initBoxes, stateRef, setEntities);
+        var boxEntListOvrlp: BoxMovableEntity[] = makeEntitites(splitBoxes, stateRef, setEntities, 0xff0000);
+
+        setEntities([...boxEntList, ...boxEntListOvrlp]);
+    }
 
     return (<>
-
+        <Helpers size={128} />
+        <BoxListHlp boxEntities={entities} selectMode={BOX_SELECT_MODES.ALLORNOT} />
     </>)
 }
 
-const Controls = React.forwardRef(
-    (props, forwardRef: any) => {
-        const orbitRef: any = useRef()
-        const { camera, gl } = useThree()
-        useFrame(() => {
-            orbitRef.current.update();
-        })
-
-        useEffect(() => {
-            forwardRef.current.addEventListener('dragging-changed', (event: any) =>
-                orbitRef.current.enabled = !event.value);
-        });
-
-        return (
-            <>
-                <orbitControls ref={orbitRef} args={[camera, gl.domElement]} enableDamping dampingFactor={0.1} rotateSpeed={0.5} />
-                <transformControls ref={forwardRef} args={[camera, gl.domElement]} />
-            </>
-        )
-    });
-
-const Lights = (props: any) => {
-    const lt: any = useRef();
-
-    useFrame((state) => {
-        const time = state.clock.getElapsedTime();
-        // mesh.current.rotation.y += 0.01;
-        lt.current.position.x = 50 * Math.sin(time / 2);
-        lt.current.position.z = 50 * Math.cos(time / 2);
-    });
-
-    return (<>
-        <spotLight ref={lt} intensity={1} position={[30, 30, 50]} angle={0.2} penumbra={1} castShadow />
-    </>)
-}
-
+/**
+ * 2 separate boxes
+ */
 const TestCase = () => {
-    var min = new Vector3(0, 0, 30);
-    var max = new Vector3(50, 50, 60);
-    var box = new Box3(min, max);
-    // box.applyMatrix4(matrix);
-    min = new Vector3(0, 0, -15);
-    max = new Vector3(50, 50, 15);
+
+    var min; var max;
+
+    min = new Vector3(0, 0, -15); max = new Vector3(50, 50, 15);
+    var box1 = new Box3(min, max);
+
+    min = new Vector3(0, 0, 30); max = new Vector3(50, 50, 60);
     var box2 = new Box3(min, max);
 
-    var boxes: Box3[] = [box, box2];
-
-    return (<>
-        <BoxListHlp boxes={boxes} selected={[0, 1]} />
-    </>)
+    var splitBoxes = BoxSplitter.split(box1, [box2.clone().intersect(box1)]);
+   
+    return (<TestBase initBoxes={[box1, box2]} splitBoxes={splitBoxes} />)
 }
 
+/**
+ * 2 adjacent boxes
+ */
 const TestCase2 = () => {
-    var min = new Vector3(-92, -16, 36);
-    var max = new Vector3(-36, 80, 92);
-    var box = new Box3(min, max);
-    // box.applyMatrix4(matrix);
-    min = new Vector3(-92, -6.399999999999999, 36);
-    max = new Vector3(-36, 70.4, 92);
+    var min; var max;
+
+    min = new Vector3(-30, 0, 0); max = new Vector3(15, 50, 50);
+    var box1 = new Box3(min, max);
+
+    min = new Vector3(0, 0, 0); max = new Vector3(45, 50, 50);
     var box2 = new Box3(min, max);
 
-    var boxes: Box3[] = [box, box2];
+    var splitBoxes = BoxSplitter.split(box1, [box2.intersect(box1)]);
+    return (<TestBase initBoxes={[box1, box2]} splitBoxes={splitBoxes} />)
 
-    return (<>
-        <BoxListHlp boxes={boxes} selected={[0, 1]} />
-    </>)
 }
 
-const TestCases = [TestCase, TestCase2];
+/**
+ * Box inclusion: 1 box contained in another
+ */
+const TestCase3 = () => {
+    var min; var max;
+
+    min = new Vector3(-92, -16, 36); max = new Vector3(-36, 80, 92);
+    var box1 = new Box3(min, max);
+
+    min = new Vector3(-92, -6.399999999999999, 36); max = new Vector3(-36, 70.4, 92);
+    var box2 = new Box3(min, max);
+
+    var splitBoxes = BoxSplitter.split(box1, [box2.intersect(box1)]);
+    return (<TestBase initBoxes={[box1, box2]} splitBoxes={splitBoxes} />)
+
+}
+
+const TestCases = [TestCase, TestCase2, TestCase3];
 
 
 export default ({ caseNb = 1 }) => {
-    const ctrl: any = useRef();
-    const TestCase = TestCases[caseNb];
-    return (
-        <Canvas
-            gl2
-            camera={{ position: [100, 50, 100] }}
-        // onCreated={({ gl }) => ((gl.shadowMap.enabled = true), (gl.shadowMap.type = THREE.PCFSoftShadowMap))}>
-        >
-            <ambientLight intensity={2} />
-            <Wrapper />
-            <Lights />
-            <Controls ref={ctrl} />
-            <TestCase/>
-        </Canvas>
-    )
+    return (<BasicTemplate Sample={TestCases[caseNb]} />)
 };
-
-// export default DemoTemplate;
