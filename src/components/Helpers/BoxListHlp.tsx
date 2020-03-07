@@ -33,6 +33,13 @@ export default ({ boxEntities = [], selectMode = BOX_SELECT_MODES.SINGLE }:
   }, [entities]);
   const { transfCtrl } = useSampleStates();
 
+  useEffect(() => {
+    if (boxEntities.length === entities.length) {
+      boxEntities.forEach((ent, i) => ent.selected = entities[i].selected)
+    }
+    setEntities(boxEntities);
+  }, [boxEntities]);
+
   // const countItems = () => {
   //   var count = entities.reduce((sum: number, key: any) => entities[key].selected ? sum + 1 : sum, 0);
   //   return count
@@ -74,8 +81,8 @@ export default ({ boxEntities = [], selectMode = BOX_SELECT_MODES.SINGLE }:
     }, [transfCtrl])
 
   const allOrNothing = (isVisible: boolean) => {
-    setEntities((prev: any) => {
-      entities.forEach(ent => ent.selected = isVisible)
+    setEntities((prev: BoxMovableEntity[]) => {
+      prev.forEach((ent) => ent.selected = isVisible)
       return [...prev]
     })
   }
