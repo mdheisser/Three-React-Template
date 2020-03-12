@@ -1,69 +1,141 @@
 ///<reference path="../dts/misc-types-extend.d.ts" />
-import React, { useRef, useEffect, useState } from "react";
-import BoxListHlp, { BoxMovableEntity } from "../components/Helpers/BoxListHlp";
+import React, { useRef, useEffect, useState, useCallback } from "react";
+import BoxListHlp, { BoxEntity } from "../components/Helpers/BoxListHlp";
 import { Box3, Vector3, Matrix4 } from "three";
 import BasicTemplate from "./BasicTemplate";
-import { inherits } from "util";
 import { BoxSplitter } from "../components/Utils/BoxUtils";
+import { useFrame, useThree } from "react-three-fiber";
 
-const makeEntitites = (boxList: any, stateRef: any, stateSetter: any) => {
-    const onMoveCb = (mat: Matrix4, id: any) => {
-        console.log("box moved to: %s %s %s", mat.elements[12], mat.elements[13], mat.elements[14]);
-        var box = stateRef.current[id].box;
-        const boxDim: any = new Vector3(0, 0, 0);
-        box.getSize(boxDim);
-        const boxCenter: any = new Vector3()
-        boxCenter.applyMatrix4(mat);
-        var box1 = stateRef.current[0].box;
-        var box2 = stateRef.current[1].box;
-        stateRef.current[id].box.setFromCenterAndSize(boxCenter, boxDim);
-        var splitEntities = [];
-        if (box2.intersectsBox(box)) {
-            var splitBoxes = BoxSplitter.split(box1, [box2.clone().intersect(box1)]);
-            splitEntities = splitBoxes.map((box: any) => ({ box: box, selected: true, color: 0xff0000 }))
-        }
-        stateSetter([stateRef.current[0], stateRef.current[1], ...splitEntities]);
-        // entities[id].box.translate(...c.toArray());
-        return {};
+const StaticBoxStyle = {
+    default: {
+        color: "white",
+        alpha: "0.2",
+        ghostColor: "white",
+        ghostAlpha: "0"
+    },
+    hovered: {
+        color: "orange",
+        alpha: "0.4",
+        ghostColor: "white",
+        ghostAlpha: "0"
+    },
+    selected: {
+        color: "white",
+        alpha: "0.6",
+        ghostColor: "white",
+        ghostAlpha: "0"
     }
-    // var boxEntList: BoxMovableEntity[] = [boxEnt];
-    const boxEntList = boxList.map((box: any, id: number) => {
-        return {
-            box: box,
-            onMove: (mat: Matrix4) => onMoveCb(mat, id)
-        }
-    })
-    return boxEntList;
 }
 
+const MovingBoxStyle = {
+    default: {
+        color: "white",
+        alpha: "0.2",
+        ghostColor: "white",
+        ghostAlpha: "0"
+    },
+    hovered: {
+        color: "orange",
+        alpha: "0.4",
+        ghostColor: "white",
+        ghostAlpha: "0"
+    },
+    selected: {
+        color: "white",
+        alpha: "0.6",
+        ghostColor: "white",
+        ghostAlpha: "0"
+    }
+}
+
+const OverlapBoxStyle = {
+    default: {
+        color: "red",
+        alpha: "1",
+        ghostColor: "red",
+        ghostAlpha: "0.1"
+    }
+}
+
+const SplitBoxesStyle = {
+    default: {
+        color: "green",
+        alpha: "1",
+        ghostColor: "green",
+        ghostAlpha: "0.1"
+    }
+}
+
+const orig = new Vector3(0, 0, 0);
+var orig2 = new Vector3(20, 30, 40);
+const dim = new Vector3(50, 50, 50);
+const dim2 = new Vector3(51, 51, 25);
+const staticBox = new Box3(orig, dim);
+const movingBox = new Box3(orig2, orig2.clone().add(dim2));
 
 const EntryPoint = () => {
 
     const [entities, setEntities] = useState();
-    const stateRef = useRef(entities);
+    const moveCbRef: any = useRef();
 
-    useEffect(() => {
-        stateRef.current = entities;
+    const staticBoxEnt = {
+        box: staticBox,
+        style: StaticBoxStyle
+    }
+
+    const movingBoxEnt = {
+        box: movingBox,
+        style: MovingBoxStyle,
+        selected: true,
+        onMove: (mat: Matrix4) => moveCbRef.current(mat), // enable movement
+    }
+
+    const onMoveCb = useCallback((mat: Matrix4) => {
+        var movingBox = movingBoxEnt.box;
+        const boxDim: any = new Vector3(0, 0, 0);
+        movingBox.getSize(boxDim);
+        const boxCenter: any = new Vector3()
+        boxCenter.applyMatrix4(mat);
+        movingBoxEnt.box.setFromCenterAndSize(boxCenter, boxDim);
+        var splitEntities = [];
+        if (movingBox.intersectsBox(staticBox)) {
+            var overlapBox = movingBox.clone().intersect(staticBox);
+            var overlapEnt = {
+                box: overlapBox,
+                style: OverlapBoxStyle
+            }
+            var splitBoxes = BoxSplitter.split(staticBox, [overlapBox]);
+            splitEntities = splitBoxes.map((box: any) => ({
+                box: box,
+                style: SplitBoxesStyle
+            }))
+            splitEntities.push(overlapEnt);
+        }
+        setEntities([staticBoxEnt, movingBoxEnt, ...splitEntities]);
+        // entities[id].box.translate(...c.toArray());
+        return {};
+    }, [entities]);
+
+    moveCbRef.current = onMoveCb;
+
+
+    if (!entities) setEntities([staticBoxEnt, movingBoxEnt])
+
+    const clk = useThree().clock
+
+
+    useFrame(() => {
+        var mat = new Matrix4()
+        const statBoxCenter = new Vector3(0, 0, 0);
+        staticBox.getCenter(statBoxCenter);
+        const movBoxCenter = new Vector3(0, 0, 0);
+        movingBox.getCenter(movBoxCenter);
+        mat.makeTranslation(statBoxCenter.x / 2 * (1 + Math.cos(clk.elapsedTime / 4) * 2),
+            25 * (1 + Math.sin(clk.elapsedTime / 4) * 2),
+            movBoxCenter.z);
+        movingBoxEnt.onMove(mat);
     })
 
-    const initBoxes = () => {
-        var boxList = []; var min; var max; var box;
-
-        min = new Vector3(0, 0, 30); max = new Vector3(50, 50, 60);
-        box = new Box3(min, max);
-        boxList.push(box);
-
-        min = new Vector3(0, 0, -15); max = new Vector3(50, 50, 15);
-        box = new Box3(min, max);
-        boxList.push(box);
-        return boxList
-    }
-
-    if (!entities) {
-        var boxEntList: BoxMovableEntity[] = makeEntitites(initBoxes(), stateRef, setEntities);
-
-        setEntities(boxEntList);
-    }
 
     return (<>
         <BoxListHlp boxEntities={entities} />
@@ -71,7 +143,7 @@ const EntryPoint = () => {
 }
 
 
-export default ({ caseNb = 1 }) => {
+export default () => {
     // const ctrl: any = useRef();
     return (<BasicTemplate Sample={EntryPoint} />)
 };

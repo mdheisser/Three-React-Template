@@ -2,18 +2,18 @@ import React from "react";
 import * as THREE from "three";
 import * as TextureCatalog from "./Textures";
 import * as Shaders from './Shaders';
-export enum MAT {
+export enum CATALOG {
   WATER,
   SAND,
   SHADCOL
 }
 export type MaterialProps = {
-  name: MAT,
+  name: CATALOG,
   repeat: number
 }
 export function Material(props: MaterialProps) {
   switch (props.name) {
-    case MAT.WATER:
+    case CATALOG.WATER:
       return (
         <meshStandardMaterial
           attach="material"
@@ -21,7 +21,7 @@ export function Material(props: MaterialProps) {
           transparent={true}
           color={0xff0000}
         />);
-    case MAT.SAND:
+    case CATALOG.SAND:
       return (
         <meshStandardMaterial
           attach="material"
@@ -34,7 +34,7 @@ export function Material(props: MaterialProps) {
           map={TextureCatalog.sand(props.repeat)}
           normalMap={TextureCatalog.sand_norm(props.repeat)}
         />);
-    case MAT.SHADCOL:
+    case CATALOG.SHADCOL:
       return (<shaderMaterial
         attach="material"
         vertexShader={Shaders.Color.vertexShader}

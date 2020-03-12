@@ -1,7 +1,7 @@
 ///<reference path="../dts/misc-types-extend.d.ts" />
 import React, { useRef, useCallback, useEffect } from "react";
 import { Canvas } from "react-three-fiber";
-import { Material, MAT } from "../resources/catalogs/Materials";
+import { Material, CATALOG } from "../resources/catalogs/Materials";
 import { SampleProps } from "../legacy/constants";
 import InfoOverlay from "../components/UI/InfoOverlay";
 import TimelineWidget from "../components/UI/TimelineWidget";
@@ -22,7 +22,7 @@ const Static = () => {
 
     var plane = <mesh rotation-x={Math.PI / 2} receiveShadow>
         <planeGeometry attach="geometry" args={[50, 50]} />
-        <Material name={MAT.SAND} repeat={1} />
+        <Material name={CATALOG.SAND} repeat={1} />
     </mesh>
 
     grp.push(plane);
@@ -54,7 +54,7 @@ const Moveable = (props: any) => {
     //   onPointerOut={e => onHover(e, false)}
     >
         <boxBufferGeometry attach="geometry" args={[10, 10, 10]} />
-        <Material name={MAT.SAND} repeat={1} />
+        <Material name={CATALOG.SAND} repeat={1} />
     </mesh>
 
     grp.push(cube);

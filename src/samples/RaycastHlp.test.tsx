@@ -59,17 +59,17 @@ const TestCase2 = () => {
 
     const onHover = useCallback(
         (e, value) => {
-            e.stopPropagation();
+            // e.stopPropagation();
             setRaycasted(e);
         },[]);
 
     return (
         <>
+            <RaycastHLP input={raycasted} />
             <mesh position={[0, 0, 0]} onPointerMove={e => onHover(e, true)}>
                 <sphereBufferGeometry attach="geometry" args={[15, 6, 6]} />
                 <meshBasicMaterial attach="material" color="#000000" wireframe />
             </mesh>
-            <RaycastHLP input={raycasted} />
         </>
     );
 }
