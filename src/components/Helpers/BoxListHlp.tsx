@@ -50,18 +50,20 @@ export default ({ boxEntities = [], selectMode = BOX_SELECT_MODES.SINGLE }:
     // .map(ent=>ent.selected);
   }
   // boxes = [];
-  const boxListHlp = boxEntities.map((boxEnt: BoxMovableEntity, i: number) => {
-    // var hoverable = (selectMode === BOX_SELECT_MODES.MULTI) || (countItems() === 0);
+  const hoverable = getSelected().length === 0; //&& selectMode !== BOX_SELECT_MODES.ALLORNOT;
+
+  const boxListHlp = selectMode !== BOX_SELECT_MODES.ALLORNOT ? boxEntities.map((boxEnt: BoxMovableEntity, i: number) => {
     return <BoxHlp key={i}
       boxEnt={boxEnt}
-      handleClick={(e: any) => handleClick(i, e)} />;
-  });
+      handleClick={(e: any) => handleClick(i, e)}
+      hoverable={hoverable} />;
+  }) : [];
 
   const handleClick = useCallback(
     (id: any, e: any) => {
       e.stopPropagation();
       // selection
-      if (e.button === 2) {
+      if (e.button === 1) {
         // if (getSelected().length === 0 || state[id]) {
         var curr = entitiesRef.current[id].selected;
         if (selectMode !== BOX_SELECT_MODES.MULTI) allOrNothing(false);
@@ -87,19 +89,33 @@ export default ({ boxEntities = [], selectMode = BOX_SELECT_MODES.SINGLE }:
     })
   }
 
+  const onMove = (event: any) => {
+    // console.log("drag ", event.value ? "begin" : "end");
+    if (!event.value) { // on drag out
+      // var id: any = getSelected()[0];
+      // need to use a ref here, because we are in a listener 
+      // entitiesRef.current[id].onMove(transfCtrl.object.matrix);
+      var selectedEntity = getSelected()[0];
+      if (selectedEntity) {
+        selectedEntity.onMove(transfCtrl.object.matrix);
+      } else {
+        console.log("error: undefined selected entity => can't move");
+      }
+    }
+  }
+
   useEffect(() => {
     if (transfCtrl.enabled) {
-      transfCtrl.addEventListener('dragging-changed', (event: any) => {
-        // console.log("drag ", event.value ? "begin" : "end");
-        if (!event.value) { // on drag out
-          // var id: any = getSelected()[0];
-          // need to use a ref here, because we are in a listener 
-          // entitiesRef.current[id].onMove(transfCtrl.object.matrix);
-          getSelected()[0].onMove(transfCtrl.object.matrix);
-        }
-      });
+      transfCtrl.addEventListener('dragging-changed', onMove);
     }
   }, [transfCtrl]);
+
+  // cleanup effect hook
+  useEffect(() => () => {
+    console.log("clean boxlist hlp before unmount");
+    transfCtrl.detach();
+    transfCtrl.removeEventListener('dragging-changed', onMove);
+  }, []);
 
   return (
     <group>
@@ -108,10 +124,12 @@ export default ({ boxEntities = [], selectMode = BOX_SELECT_MODES.SINGLE }:
   );
 }
 
-const BoxHlp = ({ boxEnt, handleClick }: { boxEnt: BoxMovableEntity, handleClick: any }) => {
+const BoxHlp = ({ boxEnt, handleClick, hoverable }: { boxEnt: BoxMovableEntity, handleClick: any, hoverable: boolean }) => {
   const [isHovered, setIsHovered] = useState(false);
   const boxRef: any = useRef();
   const ghostRef: any = useRef();
+  const hoverableRef: any = useRef();
+  hoverableRef.current = hoverable;
 
   const boxDim: any = new Vector3()
   boxEnt.box.getSize(boxDim);
@@ -127,8 +145,10 @@ const BoxHlp = ({ boxEnt, handleClick }: { boxEnt: BoxMovableEntity, handleClick
   // Events
   const onHover = useCallback(
     (e, enabled) => {
-      e.stopPropagation();
-      setIsHovered(enabled);
+      if (hoverableRef.current) {
+        e.stopPropagation();
+        setIsHovered(enabled);
+      }
     },
     [setIsHovered]
   );

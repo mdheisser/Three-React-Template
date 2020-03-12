@@ -1,10 +1,13 @@
 import React, {
     useCallback,
     useMemo,
+    useRef,
+    useEffect,
 } from "react";
 import * as THREE from 'three'
 import { BufferGeometry, BufferAttribute } from "three";
 import { useUpdate } from "react-three-fiber";
+import { Material, CATALOG } from "../../resources/catalogs/Materials";
 
 
 export enum RAYCAST_OBJ {
@@ -12,7 +15,13 @@ export enum RAYCAST_OBJ {
     POLYGON
 }
 
-export default ({ input, type = RAYCAST_OBJ.POLYGON }: { input: any, type?: RAYCAST_OBJ }) => {
+const RaycastHlp = ({ input, type = RAYCAST_OBJ.POLYGON, onClick }: { input: any, type?: RAYCAST_OBJ, onClick?: any }) => {
+    // const [locked, setLocked]: any = useState();  // internal state for lock
+    // const lockedRef = useRef(locked);
+
+    // useEffect(()=>{
+    //     lockedRef.current = locked;
+    // })
 
     const buffAttrRef = useUpdate(
         (vertices: BufferAttribute) => {
@@ -22,26 +31,22 @@ export default ({ input, type = RAYCAST_OBJ.POLYGON }: { input: any, type?: RAYC
                     vertices.setXYZ(i, posAttr.getX(faceInd), posAttr.getY(faceInd), posAttr.getZ(faceInd));
                 });
             }
-            vertices.needsUpdate = true;
+            vertices.needsUpdate = true;    // TODO: check why stays undefined
             // console.log(input.faceIndex);
         },
         [input.faceIndex] // execute only if these properties change
     )
     const buffGeomRef = useUpdate((self: BufferGeometry) => {
-        // console.log(self.attributes.position.array);
+        // mandatory for onClick to work and cursor to be visible everywhere
+        self.computeBoundingSphere();
     }, [input.faceIndex]);
 
+    // first time init
     var vertices = useMemo(() => new Float32Array(9), [])
-
-    const onClick = useCallback(
-        e => {
-            e.stopPropagation();
-            //   if (e.button === 1)
-            console.log("OnClick: TODO");
-        },[]);
+    // console.log(input.faceIndex);
 
     return (
-        <mesh onClick={e => onClick(e)}>
+        <mesh onPointerDown={onClick ? onClick : null}>
             <bufferGeometry ref={buffGeomRef} attach="geometry">
                 <bufferAttribute ref={buffAttrRef} attachObject={['attributes', 'position']} count={3} array={vertices} itemSize={3} />
             </bufferGeometry>
@@ -49,3 +54,9 @@ export default ({ input, type = RAYCAST_OBJ.POLYGON }: { input: any, type?: RAYC
         </mesh>
     );
 }
+// avoid unnecessary refresh
+const compare = (prev: any, next: any) => {
+    return prev.input && prev.input.face && (prev.input.faceIndex === next.input.faceIndex);
+}
+
+export default React.memo(RaycastHlp, compare)
