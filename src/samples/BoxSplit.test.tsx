@@ -1,6 +1,6 @@
 ///<reference path="../dts/misc-types-extend.d.ts" />
 import React, { useRef, useEffect, useState } from "react";
-import BoxListHlp, { BoxMovableEntity, BOX_SELECT_MODES } from "../components/Helpers/BoxListHlp";
+import BoxListHlp, { BoxEntity, BOX_SELECT_MODES } from "../components/Helpers/BoxListHlp";
 import { Box3, Vector3, Matrix4 } from "three";
 import BasicTemplate from "./BasicTemplate";
 import { BoxSplitter } from "../components/Utils/BoxUtils";
@@ -40,8 +40,8 @@ const TestBase = ({ initBoxes, splitBoxes }: { initBoxes: Box3[], splitBoxes: Bo
     })
 
     if (!entities) {
-        var boxEntList: BoxMovableEntity[] = makeEntitites(initBoxes, stateRef, setEntities);
-        var boxEntListOvrlp: BoxMovableEntity[] = makeEntitites(splitBoxes, stateRef, setEntities, 0xff0000);
+        var boxEntList: BoxEntity[] = makeEntitites(initBoxes, stateRef, setEntities);
+        var boxEntListOvrlp: BoxEntity[] = makeEntitites(splitBoxes, stateRef, setEntities, 0xff0000);
 
         setEntities([...boxEntList, ...boxEntListOvrlp]);
     }
