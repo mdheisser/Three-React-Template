@@ -2,9 +2,8 @@ import React, {
   useRef,
   useState,
   useEffect,
-  useCallback,
 } from "react";
-import { Box3, Vector3, Matrix4, Color } from "three";
+import { Box3, Vector3, Color } from "three";
 import { useSampleStates } from "../../common/SampleStates";
 
 export type BoxStyle = {
@@ -69,13 +68,11 @@ export const BoxEntityCtrlHlp = ({ boxEnt, onClick = () => { }, onChange = () =>
   const ghostAlpha = boxEnt.selected ? style.selected.ghostAlpha : isHovered ? style.hovered.ghostAlpha : style.default.ghostAlpha;
 
   // Events
-  const onHover = useCallback(
-    (e, enabled) => {
+  const onHover = //useCallback(
+    (e:any, enabled: any) => {
       e.stopPropagation();
       setIsHovered(enabled);
-    },
-    [isHovered]
-  );
+    }//,[isHovered]);
 
   var inputCtrl: any = useRef();
   useEffect(() => {

@@ -1,10 +1,10 @@
 ///<reference path="../dts/misc-types-extend.d.ts" />
-import React, { useRef, useEffect, useState, useCallback } from "react";
+import React, { useState } from "react";
 import { Box3, Vector3, Matrix4 } from "three";
 import BasicTemplate from "./BasicTemplate";
 import { BoxSplitter } from "../components/Utils/BoxUtils";
 import { useFrame, useThree } from "react-three-fiber";
-import { BoxEntityCtrlHlp, BoxEntity } from "../components/Helpers/BoxEntityCtrlHlp";
+import { BoxEntityCtrlHlp } from "../components/Helpers/BoxEntityCtrlHlp";
 
 const StaticBoxStyle = {
     default: {
@@ -58,7 +58,6 @@ const movingBox = new Box3(orig2, orig2.clone().add(dim2));
 const EntryPoint = () => {
 
     const [splitBoxes, setSplitBoxes]: any = useState([]);
-    const moveCbRef: any = useRef();
 
     const staticBoxEnt = {
         box: staticBox,
@@ -68,10 +67,9 @@ const EntryPoint = () => {
     const movingBoxEnt = {
         box: movingBox,
         selected: true,
-        // onMove: (mat: Matrix4) => moveCbRef.current(mat), // enable movement
     }
 
-    const onMove = useCallback((mat: Matrix4) => {
+    const onMove = (mat: Matrix4) => {
         var movingBox = movingBoxEnt.box;
         const boxDim: any = new Vector3(0, 0, 0);
         movingBox.getSize(boxDim);
@@ -83,17 +81,10 @@ const EntryPoint = () => {
             var splitBoxes = BoxSplitter.split(staticBox, [overlapBox]);
             setSplitBoxes([overlapBox, ...splitBoxes]);
         }
-        // entities[id].box.translate(...c.toArray());
         return {};
-    }, []);
-
-    // moveCbRef.current = onMoveCb;
-
-
-    // if (!entities) setEntities([staticBoxEnt, movingBoxEnt])
+    }
 
     const clk = useThree().clock
-
 
     useFrame(() => {
         var mat = new Matrix4()

@@ -1,5 +1,5 @@
 ///<reference path="../dts/misc-types-extend.d.ts" />
-import React, { useRef, useCallback, useEffect } from "react";
+import React, { useCallback } from "react";
 import { Canvas } from "react-three-fiber";
 import { Material, CATALOG } from "../resources/catalogs/Materials";
 import { SampleProps } from "../legacy/constants";

@@ -1,11 +1,9 @@
 ///<reference path="../dts/misc-types-extend.d.ts" />
 import React, { useRef, useEffect, useCallback, useState } from "react";
 import { useFrame, extend, useThree, Canvas } from "react-three-fiber";
-import { Material, MAT } from "../resources/catalogs/Materials";
 import RaycastHLP from '../components/Helpers/RaycastHlp'
 import { OrbitControls } from "three/examples/jsm/controls/OrbitControls";
 import { TransformControls } from "three/examples/jsm/controls/TransformControls";
-import * as THREE from "three";
 
 declare global {
     // eslint-disable-next-line @typescript-eslint/no-namespace
@@ -119,7 +117,7 @@ const Controls = React.forwardRef(
     });
 
 
-export default ({ caseNb = 1 }) => {
+export default ({ caseNb = 0 }) => {
     const ctrl: any = useRef();
     const TestCase = TestCases[caseNb];
 

@@ -1,17 +1,14 @@
 ///<reference path="../dts/misc-types-extend.d.ts" />
-import React, { useRef, useEffect, useState } from "react";
+import React from "react";
 import BasicTemplate from "./BasicTemplate";
 import { Helpers } from "./DemoFiber";
 import { Points, TorusKnotBufferGeometry, PointsMaterial, Box3 } from "three";
-import { useThree } from "react-three-fiber";
 import { PointOctree } from "sparse-octree";
 import { OctreeHelper } from "octree-helper";
 import { Vector3 } from "math-ds";
 
 
 const TestBase = () => {
-
-    var scene = useThree().scene;
 
     // Points.
 

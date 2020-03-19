@@ -1,14 +1,7 @@
-import React, {
-    useCallback,
-    useMemo,
-    useRef,
-    useEffect,
-} from "react";
+import React, { useMemo } from "react";
 import * as THREE from 'three'
 import { BufferGeometry, BufferAttribute } from "three";
 import { useUpdate } from "react-three-fiber";
-import { Material, CATALOG } from "../../resources/catalogs/Materials";
-
 
 export enum RAYCAST_OBJ {
     POINT,
@@ -33,8 +26,7 @@ const RaycastHlp = ({ input, type = RAYCAST_OBJ.POLYGON, onClick }: { input: any
             }
             vertices.needsUpdate = true;    // TODO: check why stays undefined
             // console.log(input.faceIndex);
-        },
-        [input.faceIndex] // execute only if these properties change
+        }, [input.faceIndex] // execute only if these properties change
     )
     const buffGeomRef = useUpdate((self: BufferGeometry) => {
         // mandatory for onClick to work and cursor to be visible everywhere
