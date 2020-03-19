@@ -1,6 +1,5 @@
 ///<reference path="../dts/misc-types-extend.d.ts" />
 import React, { useRef, useEffect, useState, useCallback } from "react";
-import BoxListHlp, { BoxEntity } from "../components/Helpers/BoxListHlp";
 import { Box3, Vector3, Matrix4 } from "three";
 import BasicTemplate from "./BasicTemplate";
 import { BoxSplitter } from "../components/Utils/BoxUtils";
@@ -133,12 +132,12 @@ const EntryPoint = () => {
         mat.makeTranslation(statBoxCenter.x / 2 * (1 + Math.cos(clk.elapsedTime / 4) * 2),
             25 * (1 + Math.sin(clk.elapsedTime / 4) * 2),
             movBoxCenter.z);
-        movingBoxEnt.onMove(mat);
+        // movingBoxEnt.onMove(mat);
     })
 
 
     return (<>
-        <BoxListHlp boxEntities={entities} />
+        {/* <BoxListHlp boxEntities={entities} /> */}
     </>)
 }
 

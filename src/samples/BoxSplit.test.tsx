@@ -1,6 +1,6 @@
 ///<reference path="../dts/misc-types-extend.d.ts" />
 import React, { useRef, useEffect, useState } from "react";
-import BoxListHlp, { BoxEntity, BOX_SELECT_MODES } from "../components/Helpers/BoxListHlp";
+import { BoxEntity, BOX_SELECT_MODES } from "../components/Helpers/BoxEntityCtrlHlp";
 import { Box3, Vector3, Matrix4 } from "three";
 import BasicTemplate from "./BasicTemplate";
 import { BoxSplitter } from "../components/Utils/BoxUtils";
@@ -48,7 +48,7 @@ const TestBase = ({ initBoxes, splitBoxes }: { initBoxes: Box3[], splitBoxes: Bo
 
     return (<>
         <Helpers size={128} />
-        <BoxListHlp boxEntities={entities} selectMode={BOX_SELECT_MODES.ALLORNOT} />
+        {/* <BoxListHlp boxEntities={entities} selectMode={BOX_SELECT_MODES.ALLORNOT} /> */}
     </>)
 }
 
