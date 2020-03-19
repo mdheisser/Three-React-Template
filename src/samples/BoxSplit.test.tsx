@@ -1,7 +1,7 @@
 ///<reference path="../dts/misc-types-extend.d.ts" />
-import React, { useRef, useEffect, useState } from "react";
-import { BoxEntity, BOX_SELECT_MODES, BoxEntityCtrlHlp } from "../components/Helpers/BoxEntityCtrlHlp";
-import { Box3, Vector3, Matrix4 } from "three";
+import React from "react";
+import { BoxEntityCtrlHlp } from "../components/Helpers/BoxEntityCtrlHlp";
+import { Box3, Vector3 } from "three";
 import BasicTemplate from "./BasicTemplate";
 import { BoxSplitter } from "../components/Utils/BoxUtils";
 import { Helpers } from "./DemoFiber";
@@ -25,12 +25,6 @@ const SplitBoxesStyle = {
 }
 
 const TestBase = ({ initBoxes, splitBoxes }: { initBoxes: Box3[], splitBoxes: Box3[] }) => {
-    // const [entities, setEntities] = useState();
-    // const stateRef = useRef(entities);
-
-    // useEffect(() => {
-    //     stateRef.current = entities;
-    // })
 
     var boxHelpers = initBoxes.map((box: any, id: number) => {
         const boxEnt = {
@@ -46,7 +40,6 @@ const TestBase = ({ initBoxes, splitBoxes }: { initBoxes: Box3[], splitBoxes: Bo
         }
         return <BoxEntityCtrlHlp boxEnt={boxEnt} boxStyle={SplitBoxesStyle} />
     })
-    // return boxEntList;
 
     return (<>
         <Helpers size={128} />
@@ -91,7 +84,7 @@ const TestCase2 = () => {
 }
 
 /**
- * Box inclusion: 1 box contained in another
+ * Box inclusion: 1 box inside another
  */
 const TestCase3 = () => {
     var min; var max;
