@@ -1,18 +1,18 @@
 # ThreeReactSandbox
 A sandbox for webGL projects.
 
-This project aims at providing a template as well as a set of tools for developing WebGL apps using Three.js and React.js.
+This project aims at providing a template, code structure/organization, as well as a set of tools for easing WebGL apps development using Three.js and React.js.
 
-Based on create-react-app tool.
+Generated from create-react-app (react) and build on top of react-three-fiber tool.
 
 ## Feature and embedded libraries:
 - Three.js: webgl 3d graphics
-- Create-react-app: Dev environment with typescript support + VsCode integration
 - React.js: UI and browser integration
-- Redux (react-redux, redux-toolkit, redux-watch): state management, data storage and exchange between UI components and engine
-- React Router(react-router-dom): dynamic browsing of multiple projects
+- React-Three-Fiber: ThreeJS integration with React
 - Ammo.js: physics engine
-
+- Create-react-app: Dev environment with typescript support + VsCode integration
+- React Router(react-router-dom): dynamic browsing of multiple projects
+- State management library (Zustand)
 
 ## Goals
 - ready to code approach: avoid boilerplate code at maximum
@@ -34,10 +34,9 @@ Once project cloned with git, issue 'npm i' in project's directory
 
 ## Create new sample 
 
-- add a new file in samples dir with new demoClassName and copy code adapted from DemoTemplate
-- add new entry in Samples.tsx with sample name:
-    `demoName`:'demoClassName'
-- directly access new sample with url: `localhost:3000/demos/<demoName>
+- add a new file in samples dir follow template code
+- add new entry in samples/index with your new sample ref
+- directly access new sample with url: `localhost:3000/<SampleName>
 
 ## Usage with VSCode
 if you plan on using VSCode for dev, you can benefit from debugging feature directly in the editor.
@@ -55,13 +54,9 @@ The samples given are voluntarily basic but shows most features :
 - 2 way data exchanges between UI and Engine and automatic refresh thanks to redux lib
 
 # Source code organization and folder structure:
-- /src/assets/: every thing that isn't code (images, 3d models, ..)
-- /src/common/: code to be reused accross projects
-- /src/common/catalogs/: materials, textures, shaders, lights resources
-- /src/redux/: state related code: common and specific 
-- /src/samples/: Demos and tests sample. 
-- /src/ui/: react web interface related. user interface on top of 3d.
-- /src/index.tsx:
-- /src/Root.tsx:
-- /src/Engine.ts: 
-- /src/Samples: listing of all samples
+- /src/resources/assets/: every thing that isn't code (images, 3d models, ..)
+- /src/resource/catalogs/: materials, textures, shaders, lights resources
+- /src/components/: components to be reused accross projects (following react-three-fiber model)
+- /src/ui/: user interface layer (react)
+- /src/samples/: Demos and tests sample.
+- /src/samples/index: Samples listing 
