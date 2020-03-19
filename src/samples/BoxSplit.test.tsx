@@ -1,54 +1,50 @@
 ///<reference path="../dts/misc-types-extend.d.ts" />
-import React, { useRef, useEffect, useState } from "react";
-import BoxListHlp, { BoxEntity, BOX_SELECT_MODES } from "../components/Helpers/BoxListHlp";
-import { Box3, Vector3, Matrix4 } from "three";
+import React from "react";
+import { BoxEntityCtrlHlp } from "../components/Helpers/BoxEntityCtrlHlp";
+import { Box3, Vector3 } from "three";
 import BasicTemplate from "./BasicTemplate";
 import { BoxSplitter } from "../components/Utils/BoxUtils";
 import { Helpers } from "./DemoFiber";
 
-const makeEntitites = (boxList: any, stateRef: any, stateSetter: any, color=0xffffff) => {
-    const onMoveCb = (mat: Matrix4, id: any) => {
-        console.log("box moved to: %s %s %s", mat.elements[12], mat.elements[13], mat.elements[14]);
-        var box = stateRef.current[id].box;
-        const boxDim: any = new Vector3(0, 0, 0);
-        box.getSize(boxDim);
-        const boxCenter: any = new Vector3()
-        boxCenter.applyMatrix4(mat);
-        stateRef.current[id].box.setFromCenterAndSize(boxCenter, boxDim);
-        stateSetter([...stateRef.current]);
-        // entities[id].box.translate(...c.toArray());
-        return {};
+const OverlapBoxStyle = {
+    default: {
+        color: "red",
+        alpha: 1,
+        ghostColor: "red",
+        ghostAlpha: 0.1
     }
-    // var boxEntList: BoxMovableEntity[] = [boxEnt];
-    const boxEntList = boxList.map((box: any, id: number) => {
-        return {
-            box: box,
-            selected: 1,
-            color: color,
-            onMove: (mat: Matrix4) => onMoveCb(mat, id)
-        }
-    })
-    return boxEntList;
+}
+
+const SplitBoxesStyle = {
+    default: {
+        color: "green",
+        alpha: 1,
+        ghostColor: "green",
+        ghostAlpha: 0.1
+    }
 }
 
 const TestBase = ({ initBoxes, splitBoxes }: { initBoxes: Box3[], splitBoxes: Box3[] }) => {
-    const [entities, setEntities] = useState();
-    const stateRef = useRef(entities);
 
-    useEffect(() => {
-        stateRef.current = entities;
+    var boxHelpers = initBoxes.map((box: any, id: number) => {
+        const boxEnt = {
+            box: box,
+            selected: false,
+        }
+        return <BoxEntityCtrlHlp boxEnt={boxEnt} boxStyle={OverlapBoxStyle} />
     })
-
-    if (!entities) {
-        var boxEntList: BoxEntity[] = makeEntitites(initBoxes, stateRef, setEntities);
-        var boxEntListOvrlp: BoxEntity[] = makeEntitites(splitBoxes, stateRef, setEntities, 0xff0000);
-
-        setEntities([...boxEntList, ...boxEntListOvrlp]);
-    }
+    var boxSplitHelpers = splitBoxes.map((box: any, id: number) => {
+        const boxEnt = {
+            box: box,
+            selected: false,
+        }
+        return <BoxEntityCtrlHlp boxEnt={boxEnt} boxStyle={SplitBoxesStyle} />
+    })
 
     return (<>
         <Helpers size={128} />
-        <BoxListHlp boxEntities={entities} selectMode={BOX_SELECT_MODES.ALLORNOT} />
+        {boxHelpers}
+        {boxSplitHelpers}
     </>)
 }
 
@@ -66,7 +62,7 @@ const TestCase = () => {
     var box2 = new Box3(min, max);
 
     var splitBoxes = BoxSplitter.split(box1, [box2.clone().intersect(box1)]);
-   
+
     return (<TestBase initBoxes={[box1, box2]} splitBoxes={splitBoxes} />)
 }
 
@@ -88,7 +84,7 @@ const TestCase2 = () => {
 }
 
 /**
- * Box inclusion: 1 box contained in another
+ * Box inclusion: 1 box inside another
  */
 const TestCase3 = () => {
     var min; var max;

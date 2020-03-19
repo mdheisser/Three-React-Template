@@ -4,10 +4,7 @@ import { useFrame, extend, useThree, Canvas } from "react-three-fiber";
 import * as THREE from "three";
 import { OrbitControls } from "three/examples/jsm/controls/OrbitControls";
 import { TransformControls } from "three/examples/jsm/controls/TransformControls";
-import BoxListHlp, { BoxEntity } from "../components/Helpers/BoxListHlp";
-import { Box3, Vector3, Matrix4 } from "three";
 import { useSampleStates } from "../common/SampleStates";
-import { inherits } from "util";
 
 declare global {
     // eslint-disable-next-line @typescript-eslint/no-namespace
