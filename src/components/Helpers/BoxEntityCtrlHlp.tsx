@@ -8,20 +8,15 @@ import { Box3, Vector3, Matrix4, Color } from "three";
 import { useSampleStates } from "../../common/SampleStates";
 
 export type BoxStyle = {
-  color: Color,
+  color: string,
   alpha: number,
-  ghostColor: Color,
+  ghostColor: string,
   ghostAlpha: number
 }
 
 export type BoxEntity = {
   box: Box3,
-  selected: Boolean,
-  style: { // custom style
-    default: BoxStyle,
-    selected: BoxStyle
-    hovered: BoxStyle
-  }
+  selected: Boolean
 }
 
 export enum BOX_SELECT_MODES {
@@ -39,8 +34,8 @@ const defaultStyle = {
     ghostColor: 'white',
     ghostAlpha: 0
   },
-  hovered: {
-    color: 'white',
+  hovered: {            // only affects unselected box
+    color: 'white',   // seems to have no impact
     alpha: 0.5,
     ghostColor: 'brown',
     ghostAlpha: 0.2
@@ -53,7 +48,8 @@ const defaultStyle = {
   }
 }
 
-export const BoxEntityCtrlHlp = ({ boxEnt, onClick, onChange, boxStyle=defaultStyle }: { boxEnt: BoxEntity, onClick: any, onChange: any, boxStyle?: any }) => {
+export const BoxEntityCtrlHlp = ({ boxEnt, onClick = () => { }, onChange = () => { }, boxStyle = defaultStyle }:
+  { boxEnt: BoxEntity, onClick?: any, onChange?: any, boxStyle?: any }) => {
   const [isHovered, setIsHovered] = useState(false);
   const boxRef: any = useRef();
   const ghostRef: any = useRef();
@@ -63,7 +59,8 @@ export const BoxEntityCtrlHlp = ({ boxEnt, onClick, onChange, boxStyle=defaultSt
   const boxCenter: any = new Vector3()
   boxEnt.box.getCenter(boxCenter);
 
-  var style = boxEnt.style ? Object.assign(boxStyle, boxEnt.style) : boxStyle;
+  var style = {...defaultStyle};
+  Object.assign(style, boxStyle); // fill missing custom style properties if any
 
   // color
   const color = boxEnt.selected ? style.selected.color : style.default.color;
@@ -80,15 +77,17 @@ export const BoxEntityCtrlHlp = ({ boxEnt, onClick, onChange, boxStyle=defaultSt
     [isHovered]
   );
 
+  var inputCtrl: any = useRef();
   useEffect(() => {
+    inputCtrl.current = boxEnt.selected ? <InputCtrl /*ref={ghostRef}*/ onChange={onChange} object={ghostRef.current} /> : "";
     boxRef.current.setFromObject(ghostRef.current);
   })
 
-  const inputCtrl = boxEnt.selected ? <InputCtrl /*ref={ghostRef}*/ onChange={onChange} object={ghostRef.current} /> : "";
+
 
   return (
     <>
-      {inputCtrl}
+      {inputCtrl.current}
       <boxHelper ref={boxRef} >
         <lineBasicMaterial attach='material' color={new Color(color)} transparent opacity={alpha} />
       </boxHelper>
@@ -115,10 +114,10 @@ export const BoxEntityCtrlHlp = ({ boxEnt, onClick, onChange, boxStyle=defaultSt
 
 const InputCtrl =
   // React.forwardRef(({ onChange, object }, objectRef) => {
-  ({ onChange, object }) => {
+  ({ onChange, object }: any) => {
     const { transfCtrl } = useSampleStates();
 
-    const onMove = (event) => {
+    const onMove = (event: any) => {
       onChange(event.target.object.matrix)
     }
 
