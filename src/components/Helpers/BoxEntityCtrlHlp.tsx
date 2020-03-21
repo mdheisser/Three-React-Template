@@ -34,7 +34,7 @@ const defaultStyle = {
     ghostAlpha: 0
   },
   hovered: {            // only affects unselected box
-    color: 'white',   // seems to have no impact
+    color: 'white',   // box color seems to have no impact here
     alpha: 0.5,
     ghostColor: 'brown',
     ghostAlpha: 0.2
@@ -49,16 +49,18 @@ const defaultStyle = {
 
 export const BoxEntityCtrlHlp = ({ boxEnt, onClick = () => { }, onChange = () => { }, boxStyle = defaultStyle }:
   { boxEnt: BoxEntity, onClick?: any, onChange?: any, boxStyle?: any }) => {
-  const [isHovered, setIsHovered] = useState(false);
+  const [isHovered, setIsHovered] = useState(true);
   const boxRef: any = useRef();
   const ghostRef: any = useRef();
+
+  // console.log(boxEnt)
 
   const boxDim: any = new Vector3()
   boxEnt.box.getSize(boxDim);
   const boxCenter: any = new Vector3()
   boxEnt.box.getCenter(boxCenter);
 
-  var style = {...defaultStyle};
+  var style = { ...defaultStyle };
   Object.assign(style, boxStyle); // fill missing custom style properties if any
 
   // color
@@ -69,22 +71,20 @@ export const BoxEntityCtrlHlp = ({ boxEnt, onClick = () => { }, onChange = () =>
 
   // Events
   const onHover = //useCallback(
-    (e:any, enabled: any) => {
+    (e: any, enabled: any) => {
       e.stopPropagation();
       setIsHovered(enabled);
     }//,[isHovered]);
 
-  var inputCtrl: any = useRef();
   useEffect(() => {
-    inputCtrl.current = boxEnt.selected ? <InputCtrl /*ref={ghostRef}*/ onChange={onChange} object={ghostRef.current} /> : "";
     boxRef.current.setFromObject(ghostRef.current);
   })
-
+  const inputCtrl = boxEnt.selected && ghostRef.current ? <InputCtrl /*ref={ghostRef}*/ onChange={onChange} object={ghostRef.current} /> : "";
 
 
   return (
     <>
-      {inputCtrl.current}
+      {inputCtrl}
       <boxHelper ref={boxRef} >
         <lineBasicMaterial attach='material' color={new Color(color)} transparent opacity={alpha} />
       </boxHelper>
@@ -130,7 +130,7 @@ const InputCtrl =
     useEffect(() => () => {
       console.log("detach controled object");
       transfCtrl.detach();
-      transfCtrl.removeEventListener('dragging-changed', onChange);
+      transfCtrl.removeEventListener('dragging-changed', onMove);
     }, []);
 
     return <></>
