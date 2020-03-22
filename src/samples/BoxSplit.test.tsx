@@ -4,7 +4,7 @@ import { BoxEntityCtrlHlp } from "../components/Helpers/BoxEntityCtrlHlp";
 import { Box3, Vector3 } from "three";
 import BasicTemplate from "./BasicTemplate";
 import { BoxSplitter } from "../components/Utils/BoxUtils";
-import { Helpers } from "./DemoFiber";
+import { Helpers } from "./BasicDemo";
 
 const OverlapBoxStyle = {
     default: {

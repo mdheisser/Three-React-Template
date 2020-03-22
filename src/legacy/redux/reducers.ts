@@ -1,6 +1,6 @@
 import { combineReducers } from 'redux'
 import { createReducer } from '@reduxjs/toolkit'
-import { CONTROL_TYPE } from '../legacy/constants';
+import { CONTROL_TYPE } from '../constants';
 
 const UiSettings = createReducer({
     showDbgCanvas: false,

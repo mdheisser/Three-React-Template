@@ -2,7 +2,7 @@ import React from 'react';
 import { render } from 'react-dom'
 import './index.css';
 import Root from './Root'
-import store from './redux/store'
+import store from './legacy/redux/store'
 import { WEBGL } from 'three/examples/jsm/WebGL.js';
 
 if (WEBGL.isWebGL2Available() === false) {

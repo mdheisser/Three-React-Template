@@ -1,7 +1,7 @@
 import { OrbitControls } from "three/examples/jsm/controls/OrbitControls";
 import { TransformControls } from "three/examples/jsm/controls/TransformControls";
 import { FlyControls } from "three/examples/jsm/controls/FlyControls";
-import store from '../redux/store';
+import store from './redux/store';
 import watch from 'redux-watch'
 import { CONTROL_TYPE } from "./constants";
 

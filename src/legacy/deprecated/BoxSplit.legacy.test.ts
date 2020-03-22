@@ -1,7 +1,7 @@
 import * as THREE from 'three'
 import { BoxSplitter } from '../../components/Utils/BoxUtils'
 import watch from 'redux-watch'
-import store from '../../redux/store'
+import store from '../redux/store'
 // import { BoxListHelper, AxeGridHelper } from '../../common/misc/Helpers';
 import Sample from '../Sample';
 import Engine from '../Engine';

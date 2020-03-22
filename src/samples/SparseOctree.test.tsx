@@ -1,7 +1,7 @@
 ///<reference path="../dts/misc-types-extend.d.ts" />
 import React from "react";
 import BasicTemplate from "./BasicTemplate";
-import { Helpers } from "./DemoFiber";
+import { Helpers } from "./BasicDemo";
 import { Points, TorusKnotBufferGeometry, PointsMaterial, Box3 } from "three";
 import { PointOctree } from "sparse-octree";
 import { OctreeHelper } from "octree-helper";
