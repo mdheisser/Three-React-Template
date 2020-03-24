@@ -1,9 +1,8 @@
 import React from 'react';
 import { render } from 'react-dom'
 import './index.css';
-import Root from './Root'
-import store from './legacy/redux/store'
 import { WEBGL } from 'three/examples/jsm/WebGL.js';
+import { App } from './App';
 
 if (WEBGL.isWebGL2Available() === false) {
 
@@ -11,7 +10,7 @@ if (WEBGL.isWebGL2Available() === false) {
 
 }
 
-render(<Root store={store} />, document.getElementById('root'));
+render(<App />, document.getElementById('root'));
 
 // import ReactDOM from 'react-dom';
 // import * as serviceWorker from './serviceWorker';

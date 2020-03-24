@@ -5,6 +5,7 @@ import * as THREE from "three";
 import { OrbitControls } from "three/examples/jsm/controls/OrbitControls";
 import { TransformControls } from "three/examples/jsm/controls/TransformControls";
 import { useSampleStates } from "../common/SampleStates";
+import InfoOverlay from "../components/UI/InfoOverlay";
 
 declare global {
     // eslint-disable-next-line @typescript-eslint/no-namespace
@@ -83,20 +84,30 @@ export const Lights = (props: any) => {
     </>)
 }
 
-export default ({ Sample }: { Sample: any }) => {
+export const UI = ({ sample }: any) => {
+
+    return (<>
+        <InfoOverlay sample={sample} />
+    </>)
+}
+
+export default ({ EntryPoint, sample }: any) => {
     // const ctrl: any = useRef();
     return (
-        <Canvas
-            gl2
-            camera={{ position: [100, 50, 100] }}
-        // onCreated={({ gl }) => ((gl.shadowMap.enabled = true), (gl.shadowMap.type = THREE.PCFSoftShadowMap))}>
-        >
-            <ambientLight intensity={2} />
-            <Wrapper />
-            <Lights />
-            <Controls />
-            <Sample />
-        </Canvas>
+        <>
+            <UI sample={sample} />
+            <Canvas
+                gl2
+                camera={{ position: [100, 50, 100] }}
+            // onCreated={({ gl }) => ((gl.shadowMap.enabled = true), (gl.shadowMap.type = THREE.PCFSoftShadowMap))}>
+            >
+                <ambientLight intensity={2} />
+                <Wrapper />
+                <Lights />
+                <Controls />
+                <EntryPoint />
+            </Canvas>
+        </>
     )
 };
 

@@ -4,7 +4,9 @@ import React, { useEffect, useRef } from 'react'
 import { Timeline } from "vis-timeline/esnext";
 import { DataSet } from 'vis-data'
 import 'vis-timeline/styles/vis-timeline-graph2d.min.css'
-export default ({ onTimeChange }: any) => {
+
+export default React.forwardRef(({ onTimeChange }: any, timelineRef: any) => {
+    // ({ onTimeChange }: any) => {
     const container: any = useRef();//document.getElementById('mytimeline');
 
     let items = new DataSet([
@@ -17,11 +19,11 @@ export default ({ onTimeChange }: any) => {
 
     const options = {
         start: 0,
-        end: 24 * 3600 * 1000,
+        end: 23 * 3600 * 1000,
         timeAxis: { scale: 'hour', step: 1 },
         min: 0,
-        max: 24 * 3600 * 1000,
-        zoomMin: 24 * 3600 * 1000,
+        max: 23 * 3600 * 1000,
+        zoomMin: 25 * 3600 * 1000,
         showMajorLabels: false,
         format: {
             minorLabels: {
@@ -31,12 +33,15 @@ export default ({ onTimeChange }: any) => {
     };
 
     useEffect(() => {
-        let timeline = new Timeline(container.current, items, options);
-        timeline.addCustomTime(3600 * 12, 't');
-        timeline.on('timechanged', onTimeChange);
-    });
+        timelineRef.current = new Timeline(container.current, items, options);
+        timelineRef.current.addCustomTime(0, 't');
+        timelineRef.current.on('timechanged', onTimeChange);
+        timelineRef.current.setCustomTime(11 * 3600 * 1000, 't');
+    }, []);
 
     return (
-        <div className="timeline"><div ref={container}></div></div>
+        <>
+            <div className="timeline"><div ref={container}></div></div>
+        </>
     )
-};
+});

@@ -1,13 +1,15 @@
 import React, { Suspense } from 'react';
 import {
   Link,
-  useLocation
+  useLocation,
+  BrowserRouter as Router,
+  Switch,
+  Route
 } from "react-router-dom";
 import './App.css';
 import * as Samples from "./samples";
-import { SampleProps } from './legacy/constants';
 
-const items: any = Object.entries(Samples)
+const sampleItems: any = Object.entries(Samples)
   .reduce((acc, [name, item]) => ({ ...acc, [name]: item }), {})
 
 // A custom hook that builds on useLocation to parse
@@ -16,9 +18,25 @@ function useQuery() {
   return new URLSearchParams(useLocation().search);
 }
 
-// type SamplesProps = { type: string }; /* could also use interface */
+
+export const App = () => {
+
+  return (<>
+    <Router>
+      {/* <Route path="/" component={App} /> */}
+      <Switch>
+        <Route exact path="/">
+          <WelcomePage />
+        </Route>
+        {/* <LoadSample sample={sample} /> */}
+        <Route exact path="/:sampleName" component={LoadSample} />
+        <Route path="/:sampleName/:id" component={LoadSample} />
+      </Switch>
+    </Router>
+  </>);
+}
+
 export const WelcomePage = ({ type }: any) => {
-  let sampleItems = items
 
   const getItemsList = (items: {}) => {
     return Object.keys(items).map((sampleName, i) => <li key={i.toString()}>
@@ -27,15 +45,16 @@ export const WelcomePage = ({ type }: any) => {
   };
   return (
     <div>
-      Welcome to ThreeSandbox! a playground for 3D projects <br/><br/>
-      <span>Sandbox contains the following samples:</span> <br/>
+      Welcome to ThreeSandbox! a playground for 3D projects <br /><br />
+      <span>Sandbox contains the following samples:</span> <br />
 
       <ul>{getItemsList(sampleItems)}</ul>
     </div>
   )
 };
 
-export const App = ({ props, match }: any) => {
+
+export const LoadSample = ({ match }: any) => {
   let query = useQuery();
   // let { id } = useParams();
   let id = query.get("id");
@@ -46,18 +65,7 @@ export const App = ({ props, match }: any) => {
     type: Number(query.get("type")),
     id: id,
   }
-
-  return (<>
-    <LoadSample sample={sample} />
-  </>);
-}
-
-const samples: any = Object.entries(Samples)
-  .reduce((acc, [name, item]) => ({ ...acc, [name]: item }), {})
-
-export const LoadSample = (props: SampleProps) => {
-  var sample = props.sample;
-  var item: any = samples[sample.name];
+  var item: any = sampleItems[sample.name];
   // const Component: any = (item.tags[0]===SAMPLE_TYPE.FIBER)? <item.Component/>: <DemoWrapper sampleComp={item.Component}></DemoWrapper>;
   const Sample = item.Component;
   sample.type = item.tags[0];

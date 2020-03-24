@@ -2,10 +2,7 @@
 import React, { useCallback } from "react";
 import { Canvas } from "react-three-fiber";
 import { Material, CATALOG } from "../resources/catalogs/Materials";
-import { SampleProps } from "../legacy/constants";
-import InfoOverlay from "../components/UI/InfoOverlay";
-import TimelineWidget from "../components/UI/TimelineWidget";
-import { Wrapper, Lights, Controls } from "./BasicTemplate";
+import { Wrapper, Lights, Controls, UI } from "./BasicTemplate";
 import { useSampleStates } from "../common/SampleStates";
 
 
@@ -32,7 +29,7 @@ const Static = () => {
     </>)
 }
 
-const Moveable = (props: any) => {
+const Moveable = () => {
     const { transfCtrl } = useSampleStates();
 
     const onClick = useCallback(
@@ -64,27 +61,7 @@ const Moveable = (props: any) => {
     </>)
 }
 
-
-
-const UI = ({ sample }: SampleProps) => {
-
-    const handleTimelineEvt = (data: any) => {
-        console.log(data);
-        // this.props.dispatch({
-        //     type: "TIMING", payload: {
-        //         hour: data.time.getHours(),
-        //         min: data.time.getMinutes()
-        //     }
-        // });
-    }
-
-    return (<>
-        <InfoOverlay sample={sample} />
-        <TimelineWidget className="timeline" onTimeChange={handleTimelineEvt} />
-    </>)
-}
-
-export default ({ sample }: SampleProps) => {
+export default ({ sample }: any) => {
 
     return (
         <>
@@ -96,7 +73,7 @@ export default ({ sample }: SampleProps) => {
                 <Wrapper />
                 <Lights />
                 <Helpers size={128} />
-                <Controls/>
+                <Controls />
                 <Static />
                 <Moveable />
             </Canvas>
