@@ -4,7 +4,8 @@ import {
   useLocation,
   BrowserRouter as Router,
   Switch,
-  Route
+  Route,
+  useParams
 } from "react-router-dom";
 import './App.css';
 import * as Samples from "./samples";
@@ -56,17 +57,14 @@ export const WelcomePage = ({ type }: any) => {
 
 export const LoadSample = ({ match }: any) => {
   let query = useQuery();
-  // let { id } = useParams();
-  let id = query.get("id");
-  id = id === undefined ? "default" : id;
-  console.log("Running sample " + id);
+  let { id } = useParams();
+  // let id = query.get("id");
   var sample = {
     name: match.params.sampleName,
     type: Number(query.get("type")),
     id: id,
   }
   var item: any = sampleItems[sample.name];
-  // const Component: any = (item.tags[0]===SAMPLE_TYPE.FIBER)? <item.Component/>: <DemoWrapper sampleComp={item.Component}></DemoWrapper>;
   const Sample = item.Component;
   sample.type = item.tags[0];
   return (

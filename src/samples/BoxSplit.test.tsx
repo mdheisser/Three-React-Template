@@ -2,9 +2,10 @@
 import React from "react";
 import { BoxEntityCtrlHlp } from "../components/Helpers/BoxEntityCtrlHlp";
 import { Box3, Vector3 } from "three";
-import BasicTemplate from "./BasicTemplate";
 import { BoxSplitter } from "../components/Utils/BoxUtils";
-import { Helpers } from "./BasicDemo";
+import { Helpers, Controls, Wrapper, Lights } from "./BasicDemo";
+import InfoOverlay from "../components/UI/InfoOverlay";
+import { Canvas } from "react-three-fiber";
 
 const OverlapBoxStyle = {
     default: {
@@ -42,16 +43,13 @@ const TestBase = ({ initBoxes, splitBoxes }: { initBoxes: Box3[], splitBoxes: Bo
     })
 
     return (<>
-        <Helpers size={128} />
         {boxHelpers}
         {boxSplitHelpers}
     </>)
 }
 
-/**
- * 2 separate boxes
- */
-const TestCase = () => {
+// TestCase #0
+const SeparateBoxes = () => {
 
     var min; var max;
 
@@ -66,10 +64,8 @@ const TestCase = () => {
     return (<TestBase initBoxes={[box1, box2]} splitBoxes={splitBoxes} />)
 }
 
-/**
- * 2 adjacent boxes
- */
-const TestCase2 = () => {
+// TestCase #1
+const AdjacentBoxes = () => {
     var min; var max;
 
     min = new Vector3(-30, 0, 0); max = new Vector3(15, 50, 50);
@@ -83,10 +79,8 @@ const TestCase2 = () => {
 
 }
 
-/**
- * Box inclusion: 1 box inside another
- */
-const TestCase3 = () => {
+// TestCase #2: one box inside another
+const BoxInclusion = () => {
     var min; var max;
 
     min = new Vector3(-92, -16, 36); max = new Vector3(-36, 80, 92);
@@ -100,9 +94,21 @@ const TestCase3 = () => {
 
 }
 
-const TestCases = [TestCase, TestCase2, TestCase3];
+const TestCases = [SeparateBoxes, AdjacentBoxes, BoxInclusion];
 
-
-export default ({ caseNb = 1 }) => {
-    return (<BasicTemplate Sample={TestCases[caseNb]} />)
+export default ({ sample }: any) => {
+    const caseNb = (sample.id !== undefined && sample.id !== null) ? sample.id : 0;
+    const TestCase = TestCases[caseNb];
+    return (
+        <>
+            <InfoOverlay sample={sample} testCases={TestCases} />
+            <Canvas camera={{ position: [100, 50, 100] }}>
+                <ambientLight intensity={2} />
+                <Wrapper />
+                <Helpers size={128} />
+                <Controls />
+                <TestCase />
+            </Canvas>
+        </>
+    )
 };

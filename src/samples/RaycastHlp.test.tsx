@@ -1,9 +1,11 @@
 ///<reference path="../dts/misc-types-extend.d.ts" />
 import React, { useRef, useEffect, useCallback, useState } from "react";
-import { useFrame, extend, useThree, Canvas } from "react-three-fiber";
+import { extend, Canvas } from "react-three-fiber";
 import RaycastHLP from '../components/Helpers/RaycastHlp'
 import { OrbitControls } from "three/examples/jsm/controls/OrbitControls";
 import { TransformControls } from "three/examples/jsm/controls/TransformControls";
+import InfoOverlay from "../components/UI/InfoOverlay";
+import { Controls } from "./BasicDemo";
 
 declare global {
     // eslint-disable-next-line @typescript-eslint/no-namespace
@@ -18,8 +20,8 @@ declare global {
 extend({ OrbitControls })
 extend({ TransformControls })
 
-// Cube
-const TestCase = () => {
+// TestCase #0
+const Cube = () => {
     var meshRef: any = useRef();
     const [raycasted, setRaycasted]: any = useState({});
 
@@ -51,15 +53,15 @@ const TestCase = () => {
         </>
     );
 }
-// Sphere
-const TestCase2 = () => {
+// TestCase #1
+const Sphere = () => {
     const [raycasted, setRaycasted] = useState({ index: null });
 
     const onHover = useCallback(
         (e, value) => {
             // e.stopPropagation();
             setRaycasted(e);
-        },[]);
+        }, []);
 
     return (
         <>
@@ -72,15 +74,15 @@ const TestCase2 = () => {
     );
 }
 
-// Plane
-const TestCase3 = () => {
+// TestCase #2
+const Plane = () => {
     const [raycasted, setRaycasted] = useState({ index: null });
 
     const onHover = useCallback(
         (e, value) => {
             e.stopPropagation();
             setRaycasted(e);
-        },[]);
+        }, []);
 
     return (
         <>
@@ -93,43 +95,19 @@ const TestCase3 = () => {
     );
 }
 
-const TestCases = [TestCase, TestCase2, TestCase3];
+const TestCases = [Cube, Sphere, Plane];
 
-const Controls = React.forwardRef(
-    (props, forwardRef: any) => {
-        const orbitRef: any = useRef()
-        const { camera, gl } = useThree()
-        useFrame(() => {
-            orbitRef.current.update();
-        })
-
-        useEffect(() => {
-            forwardRef.current.addEventListener('dragging-changed', (event: any) =>
-                orbitRef.current.enabled = !event.value);
-        });
-
-        return (
-            <>
-                <orbitControls ref={orbitRef} args={[camera, gl.domElement]} enableDamping dampingFactor={0.1} rotateSpeed={0.5} />
-                <transformControls ref={forwardRef} args={[camera, gl.domElement]} />
-            </>
-        )
-    });
-
-
-export default ({ caseNb = 0 }) => {
-    const ctrl: any = useRef();
+export default ({ sample }: any) => {
+    const caseNb = (sample.id !== undefined && sample.id !== null) ? sample.id : 0;
     const TestCase = TestCases[caseNb];
 
     return (
-        <Canvas
-            gl2
-            camera={{ position: [0, 20, 70] }}
-        // onCreated={({ gl }) => ((gl.shadowMap.enabled = true), (gl.shadowMap.type = THREE.PCFSoftShadowMap))}>
-        >
-            <ambientLight intensity={0.5} />
-            <Controls ref={ctrl} />
-            <TestCase />
-        </Canvas>
+        <>
+            <InfoOverlay sample={sample} testCases={TestCases} />
+            <Canvas gl2 camera={{ position: [50, 25, 50] }}>
+                <Controls />
+                <TestCase />
+            </Canvas>
+        </>
     )
 };

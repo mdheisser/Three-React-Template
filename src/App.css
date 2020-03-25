@@ -39,13 +39,13 @@
 }
 
 #info{
-  color: snow;
+  color: gray;
   position: absolute;
   top: 0;
   z-index: 2;
 }
 #timeinfo{
-  color: snow;
+  color: gray;
   position: absolute;
   /* top: 0; */
   top: 25px;

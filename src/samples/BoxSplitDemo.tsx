@@ -1,12 +1,13 @@
 ///<reference path="../dts/misc-types-extend.d.ts" />
 import React, { useState, useRef, useEffect, useMemo } from "react";
 import { Box3, Vector3, Matrix4 } from "three";
-import BasicTemplate from "./BasicTemplate";
 import { BoxSplitter } from "../components/Utils/BoxUtils";
-import { useFrame, useThree } from "react-three-fiber";
+import { useFrame, useThree, Canvas } from "react-three-fiber";
 import { BoxEntityCtrlHlp } from "../components/Helpers/BoxEntityCtrlHlp";
 import TimelineControl from "../components/UI/TimelineControl";
 import { useSampleStates } from "../common/SampleStates";
+import InfoOverlay from "../components/UI/InfoOverlay";
+import { Controls, Wrapper, Lights, Helpers } from "./BasicDemo";
 
 
 const StaticBoxStyle = {
@@ -133,7 +134,9 @@ const Main = () => {
         if (anim.current) {
             setTime(date);
         }
+    })
 
+    useEffect(() => {
         var mat = new Matrix4()
         const statBoxCenter = new Vector3(0, 0, 0);
         staticBox.getCenter(statBoxCenter);
@@ -145,7 +148,7 @@ const Main = () => {
             25 * (1 + Math.sin(2 * Math.PI * t / tmax) * 2),
             movBoxCenter.z);
         onMove(mat);
-    })
+    }, [time]);
 
     useEffect(() => {
         // Start/Stop animation
@@ -175,11 +178,14 @@ const Main = () => {
 
 
 export default ({ sample }: any) => {
-    // const ctrl: any = useRef();
     return (<>
         <AnimationWidget />
-        <BasicTemplate EntryPoint={Main} sample={sample} />
+        <InfoOverlay sample={sample} />
+        <Canvas camera={{ position: [100, 50, 100] }}>
+            <ambientLight intensity={0.5} />
+            <Wrapper />
+            <Controls />
+            <Main />
+        </Canvas>
     </>)
 };
-
-// export default DemoTemplate;
