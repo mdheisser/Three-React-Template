@@ -53,15 +53,13 @@ export const BoxEntityCtrlHlp = ({ boxEnt, onClick = () => { }, onChange = () =>
   const boxRef: any = useRef();
   const ghostRef: any = useRef();
 
-  // console.log(boxEnt)
-
   const boxDim: any = new Vector3()
   boxEnt.box.getSize(boxDim);
   const boxCenter: any = new Vector3()
   boxEnt.box.getCenter(boxCenter);
 
   var style = { ...defaultStyle };
-  Object.assign(style, boxStyle); // fill missing custom style properties if any
+  Object.assign(style, boxStyle); // fill missing custom style properties if provided
 
   // color
   const color = boxEnt.selected ? style.selected.color : style.default.color;
@@ -104,7 +102,6 @@ export const BoxEntityCtrlHlp = ({ boxEnt, onClick = () => { }, onChange = () =>
           opacity={ghostAlpha}
         />
       </mesh>
-      {/* </boxHelper> */}
     </>
   );
 };

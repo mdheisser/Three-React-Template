@@ -1,13 +1,12 @@
 ///<reference path="../dts/misc-types-extend.d.ts" />
-import React, { useState, useRef, useEffect, useMemo } from "react";
+import React, { useState, useRef, useEffect } from "react";
 import { Box3, Vector3, Matrix4 } from "three";
 import { BoxSplitter } from "../components/Utils/BoxUtils";
 import { useFrame, useThree, Canvas } from "react-three-fiber";
 import { BoxEntityCtrlHlp } from "../components/Helpers/BoxEntityCtrlHlp";
-import TimelineControl from "../components/UI/TimelineControl";
 import { useSampleStates } from "../common/SampleStates";
 import InfoOverlay from "../components/UI/InfoOverlay";
-import { Controls, Wrapper, Lights, Helpers } from "./BasicDemo";
+import { Controls, Wrapper } from "./BasicDemo";
 
 
 const StaticBoxStyle = {
@@ -60,34 +59,15 @@ const staticBox = new Box3(orig, dim);
 const movingBox = new Box3(orig2, orig2.clone().add(dim2));
 
 const AnimationWidget = () => {
-    const { time } = useSampleStates();
-    const { setTime } = useSampleStates();
-    const timelineRef: any = useRef();
-
-    // update time state from timeline
-    const handleTimelineEvt = (data: any) => {
-        // console.log(data);
-        setTime(data.time)
-    }
-    const timelineMem: any = useMemo(() => <TimelineControl ref={timelineRef} className="timeline" onTimeChange={handleTimelineEvt} />, []);
-
-    // update timeline from time state
-    if (timelineRef.current) {
-        // var current:Date = timelineRef.current.getCustomTime('t')
-        timelineRef.current.setCustomTime(time.custom, 't');
-    }
+    const { time, setTime } = useSampleStates();
 
     // init time state
     useEffect(() => {
-        // var current: Date = timelineRef.current.getCustomTime('t')
-        // current.setHours(1);
-        // timelineRef.current.setCustomTime(current, 't');
         setTime(new Date(0))
     }, [])
 
     return (<>
-        {time.custom ? <span id="timeinfo">Custom Time: {time.custom.toLocaleTimeString()} </span> : ""}
-        {timelineMem}
+        {time.custom ? <span id="timeinfo">Custom Time (SPACE key to toggle anim) {time.custom.toLocaleTimeString()}  </span> : ""}
     </>)
 }
 
