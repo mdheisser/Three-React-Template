@@ -1,0 +1,18 @@
+.overlay{
+    color: gray;
+    position: absolute;
+    z-index: 2;
+  }
+  
+  #info{
+    left: 0px;
+  }
+  
+  #timeinfo{
+    top: 25px;
+  }
+  
+  #caseSelector{
+    right:0px
+  }
+  

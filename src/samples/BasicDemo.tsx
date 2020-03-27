@@ -6,7 +6,7 @@ import { Material, CATALOG } from "../resources/catalogs/Materials";
 import { useSampleStates } from "../common/SampleStates";
 import { OrbitControls } from "three/examples/jsm/controls/OrbitControls";
 import { TransformControls } from "three/examples/jsm/controls/TransformControls";
-import InfoOverlay from "../components/UI/InfoOverlay";
+import { InfoOverlay } from "../components/UI/Overlay";
 
 declare global {
     // eslint-disable-next-line @typescript-eslint/no-namespace
@@ -50,7 +50,7 @@ export const Controls = () => {
     const transfCtrlRef: any = useRef()
 
     const { camera, gl } = useThree()
-    const { setTransfCtrl } = useSampleStates()
+    const setTransfCtrl = useSampleStates(state => state.setTransfCtrl)
 
     useFrame(() => {
         orbitRef.current.update();
@@ -108,7 +108,7 @@ const Static = () => {
 }
 
 const Moveable = () => {
-    const { transfCtrl } = useSampleStates();
+    const transfCtrl = useSampleStates(state => state.transfCtrl);
 
     const onClick = useCallback(
         e => {

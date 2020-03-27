@@ -4,8 +4,9 @@ import { BoxEntityCtrlHlp } from "../components/Helpers/BoxEntityCtrlHlp";
 import { Box3, Vector3 } from "three";
 import { BoxSplitter } from "../components/Utils/BoxUtils";
 import { Helpers, Controls, Wrapper, Lights } from "./BasicDemo";
-import InfoOverlay from "../components/UI/InfoOverlay";
+import { InfoOverlay, CaseSelector } from "../components/UI/Overlay";
 import { Canvas } from "react-three-fiber";
+import { useSampleStates } from "../common/SampleStates";
 
 const OverlapBoxStyle = {
     default: {
@@ -96,12 +97,14 @@ const BoxInclusion = () => {
 
 const TestCases = [SeparateBoxes, AdjacentBoxes, BoxInclusion];
 
-export default ({ sample }: any) => {
-    const caseNb = (sample.id !== undefined && sample.id !== null) ? sample.id : 0;
+export default (/*{ sample }: any*/) => {
+    const sample = useSampleStates(state => state.sample);   // get sample from states instead of from props to subscribe updates
+    const caseNb = (sample.caseNb !== undefined && sample.caseNb !== null && sample.caseNb !== "") ? sample.caseNb : 0;
     const TestCase = TestCases[caseNb];
     return (
         <>
-            <InfoOverlay sample={sample} testCases={TestCases} />
+            <InfoOverlay sample={sample} />
+            <CaseSelector sampleCases={TestCases} caseId={caseNb} />
             <Canvas camera={{ position: [100, 50, 100] }}>
                 <ambientLight intensity={2} />
                 <Wrapper />

@@ -1,4 +1,4 @@
-import React, { Suspense } from 'react';
+import React, { Suspense, useEffect } from 'react';
 import {
   Link,
   useLocation,
@@ -9,6 +9,7 @@ import {
 } from "react-router-dom";
 import './App.css';
 import * as Samples from "./samples";
+import { useSampleStates } from './common/SampleStates';
 
 const sampleItems: any = Object.entries(Samples)
   .reduce((acc, [name, item]) => ({ ...acc, [name]: item }), {})
@@ -19,7 +20,9 @@ function useQuery() {
   return new URLSearchParams(useLocation().search);
 }
 
-
+/**
+ * route to sample path and support sampleId
+ */
 export const App = () => {
 
   return (<>
@@ -37,7 +40,11 @@ export const App = () => {
   </>);
 }
 
-export const WelcomePage = ({ type }: any) => {
+/**
+ * List all availables samples in the sandbox
+ * @param param0 
+ */
+export const WelcomePage = () => {
 
   const getItemsList = (items: {}) => {
     return Object.keys(items).map((sampleName, i) => <li key={i.toString()}>
@@ -54,19 +61,28 @@ export const WelcomePage = ({ type }: any) => {
   )
 };
 
-
+/**
+ * Load a specific sample
+ * @param param0 
+ * export sample in states
+ */
 export const LoadSample = ({ match }: any) => {
-  let query = useQuery();
-  let { id } = useParams();
+  const setSample = useSampleStates(state => state.setSample);
+
+  // let query = useQuery();
   // let id = query.get("id");
+  let { id } = useParams();
   var sample = {
     name: match.params.sampleName,
-    type: Number(query.get("type")),
+    // type: Number(query.get("type")),
     id: id,
   }
+  // externalize sample in SampleStates
+  setSample(sample);
+
   var item: any = sampleItems[sample.name];
   const Sample = item.Component;
-  sample.type = item.tags[0];
+  // sample.type = item.tags[0];
   return (
     <Suspense fallback={null}>
       <Sample sample={sample} />

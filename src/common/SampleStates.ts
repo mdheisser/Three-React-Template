@@ -1,20 +1,19 @@
 import create from "zustand";
-import { stateContext } from "react-three-fiber";
+// import { stateContext } from "react-three-fiber";
 
-const [useSampleStates] = create(set => ({
+const [useSampleStates] = create((set, get) => ({
     sample: {
         name: "",
-        type: "",
-        id: ""
+        caseNb: ""
     },
     time: {
         custom: new Date()
     },
     transfCtrl: {
     },
-    setSample: (sample: any) => set(state => ({ ...state, sample: sample })),
-    setTime: (customTime: any) => { set(state => ({ ...state, time: { custom: customTime } })) },
-    setTransfCtrl: (ctrl: any) => set(state => ({ ...state, transfCtrl: ctrl }))
+    setSample: (props: any) => set({ ...get(), sample: {...(get().sample), ...props} }),
+    setTime: (customTime: any) => { set({ ...get(), time: { custom: customTime } }) },
+    setTransfCtrl: (ctrl: any) => set({ ...get(), transfCtrl: ctrl })
 }))
 
 export { useSampleStates };

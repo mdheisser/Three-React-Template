@@ -1,5 +1,18 @@
 {
   "name": "three-react-sandbox",
+  "author": {
+    "name": "Etienne Monget"
+  },
+  "homepage": "https://github.com/etienne1911/three-react-template",
+  "description": "A sandbox template for WebGL apps development using ThreeJS, React with R3F",
+  "keywords": [
+    "three",
+    "threejs",
+    "react",
+    "webgl",
+    "template"
+  ],
+  "license": "MIT",
   "version": "0.1.0",
   "private": true,
   "dependencies": {

@@ -75,7 +75,7 @@ export class BoxSplitter {
         // check inputs
         var notOverlapping = intersectBoxes.filter(overlapBox => !box.intersectsBox(overlapBox));
         if (notOverlapping.length) {
-            console.log("At least one non overlapping box has been found => abort");
+            console.log("NOT all boxes are overlapping => don't go further");
             return [];
         } else {
             var boxPtsArr = [box, ...intersectBoxes].map((box) => {

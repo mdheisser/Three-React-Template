@@ -5,7 +5,7 @@ import { BoxSplitter } from "../components/Utils/BoxUtils";
 import { useFrame, useThree, Canvas } from "react-three-fiber";
 import { BoxEntityCtrlHlp } from "../components/Helpers/BoxEntityCtrlHlp";
 import { useSampleStates } from "../common/SampleStates";
-import InfoOverlay from "../components/UI/InfoOverlay";
+import { InfoOverlay } from "../components/UI/Overlay";
 import { Controls, Wrapper } from "./BasicDemo";
 
 
@@ -59,7 +59,8 @@ const staticBox = new Box3(orig, dim);
 const movingBox = new Box3(orig2, orig2.clone().add(dim2));
 
 const AnimationWidget = () => {
-    const { time, setTime } = useSampleStates();
+    const time = useSampleStates(state => state.time);
+    const setTime = useSampleStates(state => state.setTime);
 
     // init time state
     useEffect(() => {
@@ -67,14 +68,14 @@ const AnimationWidget = () => {
     }, [])
 
     return (<>
-        {time.custom ? <span id="timeinfo">Custom Time (SPACE key to toggle anim) {time.custom.toLocaleTimeString()}  </span> : ""}
+        {time.custom ? <span className="overlay" id="timeinfo">Custom Time (SPACE key to toggle anim) {time.custom.toLocaleTimeString()}  </span> : ""}
     </>)
 }
 
 const Main = () => {
 
-    const { setTime } = useSampleStates();
-    const { time } = useSampleStates();
+    const time = useSampleStates(state => state.time);
+    const setTime = useSampleStates(state => state.setTime);
     // convert to minutes:
     const clk = useThree().clock;
     const anim = useRef(false);

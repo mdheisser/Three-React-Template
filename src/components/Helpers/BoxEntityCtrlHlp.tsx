@@ -109,7 +109,7 @@ export const BoxEntityCtrlHlp = ({ boxEnt, onClick = () => { }, onChange = () =>
 const InputCtrl =
   // React.forwardRef(({ onChange, object }, objectRef) => {
   ({ onChange, object }: any) => {
-    const { transfCtrl } = useSampleStates();
+    const transfCtrl = useSampleStates(state => state.transfCtrl);
 
     const onMove = (event: any) => {
       onChange(event.target.object.matrix)

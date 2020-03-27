@@ -4,8 +4,9 @@ import { extend, Canvas } from "react-three-fiber";
 import RaycastHLP from '../components/Helpers/RaycastHlp'
 import { OrbitControls } from "three/examples/jsm/controls/OrbitControls";
 import { TransformControls } from "three/examples/jsm/controls/TransformControls";
-import InfoOverlay from "../components/UI/InfoOverlay";
+import { InfoOverlay, CaseSelector } from "../components/UI/Overlay";
 import { Controls } from "./BasicDemo";
+import { useSampleStates } from "../common/SampleStates";
 
 declare global {
     // eslint-disable-next-line @typescript-eslint/no-namespace
@@ -97,13 +98,15 @@ const Plane = () => {
 
 const TestCases = [Cube, Sphere, Plane];
 
-export default ({ sample }: any) => {
-    const caseNb = (sample.id !== undefined && sample.id !== null) ? sample.id : 0;
+export default (/*{ sample }: any*/) => {
+    const sample = useSampleStates(state => state.sample);   // get sample from states instead of from props to subscribe updates
+    const caseNb = (sample.caseNb !== undefined && sample.caseNb !== null && sample.caseNb !== "") ? sample.caseNb : 0;
     const TestCase = TestCases[caseNb];
 
     return (
         <>
-            <InfoOverlay sample={sample} testCases={TestCases} />
+            <InfoOverlay sample={sample} />
+            <CaseSelector sampleCases={TestCases} caseId={caseNb} />
             <Canvas gl2 camera={{ position: [50, 25, 50] }}>
                 <Controls />
                 <TestCase />
