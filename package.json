@@ -3,7 +3,7 @@
   "author": {
     "name": "Etienne1911"
   },
-  "homepage": "https://github.com/etienne1911/three-react-template",
+  "homepage": "https://etienne1911.github.io/three-react-template/",
   "description": "A sandbox template for WebGL apps development using ThreeJS, React with R3F",
   "keywords": [
     "three",
@@ -24,6 +24,7 @@
     "@types/react": "^16.9.19",
     "@types/react-dom": "^16.9.5",
     "@types/react-router-dom": "^5.1.3",
+    "gh-pages": "^2.2.0",
     "react": "^16.12.0",
     "react-dom": "^16.12.0",
     "react-router-dom": "^5.1.2",
@@ -34,6 +35,8 @@
     "zustand": "^2.2.3"
   },
   "scripts": {
+    "predeploy": "npm run build",
+    "deploy": "gh-pages -d build",
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
