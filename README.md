@@ -1,4 +1,4 @@
-# ThreeReactSandbox
+# Three React Template/Sandbox
 A sandbox for webGL projects.
 
 This project aims to provide a template, code structure/organization, as well as a set of tools to ease WebGL apps development using Three.js and React.js.
@@ -6,8 +6,8 @@ This project aims to provide a template, code structure/organization, as well as
 Generated from create-react-app (react) and build on top of react-three-fiber library.
 
 ## Goals/features
-- provide a clean and structured way to write 3d web-app + organization of a threeJS project
-- ready to code approach: avoid boilerplate code at maximum
+- provide a clean and structured organization to code 3d web-app
+- ready to code: avoid boilerplate code at maximum
 - ease code reusability accross projects by sharing common components (helpers, UI,..), ressources (material catalog)
 - sandbox mode: list all projects currently worked on and enable switching between them easily
 - allowing data exchange between engine and components + UI through state store
