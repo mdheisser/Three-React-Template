@@ -6,7 +6,7 @@ This project aims to provide a template, code structure/organization, as well as
 Generated from create-react-app (react) and build on top of react-three-fiber library.
 
 ## Goals/features
-- provide a clean and structured organization to code 3d web-app
+- provide a clean way to code and structure/organize a 3d web-app
 - ready to code: avoid boilerplate code at maximum
 - ease code reusability accross projects by sharing common components (helpers, UI,..), ressources (material catalog)
 - sandbox mode: list all projects currently worked on and enable switching between them easily
