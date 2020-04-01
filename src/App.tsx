@@ -26,7 +26,7 @@ function useQuery() {
 export const App = () => {
 
   return (<>
-    <Router>
+    <Router basename="/three-react-template">
       {/* <Route path="/" component={App} /> */}
       <Switch>
         <Route exact path="/">
