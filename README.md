@@ -5,6 +5,8 @@ This project aims to provide a template, code structure/organization, as well as
 
 Generated from create-react-app (react) and build on top of react-three-fiber library.
 
+*[Live Demo](https://etienne1911.github.io/three-react-template/)*
+
 ## Goals/features
 - provide a clean way to code and structure/organize a 3d web-app
 - ready to code: avoid boilerplate code at maximum
