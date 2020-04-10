@@ -27,7 +27,7 @@ export default ({ sample }: any) => {
             <Wrapper />
             <Controls />
             <Suspense fallback={null}>
-                <Asset url="https://github.com/google/model-viewer/blob/master/packages/shared-assets/models/Astronaut.glb?raw=true" />
+                <Asset url={sample.assetUrl} />
             </Suspense>
         </Canvas>
     </>)

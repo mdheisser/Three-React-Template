@@ -69,13 +69,14 @@ export const WelcomePage = () => {
 export const LoadSample = ({ match }: any) => {
   const setSample = useSampleStates(state => state.setSample);
 
-  // let query = useQuery();
-  // let id = query.get("id");
+  let query = useQuery();
+  let assetUrl = query.get("asset_url");
   let { id } = useParams();
   var sample = {
     name: match.params.sampleName,
     // type: Number(query.get("type")),
     id: id,
+    assetUrl: assetUrl
   }
   // externalize sample in SampleStates
   setSample(sample);
