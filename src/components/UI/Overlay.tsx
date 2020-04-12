@@ -24,7 +24,7 @@ export const InfoOverlay = ({ sample }: { sample: any }) => {
 export const CaseSelector = ({ sampleCases, caseId }: { sampleCases: any, caseId: number }) => {
     const setSample = useSampleStates(state => state.setSample);
 
-    console.log("switch to case #" + caseId)
+    console.log("switch to case #" + sampleCases[caseId].name)
 
     return (<>
         <div className="overlay" id="caseSelector">
