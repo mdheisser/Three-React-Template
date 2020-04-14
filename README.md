@@ -1,23 +1,22 @@
-# Three React Template/Sandbox
-A sandbox for webGL projects.
+# Three React Template
+A template for webGL projects using Three.js and React.
 
-This project aims to provide a template, code structure/organization, as well as a set of tools to ease WebGL apps development using Three.js and React.js.
+This project aims to provide a code structure and a set of tools to ease WebGL apps development.
 
-Generated from create-react-app (react) and build on top of react-three-fiber library.
+Generated from create-react-app and built on top of react-three-fiber library.
 
-*[Live Demo](https://etienne1911.github.io/three-react-template/)*
+*[Live Demo](https://etienne1911.github.io/three-react-template/)&ensp;&middot;&ensp;[Sandbox](https://codesandbox.io/embed/github/etienne1911/three-react-template/tree/master/?fontsize=14&initialpath=three-react-template%2F&theme=dark&view=preview)*
 
 ## Goals/features
-- provide a clean way to code and structure/organize a 3d web-app
+- provide a clean way to code and organize a 3d web-app
 - ready to code: avoid boilerplate code at maximum
+- sandbox mode: list all projects currently worked on and switch easily between them
+- UI and 3D separation while enabling data exchange / instant update between engine, components and UI through state store
 - ease code reusability accross projects by sharing common components (helpers, UI,..), ressources (material catalog)
-- sandbox mode: list all projects currently worked on and enable switching between them easily
-- allowing data exchange between engine and components + UI through state store
-- decorelate UI and 3D for sake of code clarity while providing instant refresh/update
 
 ## Embedded libraries:
 - Three.js: webgl 3d graphics
-- React.js: UI and browser integration
+- React: UI and browser integration
 - React-Three-Fiber: ThreeJS integration with React
 - Typescript support
 - React Router(react-router-dom)
