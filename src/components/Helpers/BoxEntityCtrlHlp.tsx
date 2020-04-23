@@ -4,8 +4,7 @@ import React, {
   useEffect,
 } from "react";
 import { Box3, Vector3, Color } from "three";
-import { useSampleStates } from "../../common/SampleStates";
-import { useThree } from "react-three-fiber";
+import { MoveCtrl } from "../../samples/BasicDemo";
 
 export type BoxStyle = {
   color: string,
@@ -78,12 +77,11 @@ export const BoxEntityCtrlHlp = ({ boxEnt, onClick = () => { }, onChange = () =>
   useEffect(() => {
     boxRef.current.setFromObject(ghostRef.current);
   })
-  const inputCtrl = boxEnt.selected && ghostRef.current ? <InputCtrl /*ref={ghostRef}*/ onChange={onChange} object={ghostRef.current} /> : "";
+  const moveCtrl = boxEnt.selected && ghostRef.current ? <MoveCtrl /*ref={ghostRef}*/ onChange={onChange} object={ghostRef.current} /> : "";
 
 
   return (
     <>
-      {inputCtrl}
       <boxHelper ref={boxRef} >
         <lineBasicMaterial attach='material' color={new Color(color)} transparent opacity={alpha} />
       </boxHelper>
@@ -103,38 +101,7 @@ export const BoxEntityCtrlHlp = ({ boxEnt, onClick = () => { }, onChange = () =>
           opacity={ghostAlpha}
         />
       </mesh>
+      {moveCtrl}
     </>
   );
 };
-
-export const InputCtrl =
-  // React.forwardRef(({ onChange, object }, objectRef) => {
-  ({ onChange, object }: any) => {
-    const controls = useSampleStates(state => state.controls);
-    const transfCtrl: any = useRef();
-    const { camera, gl }: any = useThree();
-
-    const onMove = (event: any) => {
-      if (onChange)
-        onChange(event.target.object.matrix)
-    }
-
-    useEffect(() => {
-      // disable dragging for controls
-      transfCtrl.current.addEventListener('dragging-changed', (event: any) =>
-        controls.enabled = !event.value);
-      console.log("attach controled object");
-      transfCtrl.current.attach(object);
-      transfCtrl.current.addEventListener('dragging-changed', onMove);
-
-    }, []);
-
-    // cleanup effect hook
-    useEffect(() => () => {
-      console.log("detach controled object");
-      transfCtrl.detach();
-      transfCtrl.removeEventListener('dragging-changed', onMove);
-    }, []);
-
-    return <transformControls ref={transfCtrl} args={[camera, gl.domElement]} />
-  }//)
