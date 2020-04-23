@@ -30,7 +30,7 @@ export const CaseSelector = ({ sampleCases, caseId }: { sampleCases: any, caseId
         <div className="overlay" id="caseSelector">
             <select id="testCases" value={caseId} onChange={evt => setSample({ caseNb: evt.target.value })}>
                 {Object.keys(sampleCases).map((key) =>
-                    <option key={key} value={key}>{sampleCases[key].name}</option>
+                    <option key={key} value={key}>{sampleCases[key]}</option>
                 )}
             </select>
         </div>

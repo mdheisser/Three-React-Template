@@ -106,7 +106,7 @@ export default (/*{ sample }: any*/) => {
     return (
         <>
             <InfoOverlay sample={sample} />
-            <CaseSelector sampleCases={TestCases} caseId={caseNb} />
+            <CaseSelector sampleCases={TestCases.map(elt=>elt.name)} caseId={caseNb} />
             <Canvas gl2 camera={{ position: [50, 25, 50] }}>
                 <Controls />
                 <TestCase />

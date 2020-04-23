@@ -104,7 +104,7 @@ export default (/*{ sample }: any*/) => {
     return (
         <>
             <InfoOverlay sample={sample} />
-            <CaseSelector sampleCases={TestCases} caseId={caseNb} />
+            <CaseSelector sampleCases={TestCases.map(elt=>elt.name)} caseId={caseNb} />
             <Canvas camera={{ position: [100, 50, 100] }}>
                 <ambientLight intensity={2} />
                 <Wrapper />
