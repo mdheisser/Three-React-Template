@@ -1,7 +1,7 @@
 ///<reference path="../dts/misc-types-extend.d.ts" />
 import React, { useState, useRef, useEffect } from "react";
 import { Box3, Vector3, Matrix4 } from "three";
-import { BoxSplitter } from "../components/Utils/BoxUtils";
+import { BoxSplitter } from "../common/tools/BoxUtils";
 import { useFrame, useThree, Canvas } from "react-three-fiber";
 import { BoxEntityCtrlHlp } from "../components/Helpers/BoxEntityCtrlHlp";
 import { useSampleStates } from "../common/SampleStates";

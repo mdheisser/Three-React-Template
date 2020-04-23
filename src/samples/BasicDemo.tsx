@@ -1,5 +1,5 @@
 ///<reference path="../dts/misc-types-extend.d.ts" />
-import React, { useRef, useEffect, useCallback } from "react";
+import React, { useRef, useEffect, useCallback, useState } from "react";
 import * as THREE from "three";
 import { useFrame, extend, useThree, Canvas } from "react-three-fiber";
 import { Material, CATALOG } from "../resources/catalogs/Materials";
@@ -7,6 +7,7 @@ import { useSampleStates } from "../common/SampleStates";
 import { OrbitControls } from "three/examples/jsm/controls/OrbitControls";
 import { TransformControls } from "three/examples/jsm/controls/TransformControls";
 import { InfoOverlay } from "../components/UI/Overlay";
+import { InputCtrl } from "../components/Helpers/BoxEntityCtrlHlp";
 
 declare global {
     // eslint-disable-next-line @typescript-eslint/no-namespace
@@ -46,26 +47,23 @@ export const Wrapper = (props: any) => {
 }
 
 export const Controls = () => {
-    const orbitRef: any = useRef()
-    const transfCtrlRef: any = useRef()
+    const orbitRef: any = useRef();
 
-    const { camera, gl } = useThree()
-    const setTransfCtrl = useSampleStates(state => state.setTransfCtrl)
+    const { camera, gl }: any = useThree()
+    const setControls = useSampleStates(state => state.setControls)
 
     useFrame(() => {
         orbitRef.current.update();
     })
 
     useEffect(() => {
-        setTransfCtrl(transfCtrlRef.current);
-        transfCtrlRef.current.addEventListener('dragging-changed', (event: any) =>
-            orbitRef.current.enabled = !event.value);
+        setControls(orbitRef.current)
+
     }, []);
 
     return (
         <>
             <orbitControls ref={orbitRef} args={[camera, gl.domElement]} enableDamping dampingFactor={0.1} rotateSpeed={0.5} />
-            <transformControls ref={transfCtrlRef} args={[camera, gl.domElement]} />
         </>
     )
 };
@@ -108,34 +106,33 @@ const Static = () => {
 }
 
 const Moveable = () => {
-    const transfCtrl = useSampleStates(state => state.transfCtrl);
+    const [isSelected, setIsSelected] = useState(false);
+    const cubeRef: any = useRef();
 
     const onClick = useCallback(
         e => {
             e.stopPropagation();
-            transfCtrl.attach(e.object);
+            setIsSelected(true);
         },
-        [transfCtrl]
+        []
     );
 
-    var grp = [];
-
-    var cube = <mesh
-        // ref={mesh}
-        position={[0, 0, 0]}
-        castShadow
-        onClick={e => onClick(e)}
-    //   onPointerOver={e => onHover(e, true)}
-    //   onPointerOut={e => onHover(e, false)}
-    >
-        <boxBufferGeometry attach="geometry" args={[10, 10, 10]} />
-        <Material name={CATALOG.SAND} repeat={1} />
-    </mesh>
-
-    grp.push(cube);
+    // assign input control if object is selected
+    const inputCtrl = isSelected ? <InputCtrl /*ref={ghostRef}*/ onChange={null} object={cubeRef.current} /> : "";
 
     return (<>
-        <group>{grp}</group>;
+        {inputCtrl}
+        <mesh
+            ref={cubeRef}
+            position={[0, 0, 0]}
+            castShadow
+            onClick={e => onClick(e)}
+        //   onPointerOver={e => onHover(e, true)}
+        //   onPointerOut={e => onHover(e, false)}
+        >
+            <boxBufferGeometry attach="geometry" args={[10, 10, 10]} />
+            <Material name={CATALOG.SAND} repeat={1} />
+        </mesh>
     </>)
 }
 

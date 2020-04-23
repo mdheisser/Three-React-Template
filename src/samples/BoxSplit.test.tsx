@@ -2,7 +2,7 @@
 import React from "react";
 import { BoxEntityCtrlHlp } from "../components/Helpers/BoxEntityCtrlHlp";
 import { Box3, Vector3 } from "three";
-import { BoxSplitter } from "../components/Utils/BoxUtils";
+import { BoxSplitter } from "../common/tools/BoxUtils";
 import { Helpers, Controls, Wrapper, Lights } from "./BasicDemo";
 import { InfoOverlay, CaseSelector } from "../components/UI/Overlay";
 import { Canvas } from "react-three-fiber";

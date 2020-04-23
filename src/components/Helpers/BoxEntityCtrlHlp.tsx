@@ -5,6 +5,7 @@ import React, {
 } from "react";
 import { Box3, Vector3, Color } from "three";
 import { useSampleStates } from "../../common/SampleStates";
+import { useThree } from "react-three-fiber";
 
 export type BoxStyle = {
   color: string,
@@ -106,22 +107,27 @@ export const BoxEntityCtrlHlp = ({ boxEnt, onClick = () => { }, onChange = () =>
   );
 };
 
-const InputCtrl =
+export const InputCtrl =
   // React.forwardRef(({ onChange, object }, objectRef) => {
   ({ onChange, object }: any) => {
-    const transfCtrl = useSampleStates(state => state.transfCtrl);
+    const controls = useSampleStates(state => state.controls);
+    const transfCtrl: any = useRef();
+    const { camera, gl }: any = useThree();
 
     const onMove = (event: any) => {
-      onChange(event.target.object.matrix)
+      if (onChange)
+        onChange(event.target.object.matrix)
     }
 
     useEffect(() => {
-      if (transfCtrl.enabled) {
-        console.log("attach controled object");
-        transfCtrl.attach(object);
-        transfCtrl.addEventListener('dragging-changed', onMove);
-      }
-    }, [transfCtrl]);
+      // disable dragging for controls
+      transfCtrl.current.addEventListener('dragging-changed', (event: any) =>
+        controls.enabled = !event.value);
+      console.log("attach controled object");
+      transfCtrl.current.attach(object);
+      transfCtrl.current.addEventListener('dragging-changed', onMove);
+
+    }, []);
 
     // cleanup effect hook
     useEffect(() => () => {
@@ -130,5 +136,5 @@ const InputCtrl =
       transfCtrl.removeEventListener('dragging-changed', onMove);
     }, []);
 
-    return <></>
+    return <transformControls ref={transfCtrl} args={[camera, gl.domElement]} />
   }//)
