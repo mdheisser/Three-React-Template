@@ -15,4 +15,29 @@
   #caseSelector{
     right:0px
   }
+
+  .centered{
+    width: 100%;
+    text-align: center;
+  }
+
+  #assetURL{
+    width: 50%;
+    opacity: 0.4;
+    width: auto;
+    min-width: 25%;
+    max-width: 50%;
+  }
+
+  #assetURL:hover{
+    opacity: 0.7;
+  }
+
+  .inputBtn{
+    opacity: 0.6;
+  }
+
+  .inputBtn:hover{
+    opacity: 0.9;
+  }
   

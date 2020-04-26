@@ -4,7 +4,8 @@ import create from "zustand";
 const [useSampleStates] = create((set, get) => ({
     sample: {
         name: "",
-        caseNb: ""
+        case: "",
+        arg: ""
     },
     time: {
         custom: new Date()

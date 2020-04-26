@@ -33,8 +33,8 @@ export const App = () => {
           <WelcomePage />
         </Route>
         {/* <LoadSample sample={sample} /> */}
-        <Route exact path="/:sampleName" component={LoadSample} />
-        <Route path="/:sampleName/:id" component={LoadSample} />
+        <Route exact path="/:sample" component={LoadSample} />
+        <Route path="/:sample/:caseId" component={LoadSample} />
       </Switch>
     </Router>
   </>);
@@ -70,15 +70,15 @@ export const LoadSample = ({ match }: any) => {
   const setSample = useSampleStates(state => state.setSample);
 
   let query = useQuery();
-  let assetUrl = query.get("asset_url");
-  let { id } = useParams();
+  let urlArg = query.get("sampArg");
+  let { caseId } = useParams();
   var sample = {
-    name: match.params.sampleName,
+    name: match.params.sample,
     // type: Number(query.get("type")),
-    id: id,
-    assetUrl: assetUrl
+    case: caseId,
+    arg: urlArg
   }
-  // externalize sample in SampleStates
+  // externalize to Sample States
   setSample(sample);
 
   var item: any = sampleItems[sample.name];

@@ -27,8 +27,8 @@ export const CaseSelector = ({ sampleCases, caseId }: { sampleCases: any, caseId
     console.log("switch to case #" + sampleCases[caseId])
 
     return (<>
-        <div className="overlay" id="caseSelector">
-            <select id="testCases" value={caseId} onChange={evt => setSample({ caseNb: evt.target.value })}>
+        <div className="overlay inputBtn" id="caseSelector">
+            <select id="testCases" value={caseId} onChange={evt => setSample({ case: evt.target.value })}>
                 {Object.keys(sampleCases).map((key) =>
                     <option key={key} value={key}>{sampleCases[key]}</option>
                 )}
