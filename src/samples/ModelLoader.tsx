@@ -26,9 +26,9 @@ const Asset = ({ url }: { url: string }) => {
     return <primitive object={gltf.scene} dispose={null} />
 }
 
-const CustomUrl = ({ initUrl, onSubmitUrl }: any) => {
+const CustomUrl = ({ onSubmitUrl }: any) => {
     // enter an asset url here (local or external)
-    const [url, setUrl] = useState(initUrl);
+    const [url, setUrl] = useState("");
     const handleChange = (event: any) => {
         setUrl(event.target.value);
     }
@@ -89,7 +89,7 @@ export default ({ sample }: any) => {
 
     return (<>
         <InfoOverlay sample={sample} />
-        {currCase === 0 && !sample.arg ? <CustomUrl initUrl={assetUrl} onSubmitUrl={onAssetUrlChange} /> : ""}
+        {currCase === 0 && !sample.arg ? <CustomUrl onSubmitUrl={onAssetUrlChange} /> : ""}
         {!sample.arg ? <CaseSelector items={ALL_CASES} current={currCase} onSelect={onCaseChange} /> : ""}
         <Canvas camera={{ position: [100, 50, 100] }}>
             <ambientLight intensity={2} />
