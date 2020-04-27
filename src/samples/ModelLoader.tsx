@@ -49,14 +49,13 @@ const CustomUrl = ({ initUrl, onSubmitUrl }: any) => {
     </>)
 }
 
-const DEFAULT_CUSTOM_ASSET_URL = "https://raw.githubusercontent.com/KhronosGroup/glTF-Sample-Models/master/2.0/Avocado/glTF/Avocado.gltf";
 const MODELS: any = Models;
 const ALL_CASES = ["...custom", ...Object.keys(MODELS)];
 
 
 export default ({ sample }: any) => {
 
-    const [assetUrl, setAssetUrl] = useState(DEFAULT_CUSTOM_ASSET_URL);
+    const [assetUrl, setAssetUrl] = useState("");
     const [currCase, setCurrCase] = useState(1);
 
     // const sample = useSampleStates(state => state.sample);   // get sample from global states instead of from props to subscribe updates
@@ -72,7 +71,8 @@ export default ({ sample }: any) => {
 
     useEffect(() => {
         const caseName: any = ALL_CASES[currCase];
-        setAssetUrl(currCase > 0 ? MODELS[caseName] : sample.arg ? sample.arg : assetUrl);
+        const url = currCase > 0 ? MODELS[caseName] : sample.arg ? sample.arg : assetUrl;
+        setAssetUrl(url);
     }, [currCase]);
 
     useEffect(() => {
@@ -87,11 +87,10 @@ export default ({ sample }: any) => {
 
     }, [])
 
-    const custUrlInput = currCase > 0 ? "" : <CustomUrl initUrl={assetUrl} onSubmitUrl={onAssetUrlChange} />
     return (<>
         <InfoOverlay sample={sample} />
-        {custUrlInput}
-        <CaseSelector items={ALL_CASES} current={currCase} onSelect={onCaseChange} />
+        {currCase === 0 && !sample.arg ? <CustomUrl initUrl={assetUrl} onSubmitUrl={onAssetUrlChange} /> : ""}
+        {!sample.arg ? <CaseSelector items={ALL_CASES} current={currCase} onSelect={onCaseChange} /> : ""}
         <Canvas camera={{ position: [100, 50, 100] }}>
             <ambientLight intensity={2} />
             <Helpers size={128} />
