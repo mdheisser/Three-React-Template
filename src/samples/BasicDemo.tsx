@@ -3,10 +3,10 @@ import React, { useRef, useEffect, useCallback, useState, useMemo } from "react"
 import * as THREE from "three";
 import { useFrame, extend, useThree, Canvas } from "react-three-fiber";
 import { Material, CATALOG } from "../resources/catalogs/Materials";
-import { useSampleStates } from "../common/SampleStates";
+import { useSampleStates } from "../common/states";
 import { OrbitControls } from "three/examples/jsm/controls/OrbitControls";
 import { TransformControls } from "three/examples/jsm/controls/TransformControls";
-import { InfoOverlay } from "../components/UI/Overlay";
+import { InfoOverlay } from "../modules/UI/Overlay";
 
 declare global {
     // eslint-disable-next-line @typescript-eslint/no-namespace

@@ -1,12 +1,12 @@
 ///<reference path="../dts/misc-types-extend.d.ts" />
 import React, { useRef, useEffect, useCallback, useState } from "react";
 import { extend, Canvas } from "react-three-fiber";
-import RaycastHLP from '../components/Helpers/RaycastHlp'
+import RaycastHLP from '../modules/helpers/RaycastHlp'
 import { OrbitControls } from "three/examples/jsm/controls/OrbitControls";
 import { TransformControls } from "three/examples/jsm/controls/TransformControls";
-import { InfoOverlay, CaseSelector } from "../components/UI/Overlay";
+import { InfoOverlay, CaseSelector } from "../modules/UI/Overlay";
 import { Controls } from "./BasicDemo";
-import { useSampleStates } from "../common/SampleStates";
+import { useSampleStates } from "../common/states";
 
 declare global {
     // eslint-disable-next-line @typescript-eslint/no-namespace

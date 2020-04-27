@@ -9,7 +9,7 @@ import {
 } from "react-router-dom";
 import './App.css';
 import * as Samples from "./samples";
-import { useSampleStates } from './common/SampleStates';
+// import { useSampleStates } from './common/states';
 
 const sampleItems: any = Object.entries(Samples)
   .reduce((acc, [name, item]) => ({ ...acc, [name]: item }), {})
@@ -67,7 +67,7 @@ export const WelcomePage = () => {
  * export sample in states
  */
 export const LoadSample = ({ match }: any) => {
-  const setSample = useSampleStates(state => state.setSample);
+  // const setSample = useSampleStates(state => state.setSample);
 
   let query = useQuery();
   let urlArg = query.get("sampArg");
@@ -78,8 +78,8 @@ export const LoadSample = ({ match }: any) => {
     case: caseId,
     arg: urlArg
   }
-  // externalize to Sample States
-  setSample(sample);
+  
+  // setSample(sample); // externalize to Sample States
 
   var item: any = sampleItems[sample.name];
   const Sample = item.Component;

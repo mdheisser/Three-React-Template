@@ -1,11 +1,11 @@
 ///<reference path="../dts/misc-types-extend.d.ts" />
 import React, { useState, useRef, useEffect } from "react";
 import { Box3, Vector3, Matrix4 } from "three";
-import { BoxSplitter } from "../common/tools/BoxUtils";
+import { BoxSplitter } from "../modules/tools/BoxUtils";
 import { useFrame, useThree, Canvas } from "react-three-fiber";
-import { BoxEntityCtrlHlp } from "../components/Helpers/BoxEntityCtrlHlp";
-import { useSampleStates } from "../common/SampleStates";
-import { InfoOverlay } from "../components/UI/Overlay";
+import { BoxEntityCtrlHlp } from "../modules/helpers/BoxEntityCtrlHlp";
+import { useSampleStates } from "../common/states";
+import { InfoOverlay } from "../modules/UI/Overlay";
 import { Controls, Wrapper } from "./BasicDemo";
 
 

@@ -1,12 +1,12 @@
 ///<reference path="../dts/misc-types-extend.d.ts" />
 import React from "react";
-import { BoxEntityCtrlHlp } from "../components/Helpers/BoxEntityCtrlHlp";
+import { BoxEntityCtrlHlp } from "../modules/helpers/BoxEntityCtrlHlp";
 import { Box3, Vector3 } from "three";
-import { BoxSplitter } from "../common/tools/BoxUtils";
+import { BoxSplitter } from "../modules/tools/BoxUtils";
 import { Helpers, Controls, Wrapper, Lights } from "./BasicDemo";
-import { InfoOverlay, CaseSelector } from "../components/UI/Overlay";
+import { InfoOverlay, CaseSelector } from "../modules/UI/Overlay";
 import { Canvas } from "react-three-fiber";
-import { useSampleStates } from "../common/SampleStates";
+import { useSampleStates } from "../common/states";
 
 const OverlapBoxStyle = {
     default: {
