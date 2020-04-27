@@ -1,12 +1,12 @@
 ///<reference path="../dts/misc-types-extend.d.ts" />
-import React from "react";
-import { BoxEntityCtrlHlp } from "../components/Helpers/BoxEntityCtrlHlp";
+import React, { useEffect, useState } from "react";
+import { BoxEntityCtrlHlp } from "../modules/helpers/BoxEntityCtrlHlp";
 import { Box3, Vector3 } from "three";
-import { BoxSplitter } from "../components/Utils/BoxUtils";
+import { BoxSplitter } from "../modules/tools/BoxUtils";
 import { Helpers, Controls, Wrapper, Lights } from "./BasicDemo";
-import { InfoOverlay, CaseSelector } from "../components/UI/Overlay";
+import { InfoOverlay, CaseSelector } from "../modules/UI/Overlay";
 import { Canvas } from "react-three-fiber";
-import { useSampleStates } from "../common/SampleStates";
+import { useSampleStates } from "../common/states";
 
 const OverlapBoxStyle = {
     default: {
@@ -97,14 +97,26 @@ const BoxInclusion = () => {
 
 const TestCases = [SeparateBoxes, AdjacentBoxes, BoxInclusion];
 
-export default (/*{ sample }: any*/) => {
-    const sample = useSampleStates(state => state.sample);   // get sample from states instead of from props to subscribe updates
-    const caseNb = (sample.caseNb !== undefined && sample.caseNb !== null && sample.caseNb !== "") ? sample.caseNb : 0;
-    const TestCase = TestCases[caseNb];
+export default ({ sample }: any) => {
+    const [currCase, setCurrCase] = useState(0);
+
+    const onCaseChange = (caseId: any) => {
+        console.log("switch case to: " + caseId);
+        setCurrCase(parseInt(caseId));
+    }
+
+    useEffect(() => {
+        // check if custom case was provided
+        if (sample.case !== undefined && sample.case !== null && sample.case !== "") {
+            setCurrCase(sample.case);
+        }
+    }, [])
+
+    const TestCase = TestCases[currCase];
     return (
         <>
             <InfoOverlay sample={sample} />
-            <CaseSelector sampleCases={TestCases} caseId={caseNb} />
+            <CaseSelector items={TestCases.map(elt=>elt.name)} current={currCase}  onSelect={onCaseChange} />
             <Canvas camera={{ position: [100, 50, 100] }}>
                 <ambientLight intensity={2} />
                 <Wrapper />

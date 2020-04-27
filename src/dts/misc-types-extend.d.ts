@@ -12,3 +12,6 @@ declare module 'vis-timeline/esnext'
 declare module 'sparse-octree';
 declare module 'octree-helper';
 declare module 'math-ds';
+
+declare module "*.glb"
+declare module "*.glf"

@@ -1,6 +1,7 @@
 import React from "react"
-import { useSampleStates } from "../../common/SampleStates";
+import { useSampleStates } from "../../common/states";
 import './UI.css'
+
 /**
  * An overlay to display basic information
  */
@@ -21,16 +22,14 @@ export const InfoOverlay = ({ sample }: { sample: any }) => {
  * @param param0 case options + current caseId
  * export sample.caseNb in states
  */
-export const CaseSelector = ({ sampleCases, caseId }: { sampleCases: any, caseId: number }) => {
-    const setSample = useSampleStates(state => state.setSample);
-
-    console.log("switch to case #" + caseId)
+export const CaseSelector = ({ items, current, onSelect}: { items: any, current: number, onSelect: any }) => {
+    // const setSample = useSampleStates(state => state.setSample);
 
     return (<>
-        <div className="overlay" id="caseSelector">
-            <select id="testCases" value={caseId} onChange={evt => setSample({ caseNb: evt.target.value })}>
-                {Object.keys(sampleCases).map((key) =>
-                    <option key={key} value={key}>{sampleCases[key].name}</option>
+        <div className="overlay inputBtn" id="caseSelector">
+            <select id="testCases" value={current} onChange={evt => onSelect(evt.target.value)}>
+                {Object.keys(items).map((key) =>
+                    <option key={key} value={key}>{items[key]}</option>
                 )}
             </select>
         </div>

@@ -9,7 +9,7 @@ import {
 } from "react-router-dom";
 import './App.css';
 import * as Samples from "./samples";
-import { useSampleStates } from './common/SampleStates';
+// import { useSampleStates } from './common/states';
 
 const sampleItems: any = Object.entries(Samples)
   .reduce((acc, [name, item]) => ({ ...acc, [name]: item }), {})
@@ -33,8 +33,8 @@ export const App = () => {
           <WelcomePage />
         </Route>
         {/* <LoadSample sample={sample} /> */}
-        <Route exact path="/:sampleName" component={LoadSample} />
-        <Route path="/:sampleName/:id" component={LoadSample} />
+        <Route exact path="/:sample" component={LoadSample} />
+        <Route path="/:sample/:caseId" component={LoadSample} />
       </Switch>
     </Router>
   </>);
@@ -67,18 +67,19 @@ export const WelcomePage = () => {
  * export sample in states
  */
 export const LoadSample = ({ match }: any) => {
-  const setSample = useSampleStates(state => state.setSample);
+  // const setSample = useSampleStates(state => state.setSample);
 
-  // let query = useQuery();
-  // let id = query.get("id");
-  let { id } = useParams();
+  let query = useQuery();
+  let urlArg = query.get("sampArg");
+  let { caseId } = useParams();
   var sample = {
-    name: match.params.sampleName,
+    name: match.params.sample,
     // type: Number(query.get("type")),
-    id: id,
+    case: caseId,
+    arg: urlArg
   }
-  // externalize sample in SampleStates
-  setSample(sample);
+  
+  // setSample(sample); // externalize to Sample States
 
   var item: any = sampleItems[sample.name];
   const Sample = item.Component;

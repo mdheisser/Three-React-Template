@@ -1,12 +1,12 @@
 ///<reference path="../dts/misc-types-extend.d.ts" />
 import React, { useRef, useEffect, useCallback, useState } from "react";
 import { extend, Canvas } from "react-three-fiber";
-import RaycastHLP from '../components/Helpers/RaycastHlp'
+import RaycastHLP from '../modules/helpers/RaycastHlp'
 import { OrbitControls } from "three/examples/jsm/controls/OrbitControls";
 import { TransformControls } from "three/examples/jsm/controls/TransformControls";
-import { InfoOverlay, CaseSelector } from "../components/UI/Overlay";
+import { InfoOverlay, CaseSelector } from "../modules/UI/Overlay";
 import { Controls } from "./BasicDemo";
-import { useSampleStates } from "../common/SampleStates";
+import { useSampleStates } from "../common/states";
 
 declare global {
     // eslint-disable-next-line @typescript-eslint/no-namespace
@@ -98,15 +98,27 @@ const Plane = () => {
 
 const TestCases = [Cube, Sphere, Plane];
 
-export default (/*{ sample }: any*/) => {
-    const sample = useSampleStates(state => state.sample);   // get sample from states instead of from props to subscribe updates
-    const caseNb = (sample.caseNb !== undefined && sample.caseNb !== null && sample.caseNb !== "") ? sample.caseNb : 0;
-    const TestCase = TestCases[caseNb];
+export default ({ sample }: any) => {
+    const [currCase, setCurrCase] = useState(0);
+
+    const onCaseChange = (caseId: any) => {
+        console.log("switch case to: " + caseId);
+        setCurrCase(parseInt(caseId));
+    }
+
+    useEffect(() => {
+        // check if custom case was provided
+        if (sample.case !== undefined && sample.case !== null && sample.case !== "") {
+            setCurrCase(sample.case);
+        }
+    }, [])
+
+    const TestCase = TestCases[currCase];
 
     return (
         <>
             <InfoOverlay sample={sample} />
-            <CaseSelector sampleCases={TestCases} caseId={caseNb} />
+            <CaseSelector items={TestCases.map(elt=>elt.name)} current={currCase} onSelect={onCaseChange} />
             <Canvas gl2 camera={{ position: [50, 25, 50] }}>
                 <Controls />
                 <TestCase />

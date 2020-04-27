@@ -1,12 +1,12 @@
 ///<reference path="../dts/misc-types-extend.d.ts" />
-import React, { useRef, useEffect, useCallback } from "react";
+import React, { useRef, useEffect, useCallback, useState, useMemo } from "react";
 import * as THREE from "three";
 import { useFrame, extend, useThree, Canvas } from "react-three-fiber";
 import { Material, CATALOG } from "../resources/catalogs/Materials";
-import { useSampleStates } from "../common/SampleStates";
+import { useSampleStates } from "../common/states";
 import { OrbitControls } from "three/examples/jsm/controls/OrbitControls";
 import { TransformControls } from "three/examples/jsm/controls/TransformControls";
-import { InfoOverlay } from "../components/UI/Overlay";
+import { InfoOverlay } from "../modules/UI/Overlay";
 
 declare global {
     // eslint-disable-next-line @typescript-eslint/no-namespace
@@ -46,29 +46,59 @@ export const Wrapper = (props: any) => {
 }
 
 export const Controls = () => {
-    const orbitRef: any = useRef()
-    const transfCtrlRef: any = useRef()
+    const orbitRef: any = useRef();
 
-    const { camera, gl } = useThree()
-    const setTransfCtrl = useSampleStates(state => state.setTransfCtrl)
+    const { camera, gl }: any = useThree()
+    const setControls = useSampleStates(state => state.setControls)
 
     useFrame(() => {
         orbitRef.current.update();
     })
 
     useEffect(() => {
-        setTransfCtrl(transfCtrlRef.current);
-        transfCtrlRef.current.addEventListener('dragging-changed', (event: any) =>
-            orbitRef.current.enabled = !event.value);
+        setControls(orbitRef.current)
+
     }, []);
 
     return (
         <>
             <orbitControls ref={orbitRef} args={[camera, gl.domElement]} enableDamping dampingFactor={0.1} rotateSpeed={0.5} />
-            <transformControls ref={transfCtrlRef} args={[camera, gl.domElement]} />
         </>
     )
 };
+
+export const MoveCtrl =
+    // React.forwardRef(({ onChange, object }, objectRef) => {
+    ({ onChange, object }: any) => {
+        const controls = useSampleStates(state => state.controls);
+        const transfCtrl: any = useRef();
+        const { camera, gl }: any = useThree();
+
+        const onMove = (event: any) => {
+            if (onChange)
+                onChange(event.target.object.matrix)
+        }
+
+        useEffect(() => {
+            // disable dragging for main controls
+            transfCtrl.current.addEventListener('dragging-changed', (event: any) =>
+                controls.enabled = !event.value);
+            console.log("attach controled object");
+            transfCtrl.current.attach(object);
+            transfCtrl.current.addEventListener('dragging-changed', onMove);
+
+        }, []);
+
+        // cleanup effect hook
+        useEffect(() => () => {
+            console.log("detach controled object");
+            transfCtrl.current.detach();
+            transfCtrl.current.removeEventListener('dragging-changed', onMove);
+        }, []);
+
+        return <transformControls ref={transfCtrl} args={[camera, gl.domElement]} />
+    }//)
+
 
 export const Lights = (props: any) => {
     const lt: any = useRef();
@@ -108,20 +138,22 @@ const Static = () => {
 }
 
 const Moveable = () => {
-    const transfCtrl = useSampleStates(state => state.transfCtrl);
+    const [isSelected, setIsSelected] = useState(false);
+    const isSelectedRef: any = useRef();
+    const cubeRef: any = useRef();
 
     const onClick = useCallback(
         e => {
             e.stopPropagation();
-            transfCtrl.attach(e.object);
+            setIsSelected(!isSelectedRef.current);
         },
-        [transfCtrl]
+        []
     );
 
-    var grp = [];
+    useEffect(() => { isSelectedRef.current = isSelected });
 
-    var cube = <mesh
-        // ref={mesh}
+    const cubeMesh = useMemo(() => <mesh
+        ref={cubeRef}
         position={[0, 0, 0]}
         castShadow
         onClick={e => onClick(e)}
@@ -130,12 +162,14 @@ const Moveable = () => {
     >
         <boxBufferGeometry attach="geometry" args={[10, 10, 10]} />
         <Material name={CATALOG.SAND} repeat={1} />
-    </mesh>
+    </mesh>, [])
 
-    grp.push(cube);
+    // assign move control if object is selected
+    const moveCtrl = isSelected ? <MoveCtrl onChange={null} object={cubeRef.current} /> : "";
 
     return (<>
-        <group>{grp}</group>;
+        {cubeMesh}
+        {moveCtrl}
     </>)
 }
 
