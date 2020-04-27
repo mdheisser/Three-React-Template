@@ -1,11 +1,15 @@
 ///<reference path="../../dts/misc-types-extend.d.ts" />
-// INTERNAL RESOURCES
+
+// Internal
 import astronaut from '../assets/models/Astronaut.glf';
-import flamingo from '../assets/models/Flamingo.glb';
 import horse from '../assets/models/Horse.glb';
 
-// EXTERNAL RESOURCES
-// ?sampArg=https://raw.githubusercontent.com/KhronosGroup/glTF-Sample-Models/master/2.0/Sponza/glTF/Sponza.gltf
+// External
+const avocado = "https://raw.githubusercontent.com/KhronosGroup/glTF-Sample-Models/master/2.0/Avocado/glTF/Avocado.gltf"
+const lantern = "https://raw.githubusercontent.com/KhronosGroup/glTF-Sample-Models/master/2.0/Lantern/glTF/Lantern.gltf"
+const sponza = "https://raw.githubusercontent.com/KhronosGroup/glTF-Sample-Models/master/2.0/Sponza/glTF/Sponza.gltf"
+// const suzanne = "https://raw.githubusercontent.com/KhronosGroup/glTF-Sample-Models/master/2.0/Suzanne/glTF/Suzanne.gltf"
+
 
 // const astronaut = "/res";
-export { astronaut, flamingo, horse };
+export { astronaut, horse, avocado, lantern, sponza };
