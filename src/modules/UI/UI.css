@@ -1,43 +1,50 @@
-.overlay{
-    color: gray;
-    position: absolute;
-    z-index: 2;
-  }
-  
-  #info{
-    left: 0px;
-  }
-  
-  #timeinfo{
-    top: 25px;
-  }
-  
-  #caseSelector{
-    right:0px
-  }
+.overlay {
+  color: gray;
+  position: absolute;
+  z-index: 2;
+}
 
-  .centered{
-    width: 100%;
-    text-align: center;
-  }
+.centered {
+  width: 100%;
+  text-align: center;
+}
 
-  #assetURL{
-    width: 50%;
-    opacity: 0.4;
-    width: auto;
-    min-width: 25%;
-    max-width: 50%;
-  }
+.right {
+  right: 0px;
+}
 
-  #assetURL:hover{
-    opacity: 0.7;
-  }
+#info {
+  left: 0px;
+}
 
-  .inputBtn{
-    opacity: 0.6;
-  }
+#timeinfo {
+  top: 25px;
+}
 
-  .inputBtn:hover{
-    opacity: 0.9;
-  }
-  
+#caseSelector {
+  right: 0px;
+}
+
+#assetURL {
+  width: 50%;
+  opacity: 0.4;
+  width: auto;
+  min-width: 25%;
+  max-width: 50%;
+}
+
+#assetURL:hover {
+  opacity: 0.7;
+}
+
+#canvasOvr {
+  border: 1px solid #000000;
+}
+
+.inputBtn {
+  opacity: 0.6;
+}
+
+.inputBtn:hover {
+  opacity: 0.9;
+}

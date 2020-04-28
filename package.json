@@ -1,17 +1,11 @@
 {
-  "name": "three-react-sandbox",
+  "name": "heightmap-gen",
   "author": {
     "name": "Etienne1911"
   },
   "homepage": "https://etienne1911.github.io/three-react-template/",
-  "description": "A sandbox template for WebGL apps development using ThreeJS, React with R3F",
-  "keywords": [
-    "three",
-    "threejs",
-    "react",
-    "webgl",
-    "template"
-  ],
+  "description": "",
+  "keywords": [],
   "license": "MIT",
   "version": "0.1.0",
   "private": true,
