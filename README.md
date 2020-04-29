@@ -8,7 +8,7 @@ It also embed some tools to make WebGL apps development easier.
 *[Live Demo](https://etienne1911.github.io/three-react-template/)&ensp;&middot;&ensp;[Sandbox](https://codesandbox.io/embed/github/etienne1911/three-react-template/tree/master/?fontsize=14&initialpath=three-react-template%2F&theme=dark&view=preview)*
 
 ## Goals/features
-When I started 3d web dev, with ThreeJS I found one downside was the lack of frame to develop serious project.
+When I started 3d web dev, with ThreeJS I found the lack of frame to develop serious project to be one of the main downside.
 I was only coding small demos built from html files which ended up messy.
 With the advent of tools such as React, web dev became much cleaner, and a bit closer to traditional projects such as C++, 
 while keeping flexibility of scripting languages and possibilities offered by markup language to build UI.
@@ -38,7 +38,7 @@ Different way to get this project
 but no way to subscribe to updates made to template repo yet?
 - make a fork of repo and set upstream to point to original repo => possibility to 
 stay uptodate by fetching updates from original repo and merging them in your repo.
-- use code sandbox: quick way to get started
+- use code sandbox: quickest way to get started
 
 ## Installation
 
@@ -72,7 +72,7 @@ The samples given are voluntarily basic but shows most features :
 
 # Source code organization and folder structure:
 
-This is a suggestion of architecture as it may continue to evolve in time...
+This is just a suggestion of architecture as the project is new and may continue to evolve in time...
 
 Source files can be categorized into:
 - non component ( TS files): unrelated to react/R3F (so no access to ThreeJS instance). 
