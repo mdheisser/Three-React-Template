@@ -13,8 +13,9 @@ export const InfoOverlay = ({ sample }: { sample: any }) => {
 
   return (
     <>
-      <div className="overlay" id="info">
-        <span>{sample.name}</span>
+      <div className="overlay top centered">
+        <div id="infoLabel">{sample.name}</div>
+        <div id="description">{sample.desc}</div>
       </div>
     </>
   );
@@ -38,7 +39,7 @@ export const CaseSelector = ({
 
   return (
     <>
-      <div className="overlay inputBtn" id="caseSelector">
+      <div className="overlay top inputBtn" id="caseSelector">
         <select
           id="testCases"
           value={current}
@@ -56,7 +57,7 @@ export const CaseSelector = ({
 };
 
 /**
- * A canvas overlay to draw on top
+ * A canvas overlay to display drawings (for debug, ...)
  */
 
 export const CanvasOverlay = ({ width, height, pointsBuff }: any) => {
@@ -86,8 +87,8 @@ export const CanvasOverlay = ({ width, height, pointsBuff }: any) => {
   // console.log(img);
   return (
     <>
-      <div className="overlay right" id="canvasOvr">
-        <canvas ref={canvasRef} width={width} height={height} />
+      <div className="overlay right bottom">
+        <canvas ref={canvasRef} width={width} height={height} id="canvasOvr" />
       </div>
       {/* <img src={img ? img.src : null} alt="heightmap" /> */}
     </>

@@ -1,16 +1,15 @@
-import React from 'react';
-import { render } from 'react-dom'
-import './index.css';
-import { WEBGL } from 'three/examples/jsm/WebGL.js';
-import { App } from './App';
+import React from "react";
+import { render } from "react-dom";
+import "./index.css";
+import "./theme.css";
+import { WEBGL } from "three/examples/jsm/WebGL.js";
+import { App } from "./App";
 
 if (WEBGL.isWebGL2Available() === false) {
-
-    document.body.appendChild(WEBGL.getWebGL2ErrorMessage());
-
+  document.body.appendChild(WEBGL.getWebGL2ErrorMessage());
 }
 
-render(<App />, document.getElementById('root'));
+render(<App />, document.getElementById("root"));
 
 // import ReactDOM from 'react-dom';
 // import * as serviceWorker from './serviceWorker';

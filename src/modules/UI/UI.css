@@ -5,40 +5,63 @@
 }
 
 .centered {
-  width: 100%;
   text-align: center;
+  left: 0;
+  right: 0;
+}
+
+.top {
+  padding: 5px 0px;
+  margin: auto;
 }
 
 .right {
   right: 0px;
 }
 
-#info {
-  left: 0px;
+.bottom {
+  bottom: 0px;
+  padding: 0px 5px;
+}
+
+#infoLabel {
+  font-size: large;
+  font-weight: bold;
+}
+
+#description {
+  font-size: medium;
+  font-family: monospace;
 }
 
 #timeinfo {
-  top: 25px;
+  /* font-size: medium; */
+  font-family: monospace;
+  /* top: 25px; */
 }
 
 #caseSelector {
   right: 0px;
 }
 
-#assetURL {
-  width: 50%;
+#canvasOvr {
+  border: 1px solid #000000;
+}
+
+#assetUrl {
+  top: 25px;
+}
+
+.inputField {
+  /* width: 50%; */
   opacity: 0.4;
   width: auto;
   min-width: 25%;
   max-width: 50%;
 }
 
-#assetURL:hover {
+.inputField:hover {
   opacity: 0.7;
-}
-
-#canvasOvr {
-  border: 1px solid #000000;
 }
 
 .inputBtn {
