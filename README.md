@@ -1,30 +1,42 @@
 # Three React Template
+
 A template for webGL projects using Three.js and React.
 
-I use it as a fundation for other bigger project. 
-It is kept voluntarily small, only to provide a code structure coupled with some basic recipes.
-It also embed some tools to make WebGL apps development easier.
+Provides a code structure with some basic recipes + embed some tools to make WebGL apps development easier.
+
+I use it as a fundation of my other projects. 
+
+It is intentionnaly kept small for now and is mostly a WIP. It is more some guidelines and best pratices in webgl development than a finished library.
+
+You can take whatever you need and leave anything you consider unrelevant for your project.
+
 
 *[Live Demo](https://etienne1911.github.io/three-react-template/)&ensp;&middot;&ensp;[Sandbox](https://codesandbox.io/embed/github/etienne1911/three-react-template/tree/master/?fontsize=14&initialpath=three-react-template%2F&theme=dark&view=preview)*
 
 ## Goals/features
-When I started 3d web dev, with ThreeJS I found the lack of frame to develop serious project to be one of the main downside.
+
+When I started 3d web dev with ThreeJS, I found lack of frame to develop serious project a main downside.
 I was only coding small demos built from html files which ended up messy.
-With the advent of tools such as React, web dev became much cleaner, and a bit closer to traditional projects such as C++, 
+
+With the advent of advanced lib such as React, web dev became much cleaner, and a bit closer to traditional projects such as C++, 
 while keeping flexibility of scripting languages and possibilities offered by markup language to build UI.
 
-Hence the creation of this project:
+Hence the creation of this project.
+
+This project attempt to fullfill following goals:
 - provide a clean way to code and organize a 3d web-app
-- ready to code: avoid boilerplate code at maximum + emphasis on code reusability accross projects
+- ready to code: avoid boilerplate code at maximum 
+- emphase code reusability accross projects sharing common components, ressources, tools, ...
 - sandbox mode: listing of all projects currently worked on and easy switch between them
-- UI and 3D separation while enabling data exchange and instantaneaous update between engine, components and UI through state store
-- sharing common components (helpers, UI,..), ressources (material catalog)
+- UI and 3D separation while enabling data exchange and instantaneaous update between engine, components and UI through states (including global store) 
 
 ## Embedded libraries:
+The current choices made for this project:
+
 - Three.js: webgl 3d graphics
 - React: UI and browser integration
 - React-Three-Fiber: ThreeJS integration with React
-- Typescript support
+- Typescript support from CRA (create-react-app)
 - React Router(react-router-dom)
 - State management library (Zustand)
 - (Ammo.js: physics engine) soon
@@ -32,13 +44,14 @@ Hence the creation of this project:
 # Usage
 
 ## Source checkout
-Different way to get this project
-- local clone from repo
-- create a repo from repo template (template is a new github feature=> check github help): 
-but no way to subscribe to updates made to template repo yet?
-- make a fork of repo and set upstream to point to original repo => possibility to 
-stay uptodate by fetching updates from original repo and merging them in your repo.
-- use code sandbox: quickest way to get started
+
+Different way to get this project:
+
+- local clone in your machine
+- create a new repo from repo template (template is a new github feature=> check github help): 
+but no way to subscribe updates later yet?
+- make a fork of this repo and set upstream to point to original repo => possibility to stay updated by fetching updates from original repo and merging them in your repo.
+- use a code sandbox: quickest way to get started
 
 ## Installation
 
@@ -57,22 +70,20 @@ run 'npm i' in project's directory to install dependancies
 - add new entry in samples/index with your new sample ref
 - directly access new sample with url: `localhost:3000/<SampleName>
 
-## Usage with VSCode
-if you plan on using VSCode for dev, you can benefit from debugging feature directly in the editor.
-For that use `Debugger for Chrome` and modify .vscode/launch.json to adapt configuration to your machine.
-
 # Showcase
-The samples given are voluntarily basic but shows most features :
-- Sandbox: browse samples (welcome page)
-- Animation + materials/shader/texture load (Basic Demo)
-- Case selector using dropbox inside a sample to customize a demo/ select a test
-- Overlay on top of graphics to display UI infos (+ control )
-- Load and display of 3d model
-- custom arg in url (model loader)
+
+The samples given are voluntarily basic but tries to show most features:
+
+- Sandbox: browse samples (Welcome page)
+- Basic scene setup with some controls + material use with texture and lights with shadows (Basic Demo)
+- UI layer to show some infos + controls to customize a demo
+- Support of URL args to preset a demo 
+- Load and display of 3d model (Model Loader)
 
 # Source code organization and folder structure:
 
-This is just a suggestion of architecture as the project is new and may continue to evolve in time...
+This is mostly a suggestion of architecture for project not intended to be fixed as it probably evolve,
+as this projects matures..
 
 Source files can be categorized into:
 - non component ( TS files): unrelated to react/R3F (so no access to ThreeJS instance). 
@@ -83,19 +94,22 @@ Code split:
 - common/: of general interest for the sandbox framework
 - modules/: building blocks for samples. some hints of modules: 'common', 'helpers', 'UI', ... (+ see an example with new heighmap module below). 
 - samples/: Demos, tests, tools samples mostly dealing with 3D and UI components defined in modules. 
-Note that any new sample must be added to sample declaration file 'index.ts' at the root of this folder
+Note that any new sample must be added to sample declaration file `index.ts` at the root of this folder
 - resources/assets/: Local assets (self hosted): every thing that isn't code (images, 3d models, ..)
 - resources/catalogs/: Resources declarations for materials, textures, shaders, models, ...
 - /src/dts: to declare any missing typescript types def
 
 
 
-Example:
+Example with creation of a new module:
 
-Given we want to develop a new 'HeightMap' module .
+Given we want to develop an heighmap module, we should create a subdir in modules dir: "Heightmap".
 
-For that we create a subdir in modules dir, named "Heightmap".
+.. and then add:
+- Some routines specific to heightmap but unrelated to react/ R3F => TS file(s) inside subdir
+- A new component: '\<Heightmap>' to be instanciated in our samples => TSX file(s) inside subdir
+- Some general purpose code non heighmap specific and useful for other modules (for instance noise functions, some helper..) => TS/TSX files in external shared module dir
 
-- Some routines specific to heightmap but unrelated to react/ R3F => ts files in subdir
-- A new component: '\<Heightmap>' ready to be instanciated. => tsx files in subdir
-- Some general purpose code unspecific to Heighmap and useful for other modules, for instance noise functions. => common or shared module dir
+# Best pratices, guidelines for this project and contributions
+- keep external dependancies as low as possible
+- minimal resources (just to show some usecases)
