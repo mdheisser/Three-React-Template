@@ -1,43 +1,73 @@
-.overlay{
-    color: gray;
-    position: absolute;
-    z-index: 2;
-  }
-  
-  #info{
-    left: 0px;
-  }
-  
-  #timeinfo{
-    top: 25px;
-  }
-  
-  #caseSelector{
-    right:0px
-  }
+.overlay {
+  color: gray;
+  position: absolute;
+  z-index: 2;
+}
 
-  .centered{
-    width: 100%;
-    text-align: center;
-  }
+.centered {
+  text-align: center;
+  left: 0;
+  right: 0;
+}
 
-  #assetURL{
-    width: 50%;
-    opacity: 0.4;
-    width: auto;
-    min-width: 25%;
-    max-width: 50%;
-  }
+.top {
+  padding: 5px 0px;
+  margin: auto;
+}
 
-  #assetURL:hover{
-    opacity: 0.7;
-  }
+.right {
+  right: 0px;
+}
 
-  .inputBtn{
-    opacity: 0.6;
-  }
+.bottom {
+  bottom: 0px;
+  padding: 0px 5px;
+}
 
-  .inputBtn:hover{
-    opacity: 0.9;
-  }
-  
+#infoLabel {
+  font-size: large;
+  font-weight: bold;
+}
+
+#description {
+  font-size: medium;
+  font-family: monospace;
+}
+
+#timeinfo {
+  /* font-size: medium; */
+  font-family: monospace;
+  /* top: 25px; */
+}
+
+#caseSelector {
+  right: 0px;
+}
+
+#canvasOvr {
+  border: 1px solid #000000;
+}
+
+#assetUrl {
+  top: 25px;
+}
+
+.inputField {
+  /* width: 50%; */
+  opacity: 0.4;
+  width: auto;
+  min-width: 25%;
+  max-width: 50%;
+}
+
+.inputField:hover {
+  opacity: 0.7;
+}
+
+.inputBtn {
+  opacity: 0.6;
+}
+
+.inputBtn:hover {
+  opacity: 0.9;
+}

@@ -1,4 +1,4 @@
-import React, { Suspense, useEffect } from 'react';
+import React, { Suspense, useEffect } from "react";
 import {
   Link,
   useLocation,
@@ -7,12 +7,14 @@ import {
   Route,
   useParams
 } from "react-router-dom";
-import './App.css';
+import "./App.css";
 import * as Samples from "./samples";
 // import { useSampleStates } from './common/states';
 
-const sampleItems: any = Object.entries(Samples)
-  .reduce((acc, [name, item]) => ({ ...acc, [name]: item }), {})
+const sampleItems: any = Object.entries(Samples).reduce(
+  (acc, [name, item]) => ({ ...acc, [name]: item }),
+  {}
+);
 
 // A custom hook that builds on useLocation to parse
 // the query string for you.
@@ -24,68 +26,75 @@ function useQuery() {
  * route to sample path and support sampleId
  */
 export const App = () => {
-
-  return (<>
-    <Router basename="/three-react-template">
-      {/* <Route path="/" component={App} /> */}
-      <Switch>
-        <Route exact path="/">
-          <WelcomePage />
-        </Route>
-        {/* <LoadSample sample={sample} /> */}
-        <Route exact path="/:sample" component={LoadSample} />
-        <Route path="/:sample/:caseId" component={LoadSample} />
-      </Switch>
-    </Router>
-  </>);
-}
+  return (
+    <>
+      <Router basename="/three-react-template">
+        {/* <Route path="/" component={App} /> */}
+        <Switch>
+          <Route exact path="/">
+            <WelcomePage />
+          </Route>
+          {/* <LoadSample sample={sample} /> */}
+          <Route exact path="/:sample" component={LoadSample} />
+          <Route path="/:sample/:caseId" component={LoadSample} />
+        </Switch>
+      </Router>
+    </>
+  );
+};
 
 /**
  * List all availables samples in the sandbox
- * @param param0 
+ * @param param0
  */
 export const WelcomePage = () => {
-
   const getItemsList = (items: {}) => {
-    return Object.keys(items).map((sampleName, i) => <li key={i.toString()}>
-      <Link to={"/" + sampleName}>{sampleName}</Link>
-    </li>);
+    return Object.keys(items).map((sampleName, i) => (
+      <li key={i.toString()}>
+        <Link to={"/" + sampleName}>{sampleName}</Link>
+      </li>
+    ));
   };
   return (
-    <div>
-      Welcome to ThreeSandbox! a playground for 3D projects <br /><br />
-      <span>Sandbox contains the following samples:</span> <br />
-
+    <div className="App">
+      <div className="title">
+        <h2>ThreeSandbox! </h2>
+        <h3>A playground for 3D projects</h3>
+      </div>
+      <hr />
+      <span>Sandbox contains the following samples</span> <br />
       <ul>{getItemsList(sampleItems)}</ul>
     </div>
-  )
+  );
 };
 
 /**
  * Load a specific sample
- * @param param0 
+ * @param param0
  * export sample in states
  */
 export const LoadSample = ({ match }: any) => {
   // const setSample = useSampleStates(state => state.setSample);
-
+  let name = match.params.sample;
   let query = useQuery();
   let urlArg = query.get("sampArg");
   let { caseId } = useParams();
   var sample = {
-    name: match.params.sample,
+    name: name,
     // type: Number(query.get("type")),
+    desc: Samples[name].desc,
     case: caseId,
     arg: urlArg
-  }
-  
-  // setSample(sample); // externalize to Sample States
+  };
 
+  // setSample(sample); // externalize to Sample States
+  console.log(sample);
   var item: any = sampleItems[sample.name];
   const Sample = item.Component;
   // sample.type = item.tags[0];
   return (
     <Suspense fallback={null}>
       <Sample sample={sample} />
-    </Suspense>)
+    </Suspense>
+  );
 };
