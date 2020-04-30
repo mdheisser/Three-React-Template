@@ -10,7 +10,7 @@ export const geodata_lerp = (geoData: any) => {
   const elevArr = geoData.elevations.elevation;
   var min = { lon: elevArr[0].lon, lat: elevArr[0].lat, z: elevArr[0].z };
   var max = { lon: 0, lat: 0, z: 0 };
-  elevArr.forEach(elt => {
+  elevArr.forEach((elt: any) => {
     min.lon = elt.lon < min.lon ? elt.lon : min.lon;
     min.lat = elt.lat < min.lat ? elt.lat : min.lat;
     min.z = elt.z < min.z ? elt.z : min.z;
@@ -25,7 +25,7 @@ export const geodata_lerp = (geoData: any) => {
   };
   const mult = { lon: size / range.lon, lat: size / range.lat };
   console.log(range);
-  const pts: Vector3[] = elevArr.map(elt => {
+  const pts: Vector3[] = elevArr.map((elt: any) => {
     const pt = new Vector3(
       (elt.lat - min.lat) * mult.lat,
       (elt.lon - min.lon) * mult.lon,
@@ -34,7 +34,7 @@ export const geodata_lerp = (geoData: any) => {
     return pt;
   });
   //console.log(pts);
-  const findPt = p =>
+  const findPt = (p: any) =>
     pts.findIndex(pt => p.distanceTo(new Vector2(pt.x, pt.y)) < 5);
   return (p: Vector2) => {
     //return p.x > 64 ? 0.5 : 1;

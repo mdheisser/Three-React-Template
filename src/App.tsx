@@ -10,8 +10,8 @@ import {
 import "./App.css";
 import * as Samples from "./samples";
 // import { useSampleStates } from './common/states';
-
-const sampleItems: any = Object.entries(Samples).reduce(
+const SAMPLES:any = Samples;
+const sampleItems: any = Object.entries(SAMPLES).reduce(
   (acc, [name, item]) => ({ ...acc, [name]: item }),
   {}
 );
@@ -82,7 +82,7 @@ export const LoadSample = ({ match }: any) => {
   var sample = {
     name: name,
     // type: Number(query.get("type")),
-    desc: Samples[name].desc,
+    desc: SAMPLES[name].desc,
     case: caseId,
     arg: urlArg
   };
