@@ -1,6 +1,8 @@
 .App {
-  font-family: sans-serif;
-  text-align: center;
+  height: 100%;
+  font-family: monospace;
+  background: #282c34;
+  /* color: white; */
 }
 
 .App-logo {
@@ -36,4 +38,11 @@
   to {
     transform: rotate(360deg);
   }
+}
+
+.title {
+  text-align: center;
+  /* font-family: source-code-pro, Menlo, Monaco, Consolas, "Courier New",
+    monospace; */
+  /* font-family: code; */
 }
