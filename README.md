@@ -1,10 +1,8 @@
 # Three React Template
 
-A template for webGL projects using Three.js and React.
-
 Provides a code structure with some basic recipes + embed some tools to make WebGL apps development easier.
 
-I use it as a fundation of my other projects. 
+I use it as a fundation for my other projects. 
 
 It is intentionnaly kept small for now and is mostly a WIP. It is more some guidelines and best pratices in webgl development than a finished library.
 
