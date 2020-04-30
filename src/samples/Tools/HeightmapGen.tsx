@@ -10,7 +10,7 @@ import * as HeightFunctions from "../../resources/catalogs/misc/heightFunctions"
 import { geodata_lerp } from "../../modules/tools/GeoUtils";
 // import geoData from "../../resources/assets/oth/geodata.json";
 
-const geoFunc = geodata_lerp(null);
+const geoFunc = {};//geodata_lerp(geoData);
 const HEIGHTFUNCS: any = { ...HeightFunctions, geoFunc };
 const ALL_CASES = [...Object.keys(HEIGHTFUNCS)];
 
@@ -26,7 +26,8 @@ export default ({ sample }: any) => {
 
   const func = HEIGHTFUNCS[ALL_CASES[currCase]];
 
-  const heightArr = [...Array(W * H).keys()]
+  const arr: any = Array(W * H).keys();
+  const heightArr= [...arr]
     .map((elt, i) => new Vector2(i % W, Math.floor(i / W)))
     .map(v2 => func(v2));
   // .map(v2 => 0.25 + noise(v2) / 2);
