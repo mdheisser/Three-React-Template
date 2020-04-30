@@ -7,10 +7,10 @@ import {
 } from "../../modules/UI/Overlay";
 import { Vector2 } from "three";
 import * as HeightFunctions from "../../resources/catalogs/misc/heightFunctions";
-import { geodata_lerp } from "../../modules/tools/GeoUtils";
-// import geoData from "../../resources/assets/oth/geodata.json";
+import { geoDataProjection } from "../../modules/tools/GeoUtils";
+import geoData from "../../resources/assets/oth/geodata.json";
 
-const geoFunc = {};//geodata_lerp(geoData);
+const geoFunc = geoDataProjection(geoData) //geodata_lerp(geoData);
 const HEIGHTFUNCS: any = { ...HeightFunctions, geoFunc };
 const ALL_CASES = [...Object.keys(HEIGHTFUNCS)];
 
