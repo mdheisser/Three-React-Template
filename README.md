@@ -12,7 +12,7 @@ You can take whatever you need and leave anything you consider unrelevant for yo
 
 *[Live Demo](https://etienne1911.github.io/three-react-template/)&ensp;&middot;&ensp;[Sandbox](https://codesandbox.io/embed/github/etienne1911/three-react-template/tree/master/?fontsize=14&initialpath=three-react-template%2F&theme=dark&view=preview)*
 
-## Birth of this project
+## Motivations
 
 When I started 3d web dev with ThreeJS, I found lack of frame to develop serious project a main downside.
 I was only coding small demos built from html files which ended up messy.
@@ -20,7 +20,7 @@ I was only coding small demos built from html files which ended up messy.
 With the advent of advanced lib such as React, web dev became much cleaner, and a bit closer to traditional projects such as C++, 
 while keeping flexibility of scripting languages and possibilities offered by markup language to build UI.
 
-Hence the creation of this project.
+Hence the birth of this project.
 
 ## Goals/features
 This project attempt to fullfill following goals:
