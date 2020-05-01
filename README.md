@@ -113,13 +113,9 @@ Example: Given we want to develop a new module called "Heighmap",
 
 This an attempt here to give a frame for future template evolution.
 
-All improvements made to this template, mainly came from other projects I developed, 
-when a missing use cases was found, which for the sake of reusability, could be put in common.
+All improvements to this template, mainly come from the other projects I'm working on, when I find a missing use case, which for the sake of reusability, can be put in common.
 
-I dont know yet about next template evolutions, (maybe give birth to a more advanced
-library becoming some sort of 3D swissknife..)
-
-But for now, samples, routines and resources are embedded mainly to serve 2 purposes:
+I dont know yet about next evolutions (maybe move to some sort of 3D swissknife..), but for now, samples, routines and resources are embedded mainly to serve 2 purposes:
 - showcase most usecases giving an example of how to implement a feature and split code 
 - provide some piece of code widely used accross other project: (UI design, helpers...)
 (for instance: a text display info, a canvas overly, some helper to manipulate box...)
@@ -140,8 +136,8 @@ Its goal not being (at least for now) to be a complete standalone lib.
 Some rule of thumb to help decide what contributions to include,: 
 - keep external dependancies as low as possible. 
 if a feature absolutely requires a new dependancy, it shouldn't be included unless it is indispensable or has a clear proven interest (such as state management lib, url routing lib, ...) 
-Or concretely, common code should be the most library agnostic (meaning not using a favorite UI lib such as MaterialUI or a more pratical http request lib such as Axios no matter the quality of the lib), 
-But prefer instead standards (HTML5, fetch http request...) and then in project built upon template use any personal favorite libs.
+Or concretely, common code should be the most library agnostic (meaning avoiding using a favorite UI lib such as MaterialUI or a more pratical http request lib such as Axios no matter the quality of the lib), 
+But prefer standards instead like (HTML5, fetch http request...) and then include any personal favorite lib in project built upon template.
 - included resources should be kept minimal (just to show some usecases)
 - ....
 
