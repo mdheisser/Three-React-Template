@@ -3,62 +3,87 @@
 import { Vector3, Vector2 } from "three";
 import { requestAPI } from "../../common/misc";
 
-const ApiBaseUrl = "https://epsg.io/trans?";
-const ApiEndUrl = "&s_srs=4326&t_srs=3857";
-// construct URL for API call
+const API_BaseUrl = "https://epsg.io/";
+const API_Transform = "trans";
+const API_Map = "map";
+// conversion unit from/to (what SRS stands for?)
+const SRS = {
+  source: 4326, // geodesic
+  target: 3857  // 
+}
+
 
 /**
  * linear projection of geodata
- * @param geoData an array of geo data with terrain elevation
+ * @param geoData array of geo data with terrain elevation
  */
 export const projectGeoData = async (geoData: any) => {
   const size = 256;
   const elevArr = geoData.elevations.elevation;
 
   // Convert geodesic (lat,lon) to mercator(planar x,y,z)
-  // var results: number[] = await Promise.all(
-  // elevArr.map(async (item: any) => {
   var points = [];
   for (var item of elevArr) {
+    // construct URL for API call
     // const inputStr = "x=" + item.lon + "&y=" + item.lat + "&z=" + item.z;
-    const inputStr = `x=${item.lon}&y=${item.lat}&z=${item.z}&s_srs=4326&t_srs=3857`;
-    const url = ApiBaseUrl + inputStr;
+    const inputStr = `?x=${item.lon}&y=${item.lat}&z=${item.z}&s_srs=${SRS.source}&t_srs=${SRS.target}`;
+    const url = API_BaseUrl + API_Transform + inputStr;
 
     const coords = await requestAPI(url);
-    // console.log(coords);
-    points.push(new Vector3(coords.x, coords.y, coords.z));
-  }//)
-  // )
+    points.push(new Vector3(parseInt(coords.x), parseInt(coords.y), parseInt(coords.z)));
+  }
 
+  const limits = getBoundaries(points);
+
+  const mapDispStr = `${SRS.target}`
+  console.log("Min found at: " + API_BaseUrl + API_Map + "#srs=3857&x=%s&y=%s&z=18&layer=satellite", limits.min.x, limits.min.y);
+  console.log('Max found at: https://epsg.io/map#srs=3857&x=%s&y=%s&z=18&layer=satellite', limits.max.x, limits.max.y);
+
+  // Compute area dimensions + altitude range
+  const range = limits.max.clone().sub(limits.min).round();
+  console.log("Altitude range %sm -> %sm  (+%sm)", limits.min.z, limits.max.z, range.z);
+  console.log("Area dimensions H:%sm x W:%sm", range.x, range.y);
+
+  // set origin at middle
+  const origin = limits.min.clone().add(range.clone().multiplyScalar(0.5));
+  console.log("origin set to:")
+  console.log(origin);
+  // center on origin => all coords become relative to this reference point
+  const localPts = points.map(pt => pt.clone().sub(origin));
+  return localPts;
+};
+/**
+ * get min/max of a point list
+ * @param points 
+ */
+const getBoundaries = (points: Vector3[]) => {
   // Find min/max
-  const min = new Vector3(0, 0, 0); const max = points[0];
+  const min = new Vector3(); const max = new Vector3();
   min.x = points.map(v => v.x).reduce((min, val) => val < min ? val : min);
   min.y = points.map(v => v.y).reduce((min, val) => val < min ? val : min);
   min.z = points.map(v => v.z).reduce((min, val) => val < min ? val : min);
   max.x = points.map(v => v.x).reduce((max, val) => val > max ? val : max);
   max.y = points.map(v => v.y).reduce((max, val) => val > max ? val : max);
   max.z = points.map(v => v.z).reduce((max, val) => val > max ? val : max);
-
-  console.log('check min found at: https://epsg.io/map#srs=3857&x=%s&y=%s&z=18&layer=satellite', min.x, min.y);
-  console.log('check max found at: https://epsg.io/map#srs=3857&x=%s&y=%s&z=18&layer=satellite', max.x, max.y);
-
-  // Dimensions
-  const range = max.clone().sub(min).round()
-  console.log("altitude %sm -> %sm  (+%sm)", min.z, max.z, range.z);
-  console.log("dimensions %sm x %sm", range.x, range.y);
-
-  // Normalize so that min become origin at (0,0,0)
-
-  const localPts = points.map(pt => pt.clone().sub(min));
-  return localPts;
-};
+  return { min, max }
+}
 
 /**
-* generate an height function from projected geodata
+* generate an height function to display a set of points
  */
-export const ptsListHeighFn = (ptsList: Vector3[]) => {
-  console.log(ptsList)
-  return (p: Vector2) => {
-    return Math.cos(p.length() / 8)
-  };
+const POINT_SIZE = 1; // point size to display on canvas
+
+export const ptsListHeighFn = (pointSet: Vector3[]) => {
+  // rescale point set to fit target dim
+  const limits = getBoundaries(pointSet);
+  const range = limits.max.clone().sub(limits.min).round();
+  const center = limits.min.clone().add(range.clone().multiplyScalar(0.5));
+  // reposition on center
+  const localPts = pointSet.map(pt => pt.clone().sub(center));
+  return localPts;
+
+  const findPt = (p: any) =>
+  pointSet.findIndex(pt => p.distanceTo(new Vector2(pt.y, pt.x)) < POINT_SIZE);
+
+  return (p: Vector2) => findPt(p) === -1;//? (pts[index].z - z.min) / z.range : 1;
 }
