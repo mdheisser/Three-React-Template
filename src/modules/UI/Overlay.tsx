@@ -1,6 +1,7 @@
-import React, { useRef, useEffect, useState } from "react";
+import React, { useRef, useEffect, useState, ChangeEvent } from "react";
 import "./UI.css";
 import { fillCanvasData, canvasToImg } from "./misc";
+
 /**
  * An overlay to display basic information
  */
@@ -66,11 +67,6 @@ export const CanvasOverlay = ({ width, height, pointsBuff }: any) => {
 
   useEffect(() => {
     const ctx: CanvasRenderingContext2D = canvasRef.current.getContext("2d");
-    ctx.fillStyle = "#FF0000"; // ctx.fillStyle = "rgb(200,0,0)";
-    ctx.fillRect(32, 32, 128, 128);
-    ctx.beginPath();
-    ctx.arc(95, 50, 40, 0, 2 * Math.PI);
-    ctx.stroke();
 
     // create a new pixel array
     var imageData: ImageData = ctx.createImageData(
@@ -80,9 +76,10 @@ export const CanvasOverlay = ({ width, height, pointsBuff }: any) => {
     fillCanvasData(pointsBuff, imageData);
     // copy the image data back onto the canvas
     ctx.putImageData(imageData, 0, 0); // at coords 0,0
+    // drawOnCanvas(pointsBuff, ctx);
 
     const img: HTMLImageElement = canvasToImg(canvasRef.current);
-    setImg(img);
+    // setImg(img);
   }, [pointsBuff]);
   // console.log(img);
   return (
@@ -94,3 +91,38 @@ export const CanvasOverlay = ({ width, height, pointsBuff }: any) => {
     </>
   );
 };
+
+/**
+ * Multi purpose text box
+ * @param handleSubmit 
+ */
+export const TextBox = ({ handleSubmit, defaultValue = "empty" }: any) => {
+  const [text, setText] = useState(defaultValue);
+
+  const handleChange = (event: any) => {
+    setText(event.target.value);
+  }
+
+  // useEffect(() => {
+  //   setText("toto à vélo");
+  // })
+
+  return (
+    <>
+      <br />
+      <br />
+      <form className="overlay inputTextForm" onSubmit={evt => handleSubmit(evt, text)}>
+        <label>
+          Format data as below <br />
+          <textarea id="textArea" value={text} onChange={handleChange} />
+        </label><br />
+        <div className="submitBtn">
+          <input type="submit" value="process" />
+        </div>
+      </form>
+    </>
+  );
+}
+
+
+

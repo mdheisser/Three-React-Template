@@ -10,7 +10,7 @@ const BasicDemo = {
 };
 const ModelLoader = {
   tags: [SAMPLE_TYPE.DEMO],
-  desc: "",
+  desc: "please allow some time for the model to load",
   Component: lazy(() => import("./ModelLoader"))
 };
 const BoxSplitDemo = {
@@ -30,7 +30,7 @@ const TestRaycastHlp = {
 };
 const HeightmapGenTool = {
   tags: [SAMPLE_TYPE.TOOL],
-  desc: "",
+  desc: "generates heightmaps from various height functions",
   Component: lazy(() => import("../samples/Tools/HeightmapGen"))
 };
 

@@ -6,12 +6,29 @@ import { requestAPI } from "../../common/misc";
 const API_BaseUrl = "https://epsg.io/";
 const API_Transform = "trans";
 const API_Map = "map";
-// conversion unit from/to (what SRS stands for?)
+
+// for conversion unit from/to (what SRS stands for?)
 const SRS = {
   source: 4326, // geodesic
   target: 3857  // 
 }
 
+// default geo data
+export const DEFAULT_GEODATA_INPUT = [{
+  "lon": "4.123",
+  "lat": "45.432",
+  "z": "100.0",
+},
+{
+  "lon": "4.1235",
+  "lat": "45.4325",
+  "z": "125.0",
+},
+{
+  "lon": "4.124",
+  "lat": "45.4321",
+  "z": "125.0",
+}]
 
 /**
  * linear projection of geodata
@@ -19,11 +36,10 @@ const SRS = {
  */
 export const projectGeoData = async (geoData: any) => {
   const size = 256;
-  const elevArr = geoData.elevations.elevation;
 
   // Convert geodesic (lat,lon) to mercator(planar x,y,z)
   var points = [];
-  for (var item of elevArr) {
+  for (var item of geoData) {
     // construct URL for API call
     // const inputStr = "x=" + item.lon + "&y=" + item.lat + "&z=" + item.z;
     const inputStr = `?x=${item.lon}&y=${item.lat}&z=${item.z}&s_srs=${SRS.source}&t_srs=${SRS.target}`;
@@ -71,7 +87,7 @@ const getBoundaries = (points: Vector3[]) => {
 /**
 * generate an height function to display a set of points
  */
-const POINT_SIZE = 1; // point size to display on canvas
+const POINT_SIZE = 2; // point size to display on canvas
 
 export const ptsListHeighFn = (pointSet: Vector3[]) => {
   // rescale point set to fit target dim
@@ -81,12 +97,12 @@ export const ptsListHeighFn = (pointSet: Vector3[]) => {
   // reposition on center
   let localPts = pointSet.map(pt => pt.clone().sub(center));
   // translate on new center
-  const centerTarget = new Vector3(128,128,0.5);
+  const centerTarget = new Vector3(128, 128, 0.5);
   const translat = centerTarget.clone().sub(center);
   localPts = localPts.map(pt => pt.clone().add(translat));
-  
+
   const findPt = (p: any) =>
-  localPts.findIndex(pt => p.distanceTo(new Vector2(pt.y, pt.x)) < POINT_SIZE);
+    localPts.findIndex(pt => p.distanceTo(new Vector2(pt.y, pt.x)) < POINT_SIZE);
 
   return (p: Vector2) => findPt(p) === -1;//? (pts[index].z - z.min) / z.range : 1;
 }

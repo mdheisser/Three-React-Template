@@ -1,19 +1,20 @@
 ///<reference path="../../dts/misc-types-extend.d.ts" />
-import React, { useState, useEffect, useRef } from "react";
+import React, { useState, useEffect, useRef, ChangeEvent } from "react";
 import {
   InfoOverlay,
   CanvasOverlay,
-  CaseSelector
+  CaseSelector,
+  TextBox
 } from "../../modules/UI/Overlay";
 import { Vector2 } from "three";
 import * as HeightFunctions from "../../resources/catalogs/misc/heightFunctions";
-import { projectGeoData, ptsListHeighFn } from "../../modules/tools/GeoUtils";
-import geoData from "../../resources/assets/oth/geodata.json";
+import { projectGeoData, ptsListHeighFn, DEFAULT_GEODATA_INPUT } from "../../modules/tools/GeoUtils";
+// import geoData from "../../resources/assets/oth/geodata.json";
 
 const W = 256;
 const H = 256;
 let geoFunc = (v: Vector2) => 0;  // dummy func until set later
-const HEIGHTFUNCS:any = { ...HeightFunctions, geoFunc };
+const HEIGHTFUNCS: any = { ...HeightFunctions, geoFunc };
 const ALL_CASES = [...Object.keys(HEIGHTFUNCS)];
 
 
@@ -28,12 +29,27 @@ export default ({ sample }: any) => {
     setCurrCase(parseInt(caseId));
   };
 
+  const handleSubmit = (evt: ChangeEvent, txt: string) => {
+    evt.preventDefault();
+    const data = JSON.parse(txt);
+    processCustData(data);
+  }
+
+  const processCustData = async (inputData: any) => {
+    const pts = await projectGeoData(inputData);
+    let geoFunc = ptsListHeighFn(pts); // generate HeightFunc from geodata list
+    HEIGHTFUNCS['geoFunc'] = geoFunc; // update geoFunc in HEIGHTFUNC catalog
+    // force refresh
+    setCurrCase(0);
+    setCurrCase(currCase);
+  }
+
   useEffect(() => {
-    (async () => {
-      const pts = await projectGeoData(geoData);  
-      let geoFunc = ptsListHeighFn(pts); // generate HeightFunc from geodata list
-      HEIGHTFUNCS['geoFunc'] = geoFunc; // update geoFunc in HEIGHTFUNC catalog
-    })();
+    // (async () => {
+    //   const pts = await projectGeoData(geoData);  
+    //   let geoFunc = ptsListHeighFn(pts); // generate HeightFunc from geodata list
+    //   HEIGHTFUNCS['geoFunc'] = geoFunc; // update geoFunc in HEIGHTFUNC catalog
+    // })();
 
   }, [])
 
@@ -52,6 +68,7 @@ export default ({ sample }: any) => {
         current={currCase}
         onSelect={onCaseChange}
       />
+      {selectCase === "geoFunc" ? <TextBox handleSubmit={handleSubmit} defaultValue={JSON.stringify(DEFAULT_GEODATA_INPUT, null, 4)} />: ""}
       <CanvasOverlay width={W} height={H} pointsBuff={heightArr} />
     </>
   );
