@@ -79,11 +79,14 @@ export const ptsListHeighFn = (pointSet: Vector3[]) => {
   const range = limits.max.clone().sub(limits.min).round();
   const center = limits.min.clone().add(range.clone().multiplyScalar(0.5));
   // reposition on center
-  const localPts = pointSet.map(pt => pt.clone().sub(center));
-  return localPts;
-
+  let localPts = pointSet.map(pt => pt.clone().sub(center));
+  // translate on new center
+  const centerTarget = new Vector3(128,128,0.5);
+  const translat = centerTarget.clone().sub(center);
+  localPts = localPts.map(pt => pt.clone().add(translat));
+  
   const findPt = (p: any) =>
-  pointSet.findIndex(pt => p.distanceTo(new Vector2(pt.y, pt.x)) < POINT_SIZE);
+  localPts.findIndex(pt => p.distanceTo(new Vector2(pt.y, pt.x)) < POINT_SIZE);
 
   return (p: Vector2) => findPt(p) === -1;//? (pts[index].z - z.min) / z.range : 1;
 }
