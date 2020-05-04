@@ -1,0 +1,17 @@
+.inputTextForm {
+    width: 50%;
+    height: 35%;
+    margin: 5%;
+  }
+  
+  #textArea {
+    width: 100%;
+    height: 100%;
+    /* margin: 5%; */
+  }
+  
+  
+  .submitBtn {
+    width: 100%;
+    text-align: end;
+  }

@@ -2,13 +2,13 @@
 import React, { useState, useEffect, useRef, ChangeEvent } from "react";
 import {
   InfoOverlay,
-  CanvasOverlay,
   CaseSelector,
-  TextBox
 } from "../../modules/UI/Overlay";
 import { Vector2 } from "three";
 import * as HeightFunctions from "../../resources/catalogs/misc/heightFunctions";
-import { projectGeoData, ptsListHeighFn, DEFAULT_GEODATA_INPUT } from "../../modules/tools/GeoUtils";
+import { projectGeoData, ptsListHeighFn, DEFAULT_GEODATA_INPUT } from "../../modules/Geo/GeoTools";
+import { TextBox } from "../../modules/Geo/UI/input";
+import { CanvasOverlay } from "../../modules/Heightmap/UI/canvas";
 // import geoData from "../../resources/assets/oth/geodata.json";
 
 const W = 256;
