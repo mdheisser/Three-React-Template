@@ -5,19 +5,19 @@ Provides a code structure with some basic recipes + embedded tools to make WebGL
 I use it as a fundation for my other projects. 
 
 It is intentionnaly kept small for now and is mostly a WIP. 
-It is more some guidelines and best pratices in webgl development than a complete library.
+See it more as some guidelines and best pratices in webgl development rather than a complete library.
 
-You can take whatever you need and leave what you consider unrelevant for your project.
+I advise to take whatever you need and leave what you consider unrelevant for your project.
 
 
 *[Live Demo](https://etienne1911.github.io/three-react-template/)&ensp;&middot;&ensp;[Sandbox](https://codesandbox.io/embed/github/etienne1911/three-react-template/tree/master/?fontsize=14&initialpath=three-react-template%2F&theme=dark&view=preview)*
 
 ## Motivations
 
-When I started 3d web dev with ThreeJS, I found main downside to be the lack of frame to develop serious project.
-I was only coding small demos built from html files which ended up messy.
+When I started 3d web dev with ThreeJS, I found main downside was the lack of frame to develop serious project.
+I was only coding small demos built from html files which ended up messy most of the time.
 
-With the advent of advanced lib such as React or typescript, web dev became much cleaner, and a bit closer to traditional projects such as C++, 
+With the advent of advanced lib such as React and Typescript language, web dev became much cleaner, and a bit closer to traditional projects such as C++, 
 while keeping flexibility of scripting languages and advantages of markup language to build UI.
 
 Hence the birth of this project.
@@ -28,8 +28,8 @@ This project attempt to fullfill following goals:
 - ready to code: avoid boilerplate code at maximum 
 - emphase code reusability accross projects sharing common components, ressources, tools, ...
 - sandbox mode: listing of all projects currently worked on and easy switch between them
-- UI and 3D separation while enabling data exchange and instantaneaous update between engine, components and UI through states (including global store) 
-- enable code portability
+- UI and 3D separation while enabling data exchange and instantaneaous update between them using states (including global state store) 
+- code portability focus
 
 ## Embedded libraries:
 The current choices made for this project:
@@ -37,7 +37,7 @@ The current choices made for this project:
 - Three.js: webgl 3d graphics
 - React: UI and browser integration
 - React-Three-Fiber: ThreeJS integration with React
-- Typescript support from CRA (create-react-app)
+- Typescript (in create-react-app)
 - React Router(react-router-dom)
 - State management library (Zustand)
 - (Ammo.js: physics engine) soon
@@ -73,13 +73,14 @@ run 'npm i' in project's directory to install dependancies
 
 # Showcas.
 
-The samples given are voluntarily basic but tries to show most features:
+Embedded samples are voluntarily basic but tries to demonstrates some features such as:
 
 - Sandbox: browse samples (Welcome page)
-- Basic scene setup with some controls + material use with texture and lights with shadows (Basic Demo)
-- UI layer to show some infos + controls to customize a demo
-- Support of URL args to preset a demo 
+- Basic scene setup: some controls, resources usage (materials, textures), lights animation with shadows (Basic Demo)
 - Load and display of 3d model (Model Loader)
+- UI layer showing some infos
+- Sample customization through UI controls + URL args to preset a demo
+- ... 
 
 With time demos may become more interesting but this isn't the main purpose of this project
 
@@ -87,28 +88,28 @@ With time demos may become more interesting but this isn't the main purpose of t
 
 This is mostly a suggestion of architecture subject to future evolution.
 
-Source files can be categorized into:
+Source files can be sorted into:
 - non component ( TS files): unrelated to react/R3F (so no access to ThreeJS instance). 
 => code with highest portability.
 - components (TSX): by essence tightly coupled to react (for UI comp) and R3F (React-Three-Fiber for 3D comp)
 
 Code split:
-- common/: of general interest for the sandbox framework
-- modules/: building blocks for samples some hints of modules: 'common', 'helpers', 'UI', ... (+ see an example with new heighmap module below). 
+- common/: of general interest for the template framework
+- modules/: building blocks for samples (some hints of module names can be 'common', 'helpers', 'UI', 'heighmap' => see below with example). 
 - samples/: Demos, tests, tools samples mostly dealing with 3D and UI components defined in modules. 
 Note that any new sample must be added to sample declaration file `index.ts` at the root of this folder
 - resources/assets/: Local assets (self hosted): every thing that isn't code (images, 3d models, ..)
-- resources/catalogs/: Resources declarations for materials, textures, shaders, models, ...
-- /src/dts: to declare any missing typescript types def
+- resources/catalogs/: Resources declarations (self hosted + external) for materials, textures, shaders, models, ...
+- /src/dts: declaration of any missing typescript modules def
 
 
 Example: Given we want to develop a new module called "Heightmap", 
 
-- we should create a subdir in modules dir: "Heightmap".
-.. and then add:
-- A new component: '\<Heightmap>' to be instanciated in samples => TSX file(s) inside subdir
-- Some routines specific to heightmap but unrelated to react/ R3F => TS file(s) inside subdir
-- Some general purpose code or useful for other modules (for instance noise functions, helpers..) => TS/TSX files in other shared module dir (such as tools, helpers, UI...)
+- A new subdir should be created in modules: "Heightmap" ... 
+and following file should be added to it:
+- new component(s) (for instance '\<Heightmap>') as tsx file(s) that will be instanciated in our samples  
+- Some routines specific to heightmap but unrelated to react/ R3F as ts files
+- Some general purpose code or useful for other modules (for instance noise functions, helpers..): as ts/tsx files in other shared module dir (such as tools, helpers, UI...)
 
 # Best pratices, guidelines, contributions
 
@@ -124,12 +125,12 @@ I dont know yet how this project will evolve (maybe move to some sort of 3D swis
 ## when should a feature included?
 
 A good candidate might be a feature originaly developed for a project, 
-with a general interest and recurrently needed in others.
+having wider scope interest and recurrently needed in others.
 
 Then it may be worth spending some time to make it generic, and put it in template, 
 so that all projects built on top can automatically benefit from it, hence avoiding code duplication,..
 
-Nevertheless, choices should be made carefully and wisely, to decide what is really beneficial for the rest 
+Nevertheless, choices should be made carefully and wisely, to decide what is really beneficial to the rest 
 and worth the investment of time.  
 This, in order to make sure this project doesn't grow everywhere, become messy or too heavy. 
 Its goal not being (at least for now) to be a complete standalone lib.
@@ -137,9 +138,11 @@ Its goal not being (at least for now) to be a complete standalone lib.
 Some rule of thumb to help decide what contributions to include,: 
 - keep external dependancies as low as possible 
 if a feature absolutely requires a new dependancy, it shouldn't be included unless indispensable or has a clear proven interest (such as state management lib, url routing lib, ...) 
-Or , common code should be the most library agnostic (
-Concretely this means to avoid using a favorite UI lib (such as MaterialUI) or a more pratical http request lib (such as Axios) no matter the quality of the lib. 
-But to prefer standards instead (like HTML5, fetch http request...) and then include any personal favorite lib in project built upon template.
+
+Common code should be mostly library independant.
+Concretely meaning to avoid using a favorite UI lib (such as MaterialUI) or a more pratical http request lib (such as Axios) no matter the quality of the lib. 
+But instead to prefer standards (like HTML5, fetch http request...) 
+and then include any personal favorite lib in project built upon template.
 - included resources should be kept minimal (just to show some usecases)
 - ....
 
