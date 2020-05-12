@@ -4,22 +4,17 @@ import "./UI.css";
 /**
  * An overlay to display basic information
  */
-export const InfoOverlay = ({ sample }: { sample: any }) => {
-  console.log(
-    "Sample: %s %s",
-    sample.name,
-    sample.caseNb ? "#" + sample.caseNb : ""
-  );
+export const InfoOverlay = ({ sampleName, sampleDesc }: any) => {
 
   return (
     <>
       <div className="overlay top centered">
-        <div id="infoLabel">{sample.name}</div>
-        <div id="description">{sample.desc}</div>
+        <div id="infoLabel">{sampleName}</div>
+        <div id="description">{sampleDesc}</div>
       </div>
     </>
   );
-};
+}
 
 /**
  * A dropdown menu to select a sample case (e.g. test case)

@@ -2,7 +2,6 @@
 import React, {
   Suspense,
   useEffect,
-  ChangeEvent,
   FormEvent,
   useState
 } from "react";
@@ -66,12 +65,12 @@ const CustomUrl = ({ onSubmitUrl }: any) => {
 const MODELS: any = Models;
 const ALL_CASES = ["...custom url", ...Object.keys(MODELS)];
 
-export default ({ sample }: any) => {
+export default ({ args }: any) => {
   const [assetUrl, setAssetUrl] = useState("");
   const [currCase, setCurrCase] = useState(1);
 
   // const sample = useSampleStates(state => state.sample);   // get sample from global states instead of from props to subscribe updates
-
+  const { sampleName, sampleDesc, caseSelect, extAssetUrl } = args;
   const onCaseChange = (caseId: any) => {
     console.log("switch case to: " + caseId);
     setCurrCase(parseInt(caseId));
@@ -84,42 +83,42 @@ export default ({ sample }: any) => {
   useEffect(() => {
     const caseName: any = ALL_CASES[currCase];
     const url =
-      currCase > 0 ? MODELS[caseName] : sample.arg ? sample.arg : assetUrl;
+      currCase > 0 ? MODELS[caseName] : extAssetUrl ? extAssetUrl : assetUrl;
     setAssetUrl(url);
   }, [currCase]);
 
   useEffect(() => {
     // check if custom case was provided
     if (
-      sample.case !== undefined &&
-      sample.case !== null &&
-      sample.case !== ""
+      caseSelect !== undefined &&
+      caseSelect !== null &&
+      caseSelect !== ""
     ) {
-      setCurrCase(sample.case);
+      setCurrCase(caseSelect);
     }
-    // check custom asset passed through url arg
-    else if (sample.arg) {
+    // check custom asset passed through url params
+    else if (extAssetUrl) {
       setCurrCase(0);
     }
   }, []);
 
   return (
     <>
-      <InfoOverlay sample={sample} />
-      {currCase === 0 && !sample.arg ? (
+      <InfoOverlay sampleName={sampleName} sampleDesc={sampleDesc} />
+      {currCase === 0 && !extAssetUrl ? (
         <CustomUrl onSubmitUrl={onAssetUrlChange} />
       ) : (
-        ""
-      )}
-      {!sample.arg ? (
+          ""
+        )}
+      {!extAssetUrl ? (
         <CaseSelector
           items={ALL_CASES}
           current={currCase}
           onSelect={onCaseChange}
         />
       ) : (
-        ""
-      )}
+          ""
+        )}
       <Canvas camera={{ position: [100, 50, 100] }}>
         <ambientLight intensity={2} />
         <Helpers size={128} />
@@ -130,8 +129,8 @@ export default ({ sample }: any) => {
             <Asset url={assetUrl} />
           </Suspense>
         ) : (
-          ""
-        )}
+            ""
+          )}
       </Canvas>
     </>
   );

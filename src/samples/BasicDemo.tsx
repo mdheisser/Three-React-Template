@@ -173,11 +173,11 @@ const Moveable = () => {
     </>)
 }
 
-export default ({ sample }: any) => {
-
+export default ({ args }: any) => {
+    const {sampleName, sampleDesc} = args;
     return (
         <>
-            <InfoOverlay sample={sample} />
+            <InfoOverlay sampleName={sampleName} sampleDesc={sampleDesc} />
             <Canvas gl2 camera={{ position: [15, 30, 50] }}
             // onCreated={({ gl }) => ((gl.shadowMap.enabled = true), (gl.shadowMap.type = THREE.PCFSoftShadowMap))}>
             >

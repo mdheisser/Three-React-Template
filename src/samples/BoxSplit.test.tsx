@@ -6,7 +6,6 @@ import { BoxSplitter } from "../modules/tools/BoxUtils";
 import { Helpers, Controls, Wrapper, Lights } from "./BasicDemo";
 import { InfoOverlay, CaseSelector } from "../modules/UI/Overlay";
 import { Canvas } from "react-three-fiber";
-import { useSampleStates } from "../common/states";
 
 const OverlapBoxStyle = {
     default: {
@@ -97,8 +96,11 @@ const BoxInclusion = () => {
 
 const TestCases = [SeparateBoxes, AdjacentBoxes, BoxInclusion];
 
-export default ({ sample }: any) => {
+export default ({ args }: any) => {
     const [currCase, setCurrCase] = useState(0);
+
+  const {sampleName, sampleDesc, caseSelect } = args;
+
 
     const onCaseChange = (caseId: any) => {
         console.log("switch case to: " + caseId);
@@ -107,15 +109,15 @@ export default ({ sample }: any) => {
 
     useEffect(() => {
         // check if custom case was provided
-        if (sample.case !== undefined && sample.case !== null && sample.case !== "") {
-            setCurrCase(sample.case);
+        if (caseSelect !== undefined && caseSelect !== null && caseSelect !== "") {
+            setCurrCase(caseSelect);
         }
     }, [])
 
     const TestCase = TestCases[currCase];
     return (
         <>
-            <InfoOverlay sample={sample} />
+            <InfoOverlay sampleName={sampleName} sampleDesc={sampleDesc} />
             <CaseSelector items={TestCases.map(elt=>elt.name)} current={currCase}  onSelect={onCaseChange} />
             <Canvas camera={{ position: [100, 50, 100] }}>
                 <ambientLight intensity={2} />

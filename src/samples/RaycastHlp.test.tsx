@@ -97,8 +97,8 @@ const Plane = () => {
 }
 
 const TestCases = [Cube, Sphere, Plane];
-
-export default ({ sample }: any) => {
+export default ({ args }: any) => {
+    const {sampleName, sampleDesc, caseSelect} = args;
     const [currCase, setCurrCase] = useState(0);
 
     const onCaseChange = (caseId: any) => {
@@ -108,8 +108,8 @@ export default ({ sample }: any) => {
 
     useEffect(() => {
         // check if custom case was provided
-        if (sample.case !== undefined && sample.case !== null && sample.case !== "") {
-            setCurrCase(sample.case);
+        if (caseSelect !== undefined && caseSelect !== null && caseSelect !== "") {
+            setCurrCase(caseSelect);
         }
     }, [])
 
@@ -117,7 +117,7 @@ export default ({ sample }: any) => {
 
     return (
         <>
-            <InfoOverlay sample={sample} />
+            <InfoOverlay sampleName={sampleName} sampleDesc={sampleDesc} />
             <CaseSelector items={TestCases.map(elt=>elt.name)} current={currCase} onSelect={onCaseChange} />
             <Canvas gl2 camera={{ position: [50, 25, 50] }}>
                 <Controls />

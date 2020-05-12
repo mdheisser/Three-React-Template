@@ -10,12 +10,15 @@ import {
 import "./App.css";
 import * as Samples from "./samples";
 // import { useSampleStates } from './common/states';
-const SAMPLES:any = Samples;
-const sampleItems: any = Object.entries(SAMPLES).reduce(
-  (acc, [name, item]) => ({ ...acc, [name]: item }),
-  {}
-);
+const SAMPLES: any = Samples;
+const samples: any = //Object.entries(Samples).map(([name, sample]: any) => sample);
+  Object.entries(SAMPLES).reduce(
+    (acc, [itemName, item]) => ({ ...acc, [itemName]: item }),
+    {}
+  );
 
+// console.log(Object.entries(SAMPLES));
+console.log(SAMPLES);
 // A custom hook that builds on useLocation to parse
 // the query string for you.
 function useQuery() {
@@ -43,18 +46,20 @@ export const App = () => {
   );
 };
 
+const addUrlArgs = (args: any) => {
+  let paramStr = Object.keys(args).reduce((params, argName): any => {
+    const pref = params.length ? "&" : "?";
+    return params + pref + argName + "=" + args[argName];
+  }, "");
+  return paramStr;
+}
+
 /**
  * List all availables samples in the sandbox
  * @param param0
  */
 export const WelcomePage = () => {
-  const getItemsList = (items: {}) => {
-    return Object.keys(items).map((sampleName, i) => (
-      <li key={i.toString()}>
-        <Link to={"/" + sampleName}>{sampleName}</Link>
-      </li>
-    ));
-  };
+  console.log(samples['BasicDemo']);
   return (
     <div className="App">
       <div className="title">
@@ -63,7 +68,12 @@ export const WelcomePage = () => {
       </div>
       <hr />
       <span>Sandbox contains the following samples</span> <br />
-      <ul>{getItemsList(sampleItems)}</ul>
+      <ul>{Object.keys(samples)//.map(name => samples[name])
+        .map((sampleName: any, i: number) => (
+          <li key={i.toString()}>
+            <Link to={"/" + sampleName + addUrlArgs(samples[sampleName].args)}>{sampleName}</Link>
+          </li>
+        ))}</ul>
     </div>
   );
 };
@@ -71,30 +81,35 @@ export const WelcomePage = () => {
 /**
  * Load a specific sample
  * @param param0
- * export sample in states
  */
 export const LoadSample = ({ match }: any) => {
   // const setSample = useSampleStates(state => state.setSample);
   let name = match.params.sample;
   let query = useQuery();
-  let urlArg = query.get("sampArg");
-  let { caseId } = useParams();
-  var sample = {
-    name: name,
+  // let { caseId } = useParams();
+  // preload argument list from sample declaration
+  const urlArgs: any = SAMPLES[name].args;
+  // + fill from url provided params
+  Object.keys(urlArgs).forEach((argName: string) => {
+    const urlArgVal = query.get(argName);
+    if (urlArgVal !== undefined) urlArgs[argName] = urlArgVal;
+  })
+  // add to sample args
+  var sampleArgs = {
+    sampleName: name,
     // type: Number(query.get("type")),
-    desc: SAMPLES[name].desc,
-    case: caseId,
-    arg: urlArg
+    sampleDesc: SAMPLES[name].desc,
+    ...urlArgs
   };
 
   // setSample(sample); // externalize to Sample States
-  console.log(sample);
-  var item: any = sampleItems[sample.name];
-  const Sample = item.Component;
+  // console.log(sample);
+  const Sample = SAMPLES[name].comp;
+  console.log(Sample);
   // sample.type = item.tags[0];
   return (
     <Suspense fallback={null}>
-      <Sample sample={sample} />
+      <Sample args={{ ...sampleArgs }} />
     </Suspense>
   );
 };

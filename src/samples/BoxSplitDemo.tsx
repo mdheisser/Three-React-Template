@@ -73,8 +73,8 @@ const AnimationWidget = () => {
           Custom Time {time.custom.toLocaleTimeString()}{" "}
         </span>
       ) : (
-        ""
-      )}
+          ""
+        )}
     </>
   );
 };
@@ -183,11 +183,12 @@ const Main = () => {
   );
 };
 
-export default ({ sample }: any) => {
-  return (
+export default ({ args }: any) => {
+    const {sampleName, sampleDesc} = args;
+    return (
     <>
       <AnimationWidget />
-      <InfoOverlay sample={sample} />
+      <InfoOverlay sampleName={sampleName} sampleDesc={sampleDesc} />
       <Canvas camera={{ position: [100, 50, 100] }}>
         <ambientLight intensity={0.5} />
         <Wrapper />
