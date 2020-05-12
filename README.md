@@ -76,13 +76,13 @@ run 'npm i' in project's directory to install dependancies
 Embedded samples are voluntarily basic but tries to demonstrates some features such as:
 
 - Sandbox: browse samples (Welcome page)
-- Basic scene setup: some controls, resources usage (materials, textures), lights animation with shadows (Basic Demo)
+- Basic scene setup (controls, resources, lights, shadows, animation) (Basic Demo)
 - Load and display of 3d model (Model Loader)
-- UI layer showing some infos
-- Sample customization through UI controls + URL args to preset a demo
+- UI layer: displaying some infos and controls
+- Sample customization and preset through support of generic URL args
 - ... 
 
-With time demos may become more interesting but this isn't the main purpose of this project
+With time demos may become more interesting but for now this isn't the priority of this project
 
 # Source code organization and folder structure:
 

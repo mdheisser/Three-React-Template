@@ -49,7 +49,7 @@ export const App = () => {
 const addUrlArgs = (args: any) => {
   let paramStr = Object.keys(args).reduce((params, argName): any => {
     const pref = params.length ? "&" : "?";
-    return params + pref + argName + "=" + args[argName];
+    return args[argName] !== '' ? params + pref + argName + "=" + args[argName] : params;
   }, "");
   return paramStr;
 }
@@ -92,7 +92,7 @@ export const LoadSample = ({ match }: any) => {
   // + fill from url provided params
   Object.keys(urlArgs).forEach((argName: string) => {
     const urlArgVal = query.get(argName);
-    if (urlArgVal !== undefined) urlArgs[argName] = urlArgVal;
+    if (urlArgVal !== undefined && urlArgVal !== '') urlArgs[argName] = urlArgVal;
   })
   // add to sample args
   var sampleArgs = {

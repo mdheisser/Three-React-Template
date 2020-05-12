@@ -3,7 +3,7 @@ import { SAMPLE_TYPE } from "../common/constants";
 /** 
  * Sample customization:
  * You can choose to get sample arguments from url params  
- * by putting all supported sample arguments in args
+ * by putting all supported params in args field
 */
 
 const BasicDemo = {
@@ -17,7 +17,7 @@ const BasicDemo = {
 const ModelLoader = {
   tags: [SAMPLE_TYPE.DEMO],
   desc: "For some models, please allow some time to load. You can see camera autofit on models",
-  args: { caseSelect: 1 },
+  args: { caseSelect: 1, extAssetUrl: '' },
   comp: lazy(() => import("./ModelLoader"))
 };
 const ModelLoadCustUrl = {
