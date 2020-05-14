@@ -10,8 +10,6 @@ See it more as some guidelines and best pratices in webgl development rather tha
 I advise to take whatever you need and leave what you consider unrelevant for your project.
 
 
-*[Live Demo](https://etienne1911.github.io/three-react-template/)&ensp;&middot;&ensp;[Sandbox](https://codesandbox.io/embed/github/etienne1911/three-react-template/tree/master/?fontsize=14&initialpath=three-react-template%2F&theme=dark&view=preview)*
-
 ## Motivations
 
 When I started 3d web dev with ThreeJS, I found main downside was the lack of frame to develop serious project.
@@ -71,7 +69,7 @@ run 'npm i' in project's directory to install dependancies
 - add new entry in samples/index with your new sample declaration
 - directly access new sample with url: `localhost:3000/\<SampleName>
 
-# Showcas.
+# Showcases
 
 Embedded samples are voluntarily basic but tries to demonstrates some features such as:
 
@@ -83,9 +81,3 @@ Embedded samples are voluntarily basic but tries to demonstrates some features s
 - ... 
 
 With time demos may become more interesting but for now this isn't the priority of this project
-
-# Source code organization and folder structure:
-
-[Code structure](Organization)
-
-[Best pratices](Guidelines)
